@@ -1,24 +1,29 @@
 # Automated OBS Scene Creation Guide
 
-Skip the manual clicking! This guide shows you how to automatically create all your OBS scenes, sources, and configurations with a single command.
+**Skip 30+ minutes of manual clicking!** This guide shows you how to automatically create all your OBS scenes, sources, and configurations with a single command.
 
-## Quick Start (Recommended)
+⚡ **Total setup time: 2-3 minutes**  
+✅ **Zero configuration errors**  
+🛠️ **Professional audio processing**  
+🌐 **Works online & offline**
 
-### 1. Install Dependencies
+## 🚀 Quick Start (2-3 Minutes Total)
+
+### Step 1: Install Dependencies (30 seconds)
 ```bash
-# Install required Python libraries
+# Install required Python libraries and validate setup
 python scripts/setup/install-dependencies.py
 ```
 
-### 2. Enable OBS WebSocket Server
+### Step 2: Enable OBS WebSocket (1 minute)
 1. **Open OBS Studio**
-2. **Go to Tools → WebSocket Server Settings**
-3. **Check "Enable WebSocket server"**
-4. **Set Server Port: 4455** (default)
-5. **Set Password** (optional but recommended)
-6. **Click Apply/OK**
+2. **Tools → WebSocket Server Settings**
+3. **✅ Enable WebSocket server**
+4. **Server Port: 4455** (default)
+5. **Password**: Leave blank or set your own
+6. **Apply/OK**
 
-### 3. Create All Scenes Automatically
+### Step 3: Create All Scenes Automatically (1 minute)
 ```bash
 # Production mode with GitHub Pages overlays (RECOMMENDED)
 python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
@@ -26,71 +31,102 @@ python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 # Development mode with local overlay files
 python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline
 
-# Generate JSON file for manual import
-python scripts/obs/auto-scene-creator.py --generate-json --github-user artivisi [--offline]
-```
-
-**That's it! 🎉** All 7 scenes with sources, overlays, and configurations are created automatically.
-
-## What Gets Created
-
-### 📺 7 Complete Scenes
-1. **🎬 Intro Scene** - Professional intro with countdown
-2. **👤 Talking Head** - Full camera view with overlay
-3. **💻 Code + Camera** - Screen capture + PiP camera
-4. **🖥️ Screen Only** - Full screen for detailed work
-5. **📺 BRB / Technical** - Break screen with timer
-6. **🎯 Outro Scene** - Professional outro with CTA
-7. **👥 Dual Camera** - Interview setup with guest
-
-### 🎥 Auto-Configured Sources
-- **Browser Sources** with your GitHub Pages URLs
-- **Camera Sources** with auto-detected devices
-- **Screen Capture** optimized for coding
-- **Audio Sources** with professional filters
-- **Overlays** with Artivisi branding
-
-### 🎛️ Professional Audio Setup
-- **Noise Suppression** (RNNoise)
-- **Compressor** for consistent levels
-- **Limiter** to prevent peaking
-- **Monitor + Output** configuration
-
-## Advanced Usage
-
-### Content-Specific Templates
-```bash
-# Java development focus
-python scripts/obs/auto-scene-creator.py --create-live --template java
-
-# Linux administration 
-python scripts/obs/auto-scene-creator.py --create-live --template linux
-
-# DevOps with diagrams
-python scripts/obs/auto-scene-creator.py --create-live --template devops
-
-# Interview-only setup
-python scripts/obs/auto-scene-creator.py --create-live --template interview
-```
-
-### Generate JSON for Manual Import
-```bash
-# Create scene collection file with GitHub Pages overlays
+# Generate JSON for manual import (no WebSocket needed)
 python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json
-
-# Or with local overlays for development
-python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json --offline
-
-# Then in OBS: Scene Collection → Import → Select my-scenes.json
 ```
 
-### Custom OBS Connection
+**That's it! 🎉** 
+- 7 professional scenes created
+- Audio processing configured
+- Device sources auto-detected
+- Ready to record immediately
+
+## 🛠️ What Gets Created Automatically
+
+### 🎬 7 Professional Scenes
+1. **🎬 Intro Scene** (F1) - Professional intro with countdown and branding
+2. **👤 Talking Head** (F2) - Full presenter view for explanations
+3. **💻 Code + Camera** (F3) - Split screen with Picture-in-Picture camera
+4. **🖥️ Screen Only** (F4) - Full screen capture for detailed code work
+5. **📺 BRB / Technical** (F5) - Break screen with animated timer
+6. **🎯 Outro Scene** (F6) - Professional closing with call-to-action
+
+### 📎 Source Management System
+- **📹 Camera Sources** - Edit camera settings once, used everywhere
+- **🎤 Audio Sources** - Centralized microphone configuration
+- **🖥️ Screen Sources** - Shared screen capture settings
+- **⚙️ Scene References** - Changes propagate automatically
+
+### 🛠️ Professional Audio Processing
+- **🎙️ Noise Suppression** - RNNoise algorithm for crystal clear voice
+- **🔊 Dynamic Compression** - 10:1 ratio for consistent levels
+- **⚠️ Peak Limiter** - Prevents audio clipping and distortion
+- **🎧 Monitor Output** - Hear yourself without feedback
+
+### 🌐 Smart URL Management
+- **Production Mode**: Uses GitHub Pages URLs (always works)
+- **Development Mode**: Uses local file:// URLs (for testing)
+- **Automatic Detection**: Chooses best overlay source
+- **Error Recovery**: Fallback to safe defaults
+
+### 📱 Cross-Platform Device Support
+- **macOS**: AVFoundation camera detection
+- **Windows**: DirectShow device enumeration  
+- **Linux**: V4L2 video device scanning
+- **USB Audio**: Automatic microphone detection
+- **Cam Link 4K**: Specialized support for capture cards
+
+## 🎯 Advanced Templates
+
+### Content-Specific Scene Templates
 ```bash
-# Different host/port
+# Java development with IDE optimization
+python scripts/obs/auto-scene-creator.py --create-live --template java --github-user artivisi
+
+# Linux administration with terminal focus
+python scripts/obs/auto-scene-creator.py --create-live --template linux --github-user artivisi
+
+# DevOps with architecture diagrams
+python scripts/obs/auto-scene-creator.py --create-live --template devops --github-user artivisi
+
+# Interview-only scenes (no coding layouts)
+python scripts/obs/auto-scene-creator.py --create-live --template interview --github-user artivisi
+```
+
+### Template Customizations
+- **Java Template**: IntelliJ IDEA window detection, Java-specific overlays
+- **Linux Template**: Terminal-focused scenes, command highlighting
+- **DevOps Template**: Architecture diagram overlays, microservices layouts
+- **Interview Template**: Dual camera support, guest audio processing
+
+### 💾 Generate JSON for Manual Import
+```bash
+# Production scene collection (GitHub Pages)
+python scripts/obs/auto-scene-creator.py --generate-json --output artivisi-scenes.json --github-user artivisi
+
+# Development scene collection (local files)
+python scripts/obs/auto-scene-creator.py --generate-json --output artivisi-local.json --github-user artivisi --offline
+
+# Template-specific collections
+python scripts/obs/auto-scene-creator.py --generate-json --template java --output java-tutorial.json
+```
+
+**Import Process:**
+1. Open OBS Studio
+2. **Scene Collection → Import**
+3. Select your generated JSON file
+4. Scenes appear immediately with all sources configured
+
+### 🌐 Remote OBS Connection
+```bash
+# Connect to OBS on different computer
 python scripts/obs/auto-scene-creator.py --create-live --obs-host 192.168.1.100 --obs-port 4455
 
-# With password
-python scripts/obs/auto-scene-creator.py --create-live --obs-password mypassword
+# Secure connection with password
+python scripts/obs/auto-scene-creator.py --create-live --obs-password your-websocket-password
+
+# Complete remote setup
+python scripts/obs/auto-scene-creator.py --create-live --obs-host studio-pc.local --obs-port 4455 --obs-password secure123 --github-user artivisi
 ```
 
 ## Before You Start
@@ -107,7 +143,7 @@ python scripts/obs/auto-scene-creator.py --create-live --obs-password mypassword
 python scripts/tools/test-complete-setup.py --quick --github-user artivisi
 
 # Check device detection
-python scripts/obs/device-manager.py --scan
+python scripts/setup/install-dependencies.py --check-devices
 ```
 
 ## Troubleshooting
@@ -129,10 +165,10 @@ python scripts/setup/install-dependencies.py
 **Solution**: Check hardware connections
 ```bash
 # Run device scan
-python scripts/obs/device-manager.py --scan
+python scripts/setup/install-dependencies.py --scan-devices
 
-# For dual camera setup
-python scripts/obs/usb-hub-validator.py --validate
+# For dual camera setup validation
+python scripts/tools/test-complete-setup.py --hardware-only
 ```
 
 ### "GitHub Pages URLs not working"
@@ -173,7 +209,6 @@ F3 - Code + Camera
 F4 - Screen Only
 F5 - BRB / Technical
 F6 - Outro Scene
-F7 - Dual Camera
 
 Ctrl+R - Start/Stop Recording
 Ctrl+P - Pause Recording  

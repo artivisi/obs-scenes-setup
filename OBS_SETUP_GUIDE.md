@@ -1,63 +1,147 @@
 # OBS Studio Setup Guide
 
-Complete guide for setting up OBS Studio to use the Artivisi overlay system for programming tutorials.
+Comprehensive guide for setting up OBS Studio with automated scene creation and professional overlay system for programming tutorials.
+
+## 🚀 Quick Start (Recommended)
+
+For immediate setup, use our **automated scene creator**:
+
+```bash
+# 1. Install dependencies
+python scripts/setup/install-dependencies.py
+
+# 2. Enable OBS WebSocket (Tools → WebSocket Server Settings)
+# 3. Create all scenes automatically
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
+```
+
+**Setup time: 2-3 minutes** ⚡
 
 ## Table of Contents
 
-1. [Prerequisites](#prerequisites)
-2. [Scene Collection Setup](#scene-collection-setup)
-3. [Source Configuration](#source-configuration)
-4. [Hotkey Configuration](#hotkey-configuration)
-5. [Audio Setup](#audio-setup)
-6. [Recording/Streaming Settings](#recordingstreaming-settings)
-7. [Testing Your Setup](#testing-your-setup)
+1. [Automated Setup](#automated-setup) **← Start Here**
+2. [Manual Setup](#manual-setup) (if needed)
+3. [Scene Reference](#scene-reference)
+4. [Device Configuration](#device-configuration)
+5. [Audio Processing](#audio-processing)
+6. [Hotkey Configuration](#hotkey-configuration)
+7. [Recording Settings](#recording-settings)
 8. [Troubleshooting](#troubleshooting)
 
-## Prerequisites
+## Automated Setup
+
+### Prerequisites
 
 ### Required Software
-- **OBS Studio 30.0+** (latest version recommended)
-- **Web browser** for testing overlays
-- **Your GitHub Pages URL** ready: `https://artivisi.github.io/obs-scenes-setup/`
+- **OBS Studio 28.0+** with WebSocket plugin
+- **Python 3.7+** for automation scripts
+- **Git** for version control
+- **GitHub Pages** enabled (or local overlay files)
 
 ### Hardware Requirements
-- **Camera**: Nikon ZFC via Cam Link 4K (or any USB camera)
-- **Microphone**: Hollyland Lark M2 via USB (or any USB microphone)
-- **3x3 Macropad** (optional but recommended)
+- **Camera**: Any USB camera or capture card
+- **Microphone**: USB audio device or built-in mic
+- **3x3 Macropad** (optional) with Vial firmware
 
-## Scene Collection Setup
-
-### Step 1: Create New Scene Collection
+### Step 1: Enable OBS WebSocket Server
 
 1. Open OBS Studio
-2. Go to **Scene Collection** → **New**
-3. Name it: `Programming Tutorials - Artivisi`
-4. Click **OK**
+2. Go to **Tools → WebSocket Server Settings**
+3. Check **"Enable WebSocket server"**
+4. Set **Server Port: 4455** (default)
+5. Set **Password** (optional)
+6. Click **Apply/OK**
 
-### Step 2: Create Base Scenes
+### Step 2: Run Automated Scene Creator
 
-Create these 7 scenes (click **+** in Scenes panel):
+```bash
+# Production mode with GitHub Pages overlays (RECOMMENDED)
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 
-1. **🎬 Intro Scene**
-2. **👤 Talking Head** 
-3. **💻 Code + Camera**
-4. **🖥️ Screen Only**
-5. **📺 BRB / Technical**
-6. **🎯 Outro Scene**
-7. **👥 Dual Camera / Interview** (for guest interviews)
+# Development mode with local overlay files
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline
 
-## Source Configuration
+# Generate JSON file for manual import
+python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json
+```
 
-### Scene 1: 🎬 Intro Scene
+### What Gets Created Automatically
 
-**Sources to add:**
+✅ **7 Professional Scenes** with proper source ordering  
+✅ **Browser Sources** with correct GitHub Pages URLs  
+✅ **Camera Auto-Detection** and configuration  
+✅ **Audio Processing** with noise suppression, compression, and limiting  
+✅ **Screen Capture** optimized for programming  
+✅ **Source References** for easy editing (edit once, used everywhere)  
 
-1. **Browser Source** - "Intro Overlay"
-   - URL: `https://artivisi.github.io/obs-scenes-setup/overlays/intro.html`
-   - Width: `1920`, Height: `1080`
-   - ✅ Custom CSS: Leave blank
-   - ✅ Shutdown source when not visible
-   - ✅ Refresh browser when scene becomes active
+## Manual Setup
+
+## Scene Reference
+
+The automated system creates these 7 scenes with optimized layouts:
+
+### Main Scenes (F1-F6)
+1. **🎬 Intro Scene** - Professional intro with countdown
+2. **👤 Talking Head** - Full camera view for presentations
+3. **💻 Code + Camera** - Split layout with PiP camera
+4. **🖥️ Screen Only** - Full screen capture for detailed work
+5. **📺 BRB / Technical** - Break screen with timer
+6. **🎯 Outro Scene** - Professional outro with call-to-action
+
+### Source Scenes (Edit Once, Use Everywhere)
+- **📹 Camera Sources** - Edit camera settings here
+- **🎤 Audio Sources** - Edit microphone settings here  
+- **🖥️ Screen Sources** - Edit screen capture settings here
+
+All main scenes reference these source scenes, so you only need to configure devices once.
+
+## Manual Scene Collection Setup (If Not Using Automation)
+
+Only follow this section if you cannot use the automated setup:
+
+### Create New Scene Collection
+
+1. Go to **Scene Collection** → **New**
+2. Name: `Programming Tutorials - Artivisi`
+3. Manually create the 7 scenes listed above
+
+## Device Configuration
+
+### Camera Setup
+
+The automated system detects cameras automatically. For manual setup:
+
+**Recommended Camera Settings:**
+- **Resolution**: 1920x1080 or 1080x1080 (square for better framing)
+- **FPS**: 30 (matches recording settings)
+- **Format**: Auto-detect (MJPEG or YUV422)
+
+**Multi-Camera Setup:**
+- **Primary Camera**: Main presenter camera
+- **Secondary Camera**: Guest or alternate angle
+- Connect in consistent order for reliable device detection
+
+### Audio Configuration
+
+The system automatically applies professional audio processing:
+
+**Applied Filters:**
+- **Noise Suppression** (RNNoise method)
+- **Compressor** (10:1 ratio, -18dB threshold) 
+- **Limiter** (-6dB threshold, 60ms release)
+
+### Browser Source Configuration
+
+All overlays use these optimized settings:
+- **Width**: 1920, **Height**: 1080
+- **FPS**: 30
+- ✅ **Shutdown source when not visible**
+- ✅ **Restart when active** (ensures fresh loading)
+- ❌ **Reroute audio** (keep disabled)
+
+**Overlay URLs:**
+- Production: `https://artivisi.github.io/obs-scenes-setup/overlays/[scene].html`
+- Development: `file://[project-path]/docs/overlays/[scene].html`
 
 2. **Video Capture Device** - "Background Camera" (Optional)
    - Device: Your camera (Nikon ZFC/Cam Link 4K)
