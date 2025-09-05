@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talking Head Overlay</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* Talking Head Specific Styles */
+        .talking-head-container {
+            background: transparent;
+        }
+        
+        .main-webcam {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 600px;
+            border: 4px solid var(--accent-color);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .intro-title {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(15px);
+            padding: 24px 40px;
+            border-radius: var(--border-radius);
+            border: 2px solid var(--accent-color);
+            max-width: 600px;
+        }
+        
+        .intro-title h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .intro-title p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+        
+        /* Animation for entry */
+        .animate-in .main-webcam {
+            animation: zoomIn 1s ease;
+        }
+        
+        .animate-in .intro-title {
+            animation: slideUpFade 1s ease 0.3s both;
+        }
+        
+        @keyframes zoomIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideUpFade {
+            from {
+                transform: translateX(-50%) translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Test mode styling */
+        .test-mode .main-webcam {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="talking-head-container">
+    <div class="overlay-container animate-in">
+        <!-- Main webcam placeholder -->
+        <div class="main-webcam webcam-frame" id="mainWebcam">
+            <div class="test-mode">
+                📹 Main Camera Feed
+            </div>
+        </div>
+        
+        <!-- Optional intro title (can be toggled) -->
+        <div class="intro-title" id="introTitle">
+            <h1>Welcome to the Session</h1>
+            <p>Java Development & Software Engineering</p>
+        </div>
+        
+        <!-- Recording status indicator -->
+        <div class="recording-status" id="recordingStatus">
+            REC
+        </div>
+        
+        <!-- Topic indicator -->
+        <div class="topic-indicator" id="topicIndicator">
+            <span class="topic-icon">☕</span>
+            <span class="topic-text">Java Programming</span>
+        </div>
+        
+        <!-- Macropad layer indicator -->
+        <div class="macropad-indicator layer-1" id="macropadIndicator">
+            Layer 1: Tutorial Mode
+        </div>
+    </div>
+
+    <script>
+        // URL parameters for customization
+        const urlParams = new URLSearchParams(window.location.search);
+        const testMode = urlParams.get('test') === 'true';
+        const hideTitle = urlParams.get('hidetitle') === 'true';
+        const showRecording = urlParams.get('recording') === 'true';
+        const topic = urlParams.get('topic') || 'Java Programming';
+        
+        // Initialize overlay
+        document.addEventListener('DOMContentLoaded', function() {
+            const introTitle = document.getElementById('introTitle');
+            const recordingStatus = document.getElementById('recordingStatus');
+            const topicIndicator = document.getElementById('topicIndicator');
+            const macropadIndicator = document.getElementById('macropadIndicator');
+            
+            // Handle test mode
+            if (testMode) {
+                document.body.classList.add('test-mode');
+            }
+            
+            // Handle title visibility
+            if (hideTitle) {
+                introTitle.style.display = 'none';
+            }
+            
+            // Handle recording status
+            if (showRecording) {
+                recordingStatus.classList.add('active');
+            }
+            
+            // Update topic
+            const topicText = document.querySelector('.topic-text');
+            if (topicText) {
+                topicText.textContent = topic;
+            }
+            
+            // Show indicators after animation
+            setTimeout(() => {
+                topicIndicator.classList.add('active');
+                macropadIndicator.classList.add('active');
+            }, 1000);
+            
+            // Auto-hide title after 5 seconds
+            setTimeout(() => {
+                if (!hideTitle) {
+                    introTitle.style.opacity = '0';
+                    introTitle.style.transform = 'translateX(-50%) translateY(20px)';
+                }
+            }, 5000);
+        });
+        
+        // OBS WebSocket integration (if available)
+        function updateRecordingStatus(isRecording) {
+            const recordingStatus = document.getElementById('recordingStatus');
+            if (isRecording) {
+                recordingStatus.classList.add('active');
+            } else {
+                recordingStatus.classList.remove('active');
+            }
+        }
+        
+        function updateTopic(newTopic, icon = '☕') {
+            const topicText = document.querySelector('.topic-text');
+            const topicIcon = document.querySelector('.topic-icon');
+            if (topicText) topicText.textContent = newTopic;
+            if (topicIcon) topicIcon.textContent = icon;
+        }
+        
+        function updateMacropadLayer(layerNumber, layerName) {
+            const indicator = document.getElementById('macropadIndicator');
+            indicator.className = `macropad-indicator layer-${layerNumber} active`;
+            indicator.textContent = `Layer ${layerNumber}: ${layerName}`;
+        }
+        
+        // Expose functions for OBS scripting
+        window.obsOverlay = {
+            updateRecordingStatus,
+            updateTopic,
+            updateMacropadLayer
+        };
+    </script>
+</body>
+</html>

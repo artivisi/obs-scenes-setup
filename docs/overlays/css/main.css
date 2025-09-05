@@ -1,0 +1,311 @@
+/* OBS Overlay System - Main Styles */
+/* Optimized for 1920x1080 resolution */
+
+:root {
+    --primary-color: #2e3192;
+    --secondary-color: #1e2558;
+    --accent-color: #58c034;
+    --accent-light: #6dd13f;
+    --text-light: #ffffff;
+    --text-dark: #1f2937;
+    --overlay-bg: rgba(46, 49, 146, 0.9);
+    --overlay-bg-dark: rgba(30, 37, 88, 0.95);
+    --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    --gradient-accent: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+    --font-main: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --border-radius: 8px;
+    --shadow: 0 4px 12px rgba(46, 49, 146, 0.3);
+    --shadow-accent: 0 4px 12px rgba(88, 192, 52, 0.3);
+}
+
+/* Base Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-light);
+    background: transparent;
+    overflow: hidden;
+    width: 1920px;
+    height: 1080px;
+}
+
+/* Common Layout Classes */
+.overlay-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.safe-zone {
+    padding: 60px;
+}
+
+/* Webcam Frame Styles */
+.webcam-frame {
+    position: absolute;
+    border: 3px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.webcam-frame.large {
+    width: 640px;
+    height: 480px;
+}
+
+.webcam-frame.medium {
+    width: 480px;
+    height: 360px;
+}
+
+.webcam-frame.small {
+    width: 320px;
+    height: 240px;
+}
+
+.webcam-frame.pip-top-right {
+    top: 60px;
+    right: 60px;
+}
+
+.webcam-frame.pip-bottom-right {
+    bottom: 60px;
+    right: 60px;
+}
+
+.webcam-frame.pip-bottom-left {
+    bottom: 60px;
+    left: 60px;
+}
+
+.webcam-frame.centered {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Lower Third Styles */
+.lower-third {
+    position: absolute;
+    bottom: 80px;
+    left: 60px;
+    right: 60px;
+    background: var(--gradient-primary);
+    border-radius: var(--border-radius);
+    padding: 20px 30px;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transform: translateY(100px);
+    transition: all 0.5s ease;
+}
+
+.lower-third.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.lower-third h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.lower-third h2 {
+    font-size: 1.25rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+
+/* Topic Indicator */
+.topic-indicator {
+    position: absolute;
+    top: 60px;
+    right: 60px;
+    background: var(--overlay-bg);
+    border: 2px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    padding: 12px 20px;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 0.3s ease;
+}
+
+.topic-indicator.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.topic-indicator .topic-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    vertical-align: middle;
+}
+
+.topic-indicator .topic-text {
+    font-size: 1rem;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+/* Progress Indicator */
+.progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+/* Recording Status */
+.recording-status {
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    background: #dc2626;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: pulse 2s infinite;
+}
+
+.recording-status.active {
+    opacity: 1;
+}
+
+.recording-status::before {
+    content: "●";
+    font-size: 1.2rem;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Transition Effects */
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.5s ease;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInLeft {
+    from { transform: translateX(-100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Macropad Layer Indicator */
+.macropad-indicator {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--overlay-bg);
+    border: 2px solid var(--accent-color);
+    border-radius: var(--border-radius);
+    padding: 12px 20px;
+    backdrop-filter: blur(10px);
+    font-size: 0.875rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.macropad-indicator.active {
+    opacity: 1;
+}
+
+.macropad-indicator.layer-0 { border-color: #dc2626; }
+.macropad-indicator.layer-1 { border-color: var(--accent-color); }
+.macropad-indicator.layer-2 { border-color: var(--primary-color); }
+.macropad-indicator.layer-3 { border-color: #ca8a04; }
+
+/* Content Type Specific - Artivisi Branded Variants */
+.java-theme {
+    --accent-color: #f89820;
+    --accent-light: #ffb347;
+    --gradient-accent: linear-gradient(135deg, #f89820, #ffb347);
+    --shadow-accent: 0 4px 12px rgba(248, 152, 32, 0.3);
+}
+
+.linux-theme {
+    --accent-color: #fcc419;
+    --accent-light: #ffd43b;
+    --gradient-accent: linear-gradient(135deg, #fcc419, #ffd43b);
+    --shadow-accent: 0 4px 12px rgba(252, 196, 25, 0.3);
+}
+
+.devops-theme {
+    --accent-color: #20c997;
+    --accent-light: #40e0d0;
+    --gradient-accent: linear-gradient(135deg, #20c997, #40e0d0);
+    --shadow-accent: 0 4px 12px rgba(32, 201, 151, 0.3);
+}
+
+.python-theme {
+    --accent-color: #3776ab;
+    --accent-light: #4b8bbe;
+    --gradient-accent: linear-gradient(135deg, #3776ab, #4b8bbe);
+    --shadow-accent: 0 4px 12px rgba(55, 118, 171, 0.3);
+}
+
+/* Utility Classes */
+.hidden { display: none !important; }
+.invisible { opacity: 0 !important; }
+.no-pointer { pointer-events: none; }
+
+/* Responsive Helpers (for testing in browser) */
+@media (max-width: 1920px) {
+    body {
+        transform: scale(0.8);
+        transform-origin: top left;
+    }
+}

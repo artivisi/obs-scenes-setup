@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBS Overlay System - Programming Tutorials</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .overlay-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .overlay-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .overlay-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .overlay-card h2 {
+            color: #2e3192;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .overlay-card p {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .overlay-preview {
+            width: 100%;
+            height: 150px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #999;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .overlay-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .overlay-link {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            text-align: center;
+            transition: opacity 0.3s ease;
+        }
+        
+        .overlay-link:hover {
+            opacity: 0.9;
+        }
+        
+        .status-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .status-item {
+            padding: 1rem;
+            background: #f8f8f8;
+            border-radius: 8px;
+            border-left: 4px solid #58c034;
+        }
+        
+        .status-item h3 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .status-item p {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .tech-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .tech-pill {
+            padding: 0.25rem 0.75rem;
+            background: #f0f0f0;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 OBS Overlay System</h1>
+        
+        <div class="status-section">
+            <h2>System Configuration</h2>
+            <div class="status-grid">
+                <div class="status-item">
+                    <h3>Resolution</h3>
+                    <p>1920×1080</p>
+                </div>
+                <div class="status-item">
+                    <h3>Frame Rate</h3>
+                    <p>30 FPS</p>
+                </div>
+                <div class="status-item">
+                    <h3>Overlays</h3>
+                    <p>5 Active</p>
+                </div>
+                <div class="status-item">
+                    <h3>Control</h3>
+                    <p>Macropad</p>
+                </div>
+            </div>
+            
+            <div class="tech-pills">
+                <span class="tech-pill">Java</span>
+                <span class="tech-pill">Linux</span>
+                <span class="tech-pill">DevOps</span>
+                <span class="tech-pill">Software Engineering</span>
+                <span class="tech-pill">Project Management</span>
+            </div>
+        </div>
+        
+        <div class="overlay-grid">
+            <div class="overlay-card">
+                <h2>Talking Head</h2>
+                <div class="overlay-preview">
+                    <span>Preview Loading...</span>
+                </div>
+                <p>Full camera view for introductions and explanations. Clean, professional layout.</p>
+                <div class="overlay-links">
+                    <a href="overlays/talking-head.html" class="overlay-link">Open</a>
+                    <a href="overlays/talking-head.html?test=true" class="overlay-link">Test</a>
+                </div>
+            </div>
+            
+            <div class="overlay-card">
+                <h2>Code + Camera</h2>
+                <div class="overlay-preview">
+                    <span>Preview Loading...</span>
+                </div>
+                <p>Split layout for live coding sessions. IDE/terminal with picture-in-picture.</p>
+                <div class="overlay-links">
+                    <a href="overlays/code-demo.html" class="overlay-link">Open</a>
+                    <a href="overlays/code-demo.html?test=true" class="overlay-link">Test</a>
+                </div>
+            </div>
+            
+            <div class="overlay-card">
+                <h2>Screen Only</h2>
+                <div class="overlay-preview">
+                    <span>Preview Loading...</span>
+                </div>
+                <p>Full screen capture for detailed demonstrations. Minimal overlay elements.</p>
+                <div class="overlay-links">
+                    <a href="overlays/screen-only.html" class="overlay-link">Open</a>
+                    <a href="overlays/screen-only.html?test=true" class="overlay-link">Test</a>
+                </div>
+            </div>
+            
+            <div class="overlay-card">
+                <h2>Intro Scene</h2>
+                <div class="overlay-preview">
+                    <span>Preview Loading...</span>
+                </div>
+                <p>Professional intro with animations and branding. Sets the stage for content.</p>
+                <div class="overlay-links">
+                    <a href="overlays/intro.html" class="overlay-link">Open</a>
+                    <a href="overlays/intro.html?test=true" class="overlay-link">Test</a>
+                </div>
+            </div>
+            
+            <div class="overlay-card">
+                <h2>Outro Scene</h2>
+                <div class="overlay-preview">
+                    <span>Preview Loading...</span>
+                </div>
+                <p>Closing sequence with calls to action. Subscribe, like, and follow prompts.</p>
+                <div class="overlay-links">
+                    <a href="overlays/outro.html" class="overlay-link">Open</a>
+                    <a href="overlays/outro.html?test=true" class="overlay-link">Test</a>
+                </div>
+            </div>
+            
+            <div class="overlay-card">
+                <h2>BRB / Technical</h2>
+                <div class="overlay-preview">
+                    <span>Preview Loading...</span>
+                </div>
+                <p>Be Right Back and Technical Difficulties scenes. Professional holding patterns.</p>
+                <div class="overlay-links">
+                    <a href="overlays/brb.html" class="overlay-link">Open</a>
+                    <a href="overlays/brb.html?test=true" class="overlay-link">Test</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-section">
+            <h2>Quick Setup Instructions</h2>
+            <ol style="line-height: 2; color: #666;">
+                <li>In OBS, add a new Browser Source</li>
+                <li>Set URL to: <code style="background: #f0f0f0; padding: 0.25rem 0.5rem; border-radius: 4px;">https://[your-username].github.io/obs-scenes-setup/overlays/[overlay-name].html</code></li>
+                <li>Set resolution to 1920×1080</li>
+                <li>Check "Shutdown source when not visible" for performance</li>
+                <li>Configure your macropad using the button mappings in MACROPAD_DESIGN.md</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRB / Technical Difficulties Overlay</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* BRB Specific Styles */
+        .brb-container {
+            background: linear-gradient(135deg, #1e293b 0%, #374151 50%, #4b5563 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .brb-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.15) 0%, transparent 50%);
+            animation: backgroundFlow 20s ease-in-out infinite;
+        }
+        
+        @keyframes backgroundFlow {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(1deg) scale(1.05); }
+        }
+        
+        .main-message {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .main-message h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            animation: messagePulse 3s ease-in-out infinite;
+        }
+        
+        .main-message p {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+        }
+        
+        @keyframes messagePulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.02); }
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--accent-color);
+            border-radius: 25px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 10;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: statusBlink 2s infinite;
+        }
+        
+        .status-dot.warning {
+            background: #f59e0b;
+        }
+        
+        .status-dot.error {
+            background: #dc2626;
+        }
+        
+        @keyframes statusBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .status-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .timer-display {
+            position: absolute;
+            bottom: 40%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem 2.5rem;
+            text-align: center;
+            z-index: 10;
+        }
+        
+        .timer-display .timer-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+        }
+        
+        .timer-display .timer-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            font-family: var(--font-mono);
+        }
+        
+        .music-indicator {
+            position: absolute;
+            bottom: 60px;
+            left: 60px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .music-indicator.active {
+            opacity: 1;
+        }
+        
+        .music-indicator .music-icon {
+            font-size: 1.2rem;
+            animation: musicBounce 1s ease-in-out infinite;
+        }
+        
+        @keyframes musicBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .music-indicator .music-text {
+            font-size: 0.9rem;
+            color: white;
+        }
+        
+        .contact-info {
+            position: absolute;
+            bottom: 60px;
+            right: 60px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: right;
+            max-width: 280px;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 0.8rem;
+        }
+        
+        .contact-info p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.4rem;
+            line-height: 1.5;
+        }
+        
+        .social-quick {
+            display: flex;
+            gap: 0.8rem;
+            justify-content: flex-end;
+            margin-top: 1rem;
+        }
+        
+        .social-quick a {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-quick a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+        }
+        
+        /* Animated elements */
+        .floating-dots {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: floatDots 25s linear infinite;
+        }
+        
+        @keyframes floatDots {
+            0% {
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Different BRB states */
+        .brb-state-break {
+            --accent-color: #10b981;
+        }
+        
+        .brb-state-technical {
+            --accent-color: #f59e0b;
+        }
+        
+        .brb-state-emergency {
+            --accent-color: #dc2626;
+        }
+        
+        /* Animation delays for staggered appearance */
+        .animate-in .main-message {
+            animation-delay: 0.5s;
+            animation-fill-mode: both;
+        }
+        
+        .animate-in .status-indicator {
+            animation: slideDown 1s ease 0.8s both;
+        }
+        
+        .animate-in .timer-display {
+            animation: slideUp 1s ease 1s both;
+        }
+        
+        .animate-in .contact-info {
+            animation: slideInRight 1s ease 1.2s both;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body class="brb-container brb-state-break">
+    <div class="brb-background"></div>
+    
+    <!-- Floating dots animation -->
+    <div class="floating-dots">
+        <div class="dot" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="dot" style="left: 20%; animation-delay: 3s;"></div>
+        <div class="dot" style="left: 30%; animation-delay: 6s;"></div>
+        <div class="dot" style="left: 40%; animation-delay: 2s;"></div>
+        <div class="dot" style="left: 50%; animation-delay: 8s;"></div>
+        <div class="dot" style="left: 60%; animation-delay: 4s;"></div>
+        <div class="dot" style="left: 70%; animation-delay: 7s;"></div>
+        <div class="dot" style="left: 80%; animation-delay: 1s;"></div>
+        <div class="dot" style="left: 90%; animation-delay: 5s;"></div>
+    </div>
+    
+    <div class="overlay-container animate-in">
+        <!-- Status indicator -->
+        <div class="status-indicator" id="statusIndicator">
+            <div class="status-dot" id="statusDot"></div>
+            <div class="status-text" id="statusText">Taking a short break</div>
+        </div>
+        
+        <!-- Main message -->
+        <div class="main-message">
+            <h1 id="mainMessage">Be Right Back</h1>
+            <p id="subMessage">Taking a quick break - we'll be back shortly</p>
+        </div>
+        
+        <!-- Timer display -->
+        <div class="timer-display" id="timerDisplay">
+            <div class="timer-label">Estimated return</div>
+            <div class="timer-value" id="timerValue">05:00</div>
+        </div>
+        
+        <!-- Music indicator -->
+        <div class="music-indicator" id="musicIndicator">
+            <div class="music-icon">🎵</div>
+            <div class="music-text">Background music playing</div>
+        </div>
+        
+        <!-- Contact information -->
+        <div class="contact-info">
+            <h3>Stay Connected</h3>
+            <p>Follow along for updates</p>
+            <p>Questions? Drop them in chat!</p>
+            
+            <div class="social-quick">
+                <a href="#" title="GitHub">🐙</a>
+                <a href="#" title="LinkedIn">💼</a>
+                <a href="#" title="Twitter">🐦</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const brbType = urlParams.get('type') || 'break'; // break, technical, emergency
+        const duration = parseInt(urlParams.get('duration')) || 5; // minutes
+        const showMusic = urlParams.get('music') === 'true';
+        const customMessage = urlParams.get('message');
+        
+        // BRB type configurations
+        const brbConfigs = {
+            break: {
+                mainMessage: 'Be Right Back',
+                subMessage: 'Taking a quick break - we\'ll be back shortly',
+                statusText: 'Taking a short break',
+                statusDot: '',
+                accent: '#10b981',
+                className: 'brb-state-break'
+            },
+            technical: {
+                mainMessage: 'Technical Difficulties',
+                subMessage: 'Experiencing some technical issues - please stand by',
+                statusText: 'Resolving technical issues',
+                statusDot: 'warning',
+                accent: '#f59e0b',
+                className: 'brb-state-technical'
+            },
+            emergency: {
+                mainMessage: 'Please Stand By',
+                subMessage: 'Unexpected interruption - we\'ll return as soon as possible',
+                statusText: 'Handling emergency',
+                statusDot: 'error',
+                accent: '#dc2626',
+                className: 'brb-state-emergency'
+            }
+        };
+        
+        let countdownTimer;
+        let remainingSeconds = duration * 60;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const config = brbConfigs[brbType] || brbConfigs.break;
+            
+            // Apply state class
+            document.body.className = `brb-container ${config.className}`;
+            
+            // Update messages
+            document.getElementById('mainMessage').textContent = customMessage || config.mainMessage;
+            document.getElementById('subMessage').textContent = config.subMessage;
+            document.getElementById('statusText').textContent = config.statusText;
+            
+            // Update status dot
+            const statusDot = document.getElementById('statusDot');
+            if (config.statusDot) {
+                statusDot.classList.add(config.statusDot);
+            }
+            
+            // Show music indicator if requested
+            if (showMusic) {
+                document.getElementById('musicIndicator').classList.add('active');
+            }
+            
+            // Start countdown if duration is set
+            if (duration > 0) {
+                startCountdown();
+            } else {
+                document.getElementById('timerDisplay').style.display = 'none';
+            }
+        });
+        
+        function startCountdown() {
+            const timerValue = document.getElementById('timerValue');
+            
+            countdownTimer = setInterval(() => {
+                const minutes = Math.floor(remainingSeconds / 60);
+                const seconds = remainingSeconds % 60;
+                
+                timerValue.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (remainingSeconds <= 0) {
+                    clearInterval(countdownTimer);
+                    timerValue.textContent = '00:00';
+                    // Could trigger return to main content
+                    window.obsOverlay && window.obsOverlay.onCountdownComplete();
+                }
+                
+                remainingSeconds--;
+            }, 1000);
+        }
+        
+        function updateMessage(mainMessage, subMessage) {
+            document.getElementById('mainMessage').textContent = mainMessage;
+            document.getElementById('subMessage').textContent = subMessage;
+        }
+        
+        function updateStatus(statusText, statusType = '') {
+            document.getElementById('statusText').textContent = statusText;
+            const statusDot = document.getElementById('statusDot');
+            statusDot.className = `status-dot ${statusType}`;
+        }
+        
+        function setTimer(minutes) {
+            remainingSeconds = minutes * 60;
+            if (countdownTimer) {
+                clearInterval(countdownTimer);
+            }
+            startCountdown();
+        }
+        
+        function toggleMusic(show) {
+            const musicIndicator = document.getElementById('musicIndicator');
+            if (show) {
+                musicIndicator.classList.add('active');
+            } else {
+                musicIndicator.classList.remove('active');
+            }
+        }
+        
+        function setBRBType(type) {
+            const config = brbConfigs[type] || brbConfigs.break;
+            document.body.className = `brb-container ${config.className}`;
+            updateMessage(config.mainMessage, config.subMessage);
+            updateStatus(config.statusText, config.statusDot);
+        }
+        
+        function addCustomNote(note) {
+            const contactInfo = document.querySelector('.contact-info');
+            const customNote = document.createElement('p');
+            customNote.style.fontStyle = 'italic';
+            customNote.style.marginTop = '1rem';
+            customNote.style.paddingTop = '1rem';
+            customNote.style.borderTop = '1px solid rgba(255, 255, 255, 0.2)';
+            customNote.textContent = note;
+            contactInfo.appendChild(customNote);
+        }
+        
+        // Expose functions for OBS scripting
+        window.obsOverlay = {
+            updateMessage,
+            updateStatus,
+            setTimer,
+            toggleMusic,
+            setBRBType,
+            addCustomNote,
+            onCountdownComplete: function() {
+                console.log('BRB countdown completed - ready to return');
+            }
+        };
+    </script>
+</body>
+</html>
