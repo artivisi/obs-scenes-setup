@@ -132,7 +132,7 @@ obs-scenes-setup/
 
 - **Camera**: Nikon ZFC via Cam Link 4K (USB capture card)
 - **Microphone**: Hollyland Lark M2 via USB soundcard  
-- **Control**: 3x3 macropad with 1 potentiometer (cost-effective alternative to Stream Deck)
+- **Control**: 3x3 macropad with 1 potentiometer/encoder with click function (cost-effective alternative to Stream Deck)
 - **Computers**: MacBook Pro M1 + Dell Latitude 2-in-1 (dual platform support)
 - **Challenge**: USB device address changes require robust device detection
 

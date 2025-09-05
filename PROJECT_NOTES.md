@@ -136,9 +136,11 @@ Hybrid Mode: Show suggestions but don't auto-switch
 - **Secondary**: Dell Latitude 2-in-1 (Windows)
 - **Challenge**: USB device addresses change between connections and platforms
 
-### Macropad: 3x3 + 1 Potentiometer
+### Macropad: 3x3 + 1 Potentiometer with Click
 - **Layout**: 9 buttons for scene switching and controls
-- **Potentiometer**: Headphone/Monitor volume (most versatile)
+- **Potentiometer**: Rotary encoder with push/click function
+  - **Rotation**: Volume control (headphone/monitor/source switching)
+  - **Click**: Toggle function (mute/unmute, mode switch, or layer change)
 - **Firmware**: Vial-compatible (GUI-based configuration)
 - **Connection**: USB to laptop
 
