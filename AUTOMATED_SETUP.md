@@ -7,7 +7,7 @@ Skip the manual clicking! This guide shows you how to automatically create all y
 ### 1. Install Dependencies
 ```bash
 # Install required Python libraries
-python scripts/install-dependencies.py
+python scripts/setup/install-dependencies.py
 ```
 
 ### 2. Enable OBS WebSocket Server
@@ -21,10 +21,10 @@ python scripts/install-dependencies.py
 ### 3. Create All Scenes Automatically
 ```bash
 # Create scenes directly in OBS (RECOMMENDED)
-python scripts/setup-scripts/auto-scene-creator.py --create-live --github-user [your-username]
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 
 # Or generate JSON file for manual import
-python scripts/setup-scripts/auto-scene-creator.py --generate-json --github-user [your-username]
+python scripts/obs/auto-scene-creator.py --generate-json --github-user artivisi
 ```
 
 **That's it! 🎉** All 7 scenes with sources, overlays, and configurations are created automatically.
@@ -58,22 +58,22 @@ python scripts/setup-scripts/auto-scene-creator.py --generate-json --github-user
 ### Content-Specific Templates
 ```bash
 # Java development focus
-python scripts/setup-scripts/auto-scene-creator.py --create-live --template java
+python scripts/obs/auto-scene-creator.py --create-live --template java
 
 # Linux administration 
-python scripts/setup-scripts/auto-scene-creator.py --create-live --template linux
+python scripts/obs/auto-scene-creator.py --create-live --template linux
 
 # DevOps with diagrams
-python scripts/setup-scripts/auto-scene-creator.py --create-live --template devops
+python scripts/obs/auto-scene-creator.py --create-live --template devops
 
 # Interview-only setup
-python scripts/setup-scripts/auto-scene-creator.py --create-live --template interview
+python scripts/obs/auto-scene-creator.py --create-live --template interview
 ```
 
 ### Generate JSON for Manual Import
 ```bash
 # Create scene collection file
-python scripts/setup-scripts/auto-scene-creator.py --generate-json --output my-scenes.json
+python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json
 
 # Then in OBS: Scene Collection → Import → Select my-scenes.json
 ```
@@ -81,10 +81,10 @@ python scripts/setup-scripts/auto-scene-creator.py --generate-json --output my-s
 ### Custom OBS Connection
 ```bash
 # Different host/port
-python scripts/setup-scripts/auto-scene-creator.py --create-live --obs-host 192.168.1.100 --obs-port 4455
+python scripts/obs/auto-scene-creator.py --create-live --obs-host 192.168.1.100 --obs-port 4455
 
 # With password
-python scripts/setup-scripts/auto-scene-creator.py --create-live --obs-password mypassword
+python scripts/obs/auto-scene-creator.py --create-live --obs-password mypassword
 ```
 
 ## Before You Start
@@ -98,10 +98,10 @@ python scripts/setup-scripts/auto-scene-creator.py --create-live --obs-password 
 ### Quick Validation
 ```bash
 # Test your complete setup first
-python scripts/test-complete-setup.py --quick --github-user [your-username]
+python scripts/tools/test-complete-setup.py --quick --github-user artivisi
 
 # Check device detection
-python scripts/setup-scripts/device-manager.py --scan
+python scripts/obs/device-manager.py --scan
 ```
 
 ## Troubleshooting
@@ -115,7 +115,7 @@ python scripts/setup-scripts/device-manager.py --scan
 ### "obsws-python not found" 
 **Solution**: Install dependencies
 ```bash
-python scripts/install-dependencies.py
+python scripts/setup/install-dependencies.py
 # OR manually: pip install obsws-python requests
 ```
 
@@ -123,17 +123,17 @@ python scripts/install-dependencies.py
 **Solution**: Check hardware connections
 ```bash
 # Run device scan
-python scripts/setup-scripts/device-manager.py --scan
+python scripts/obs/device-manager.py --scan
 
 # For dual camera setup
-python scripts/setup-scripts/usb-hub-validator.py --validate
+python scripts/obs/usb-hub-validator.py --validate
 ```
 
 ### "GitHub Pages URLs not working"
 **Solution**: Verify deployment
 ```bash
 # Test overlay accessibility
-python scripts/test-complete-setup.py --overlays-only --github-user [your-username]
+python scripts/tools/test-complete-setup.py --overlays-only --github-user artivisi
 ```
 
 ### "Scenes created but sources missing"
@@ -197,7 +197,7 @@ Ctrl+M - Mute Microphone
 # Scene Collection → Export → Save current setup
 
 # Create new collection with automation
-python scripts/setup-scripts/auto-scene-creator.py --create-live --github-user [your-username]
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 
 # Switch between collections as needed
 ```
@@ -216,7 +216,7 @@ The automated creator won't interfere with:
 4. **Setup Macropad** - Automated setup available!
    ```bash
    # One-command macropad configuration
-   python scripts/setup-macropad.py
+   python scripts/setup/setup-macropad.py
    ```
 5. **Practice Workflow** - Get familiar with scene switching
 6. **Start Creating Content!** 🎬
@@ -228,13 +228,13 @@ Skip the manual Vial configuration with automated macropad setup:
 ### Quick Macropad Setup
 ```bash
 # Interactive setup wizard (recommended)
-python scripts/setup-macropad.py
+python scripts/setup/setup-macropad.py
 
 # Quick setup without prompts  
-python scripts/setup-macropad.py --quick
+python scripts/setup/setup-macropad.py --quick
 
 # Test current setup
-python scripts/setup-macropad.py --test
+python scripts/setup/setup-macropad.py --test
 ```
 
 ### What It Does
@@ -253,7 +253,7 @@ Simply load the generated keymap in Vial GUI and you're ready to go!
 ## Advanced Customization
 
 ### Modify Source Templates
-Edit `scripts/setup-scripts/auto-scene-creator.py` to customize:
+Edit `scripts/obs/auto-scene-creator.py` to customize:
 - **Overlay URLs** with different parameters
 - **Camera positions** and scaling
 - **Audio filter** settings
@@ -271,7 +271,7 @@ def _create_my_custom_scenes(self) -> List[SceneConfig]:
 ```bash
 # Create multiple variations
 for template in java linux devops; do
-    python scripts/setup-scripts/auto-scene-creator.py --generate-json --template $template --output scenes-$template.json
+    python scripts/obs/auto-scene-creator.py --generate-json --template $template --output scenes-$template.json
 done
 ```
 

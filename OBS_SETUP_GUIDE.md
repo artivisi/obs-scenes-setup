@@ -18,7 +18,7 @@ Complete guide for setting up OBS Studio to use the Artivisi overlay system for 
 ### Required Software
 - **OBS Studio 30.0+** (latest version recommended)
 - **Web browser** for testing overlays
-- **Your GitHub Pages URL** ready: `https://[your-username].github.io/obs-scenes-setup/`
+- **Your GitHub Pages URL** ready: `https://artivisi.github.io/obs-scenes-setup/`
 
 ### Hardware Requirements
 - **Camera**: Nikon ZFC via Cam Link 4K (or any USB camera)
@@ -53,7 +53,7 @@ Create these 7 scenes (click **+** in Scenes panel):
 **Sources to add:**
 
 1. **Browser Source** - "Intro Overlay"
-   - URL: `https://[your-username].github.io/obs-scenes-setup/overlays/intro.html`
+   - URL: `https://artivisi.github.io/obs-scenes-setup/overlays/intro.html`
    - Width: `1920`, Height: `1080`
    - ✅ Custom CSS: Leave blank
    - ✅ Shutdown source when not visible
@@ -83,7 +83,7 @@ Create these 7 scenes (click **+** in Scenes panel):
    - Position: Center of screen
 
 2. **Browser Source** - "Talking Head Overlay"
-   - URL: `https://[your-username].github.io/obs-scenes-setup/overlays/talking-head.html`
+   - URL: `https://artivisi.github.io/obs-scenes-setup/overlays/talking-head.html`
    - Width: `1920`, Height: `1080`
    - ✅ Shutdown source when not visible
    - ✅ Refresh browser when scene becomes active
@@ -110,7 +110,7 @@ Create these 7 scenes (click **+** in Scenes panel):
    - Transform: Scale to 400x300px
 
 3. **Browser Source** - "Code Demo Overlay"
-   - URL: `https://[your-username].github.io/obs-scenes-setup/overlays/code-demo.html`
+   - URL: `https://artivisi.github.io/obs-scenes-setup/overlays/code-demo.html`
    - Width: `1920`, Height: `1080`
    - Layer: Top layer
 
@@ -137,7 +137,7 @@ Create these 7 scenes (click **+** in Scenes panel):
    - Can be hidden with URL parameter
 
 3. **Browser Source** - "Screen Only Overlay"
-   - URL: `https://[your-username].github.io/obs-scenes-setup/overlays/screen-only.html`
+   - URL: `https://artivisi.github.io/obs-scenes-setup/overlays/screen-only.html`
    - Width: `1920`, Height: `1080`
 
 **URL Parameters:**
@@ -153,7 +153,7 @@ Create these 7 scenes (click **+** in Scenes panel):
 **Sources to add:**
 
 1. **Browser Source** - "BRB Overlay"
-   - URL: `https://[your-username].github.io/obs-scenes-setup/overlays/brb.html`
+   - URL: `https://artivisi.github.io/obs-scenes-setup/overlays/brb.html`
    - Width: `1920`, Height: `1080`
 
 **URL Parameters:**
@@ -169,7 +169,7 @@ Create these 7 scenes (click **+** in Scenes panel):
 **Sources to add:**
 
 1. **Browser Source** - "Outro Overlay"
-   - URL: `https://[your-username].github.io/obs-scenes-setup/overlays/outro.html`
+   - URL: `https://artivisi.github.io/obs-scenes-setup/overlays/outro.html`
    - Width: `1920`, Height: `1080`
 
 2. **Video Capture Device** - "Background Camera" (Optional)
@@ -201,7 +201,7 @@ Create these 7 scenes (click **+** in Scenes panel):
    - Add noise suppression and compression filters
 
 4. **Browser Source** - "Dual Camera Overlay"
-   - URL: `https://[your-username].github.io/obs-scenes-setup/overlays/dual-cam.html`
+   - URL: `https://artivisi.github.io/obs-scenes-setup/overlays/dual-cam.html`
    - Width: `1920`, Height: `1080`
 
 **URL Parameters:**
@@ -227,13 +227,13 @@ Before setting up scenes, run the device detection script:
 
 ```bash
 # Scan all available devices
-python scripts/setup-scripts/device-manager.py --scan
+python scripts/obs/device-manager.py --scan
 
 # Generate platform-specific profile
-python scripts/setup-scripts/device-manager.py --generate-profile
+python scripts/obs/device-manager.py --generate-profile
 
 # Test device connectivity
-python scripts/setup-scripts/device-manager.py --test-devices
+python scripts/obs/device-manager.py --test-devices
 ```
 
 ### USB Hub Best Practices

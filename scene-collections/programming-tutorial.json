@@ -47,7 +47,7 @@
       "monitoring_type": 0,
       "private_settings": {},
       "settings": {
-        "url": "https://[your-username].github.io/obs-scenes-setup/overlays/intro.html",
+        "url": "https://artivisi.github.io/obs-scenes-setup/overlays/intro.html",
         "width": 1920,
         "height": 1080,
         "fps": 30,
@@ -71,7 +71,7 @@
       "monitoring_type": 0,
       "private_settings": {},
       "settings": {
-        "url": "https://[your-username].github.io/obs-scenes-setup/overlays/talking-head.html",
+        "url": "https://artivisi.github.io/obs-scenes-setup/overlays/talking-head.html",
         "width": 1920,
         "height": 1080,
         "fps": 30,
@@ -95,7 +95,7 @@
       "monitoring_type": 0,
       "private_settings": {},
       "settings": {
-        "url": "https://[your-username].github.io/obs-scenes-setup/overlays/code-demo.html",
+        "url": "https://artivisi.github.io/obs-scenes-setup/overlays/code-demo.html",
         "width": 1920,
         "height": 1080,
         "fps": 30,
@@ -119,7 +119,7 @@
       "monitoring_type": 0,
       "private_settings": {},
       "settings": {
-        "url": "https://[your-username].github.io/obs-scenes-setup/overlays/screen-only.html",
+        "url": "https://artivisi.github.io/obs-scenes-setup/overlays/screen-only.html",
         "width": 1920,
         "height": 1080,
         "fps": 30,
@@ -143,7 +143,7 @@
       "monitoring_type": 0,
       "private_settings": {},
       "settings": {
-        "url": "https://[your-username].github.io/obs-scenes-setup/overlays/brb.html",
+        "url": "https://artivisi.github.io/obs-scenes-setup/overlays/brb.html",
         "width": 1920,
         "height": 1080,
         "fps": 30,
@@ -167,7 +167,7 @@
       "monitoring_type": 0,
       "private_settings": {},
       "settings": {
-        "url": "https://[your-username].github.io/obs-scenes-setup/overlays/outro.html",
+        "url": "https://artivisi.github.io/obs-scenes-setup/overlays/outro.html",
         "width": 1920,
         "height": 1080,
         "fps": 30,
@@ -311,7 +311,7 @@
       "monitoring_type": 0,
       "private_settings": {},
       "settings": {
-        "url": "https://[your-username].github.io/obs-scenes-setup/overlays/dual-cam.html",
+        "url": "https://artivisi.github.io/obs-scenes-setup/overlays/dual-cam.html",
         "width": 1920,
         "height": 1080,
         "fps": 30,

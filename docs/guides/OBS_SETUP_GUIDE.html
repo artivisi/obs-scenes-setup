@@ -362,7 +362,7 @@
 <ul>
 <li><strong>OBS Studio 30.0+</strong> (latest version recommended)</li>
 <li><strong>Web browser</strong> for testing overlays</li>
-<li><strong>Your GitHub Pages URL</strong> ready: <code>https://[your-username].github.io/obs-scenes-setup/</code></li>
+<li><strong>Your GitHub Pages URL</strong> ready: <code>https://artivisi.github.io/obs-scenes-setup/</code></li>
 </ul>
 <h3>Hardware Requirements</h3>
 <ul>
@@ -395,7 +395,7 @@
 <ol>
 <li><strong>Browser Source</strong> - "Intro Overlay"</li>
 </ul>
-<p>   - URL: <code>https://[your-username].github.io/obs-scenes-setup/overlays/intro.html</code></p>
+<p>   - URL: <code>https://artivisi.github.io/obs-scenes-setup/overlays/intro.html</code></p>
 <p>   - Width: <code>1920</code>, Height: <code>1080</code></p>
 <p>   - ✅ Custom CSS: Leave blank</p>
 <p>   - ✅ Shutdown source when not visible</p>
@@ -423,7 +423,7 @@
 <ol>
 <li><strong>Browser Source</strong> - "Talking Head Overlay"</li>
 </ul>
-<p>   - URL: <code>https://[your-username].github.io/obs-scenes-setup/overlays/talking-head.html</code></p>
+<p>   - URL: <code>https://artivisi.github.io/obs-scenes-setup/overlays/talking-head.html</code></p>
 <p>   - Width: <code>1920</code>, Height: <code>1080</code></p>
 <p>   - ✅ Shutdown source when not visible</p>
 <p>   - ✅ Refresh browser when scene becomes active</p>
@@ -448,7 +448,7 @@
 <ol>
 <li><strong>Browser Source</strong> - "Code Demo Overlay"</li>
 </ul>
-<p>   - URL: <code>https://[your-username].github.io/obs-scenes-setup/overlays/code-demo.html</code></p>
+<p>   - URL: <code>https://artivisi.github.io/obs-scenes-setup/overlays/code-demo.html</code></p>
 <p>   - Width: <code>1920</code>, Height: <code>1080</code></p>
 <p>   - Layer: Top layer</p>
 <strong>URL Parameters:</strong>
@@ -473,7 +473,7 @@
 <ol>
 <li><strong>Browser Source</strong> - "Screen Only Overlay"</li>
 </ul>
-<p>   - URL: <code>https://[your-username].github.io/obs-scenes-setup/overlays/screen-only.html</code></p>
+<p>   - URL: <code>https://artivisi.github.io/obs-scenes-setup/overlays/screen-only.html</code></p>
 <p>   - Width: <code>1920</code>, Height: <code>1080</code></p>
 <strong>URL Parameters:</strong>
 <pre><code>?hidecam=false
@@ -485,7 +485,7 @@
 <ol>
 <li><strong>Browser Source</strong> - "BRB Overlay"</li>
 </ul>
-<p>   - URL: <code>https://[your-username].github.io/obs-scenes-setup/overlays/brb.html</code></p>
+<p>   - URL: <code>https://artivisi.github.io/obs-scenes-setup/overlays/brb.html</code></p>
 <p>   - Width: <code>1920</code>, Height: <code>1080</code></p>
 <strong>URL Parameters:</strong>
 <pre><code>?type=break          # break, technical, emergency
@@ -497,7 +497,7 @@
 <ol>
 <li><strong>Browser Source</strong> - "Outro Overlay"</li>
 </ul>
-<p>   - URL: <code>https://[your-username].github.io/obs-scenes-setup/overlays/outro.html</code></p>
+<p>   - URL: <code>https://artivisi.github.io/obs-scenes-setup/overlays/outro.html</code></p>
 <p>   - Width: <code>1920</code>, Height: <code>1080</code></p>
 <ol>
 <li><strong>Video Capture Device</strong> - "Background Camera" (Optional)</li>
@@ -529,7 +529,7 @@
 <ol>
 <li><strong>Browser Source</strong> - "Dual Camera Overlay"</li>
 </ul>
-<p>   - URL: <code>https://[your-username].github.io/obs-scenes-setup/overlays/dual-cam.html</code></p>
+<p>   - URL: <code>https://artivisi.github.io/obs-scenes-setup/overlays/dual-cam.html</code></p>
 <p>   - Width: <code>1920</code>, Height: <code>1080</code></p>
 <strong>URL Parameters:</strong>
 <pre><code>?layout=balanced        # balanced, host-focus, guest-focus
@@ -548,11 +548,11 @@
 <h3>Cross-Platform Device Detection</h3>
 <p>Before setting up scenes, run the device detection script:</p>
 <pre><code><h1>Scan all available devices</h1>
-<p>python scripts/setup-scripts/device-manager.py --scan</p>
+<p>python scripts/obs/device-manager.py --scan</p>
 <h1>Generate platform-specific profile</h1>
-<p>python scripts/setup-scripts/device-manager.py --generate-profile</p>
+<p>python scripts/obs/device-manager.py --generate-profile</p>
 <h1>Test device connectivity</h1>
-<p>python scripts/setup-scripts/device-manager.py --test-devices</code></pre></p>
+<p>python scripts/obs/device-manager.py --test-devices</code></pre></p>
 <h3>USB Hub Best Practices</h3>
 <strong>Recommended Connection Order:</strong>
 <ol>
