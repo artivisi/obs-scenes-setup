@@ -516,6 +516,15 @@ class AutoSceneCreator:
         try:
             print(f"🎬 Creating scene: {scene_config.name}")
             
+            # Check if scene exists, remove if it does
+            try:
+                scene_list = self.obs_client.get_scene_list()
+                if scene_config.name in [scene['sceneName'] for scene in scene_list.scenes]:
+                    print(f"  🗑️  Removing existing scene: {scene_config.name}")
+                    self.obs_client.remove_scene(scene_config.name)
+            except Exception as e:
+                print(f"  ⚠️  Could not check/remove existing scene: {e}")
+            
             # Create the scene
             self.obs_client.create_scene(scene_config.name)
             
@@ -527,11 +536,12 @@ class AutoSceneCreator:
                 resolved_settings = self.resolve_device_placeholders(source.settings)
                 
                 # Create the source
-                self.obs_client.create_source(
-                    scene_name=scene_config.name,
-                    source_name=source.name,
-                    source_kind=self._map_source_type(source.type),
-                    source_settings=resolved_settings
+                self.obs_client.create_input(
+                    inputName=source.name,
+                    inputKind=self._map_source_type(source.type),
+                    inputSettings=resolved_settings,
+                    sceneName=scene_config.name,
+                    sceneItemEnabled=source.visible
                 )
                 
                 # Apply transform if specified
@@ -577,6 +587,75 @@ class AutoSceneCreator:
         }
         return mapping.get(source_type, source_type)
     
+    async def import_scene_collection_live(self, json_path: Path) -> bool:
+        """Import scene collection from JSON file into live OBS"""
+        if not await self.connect_obs():
+            return False
+            
+        try:
+            with open(json_path, 'r') as f:
+                scene_data = json.load(f)
+            
+            print(f"📋 Importing scene collection from: {json_path}")
+            
+            # Create new scene collection
+            collection_name = f"Artivisi-{int(time.time())}"
+            self.obs_client.create_scene_collection(collection_name)
+            print(f"✅ Created scene collection: {collection_name}")
+            
+            # Import scenes
+            success_count = 0
+            scene_order = scene_data.get('scene_order', [])
+            scenes_data = {scene['name']: scene for scene in scene_data.get('scenes', [])}
+            all_sources = {source['name']: source for source in scene_data.get('sources', [])}
+            
+            for scene_info in scene_order:
+                scene_name = scene_info['name']
+                print(f"🎬 Creating scene: {scene_name}")
+                
+                try:
+                    # Create scene
+                    self.obs_client.create_scene(scene_name)
+                    
+                    # Find scene data and add sources
+                    if scene_name in scenes_data:
+                        scene_sources = scenes_data[scene_name].get('sources', [])
+                        
+                        for scene_item in scene_sources:
+                            source_name = scene_item['name']
+                            
+                            # Find the source definition
+                            if source_name in all_sources:
+                                source = all_sources[source_name]
+                                source_kind = source['versioned_id'] 
+                                source_settings = source.get('settings', {})
+                                
+                                try:
+                                    self.obs_client.create_input(
+                                        inputName=source_name,
+                                        inputKind=source_kind,
+                                        inputSettings=source_settings,
+                                        sceneName=scene_name,
+                                        sceneItemEnabled=scene_item.get('enabled', True)
+                                    )
+                                    print(f"  ✅ Added source: {source_name}")
+                                except Exception as e:
+                                    print(f"  ⚠️  Could not add source {source_name}: {e}")
+                            else:
+                                print(f"  ⚠️  Source definition not found: {source_name}")
+                                
+                    success_count += 1
+                    
+                except Exception as e:
+                    print(f"❌ Failed to create scene '{scene_name}': {e}")
+                    
+            print(f"🎉 Imported {success_count}/{len(scene_order)} scenes successfully")
+            return success_count > 0
+            
+        except Exception as e:
+            print(f"❌ Failed to import scene collection: {e}")
+            return False
+    
     async def create_all_scenes_live(self) -> bool:
         """Create all scenes in live OBS"""
         if not await self.connect_obs():
@@ -619,8 +698,22 @@ class AutoSceneCreator:
             return
         
         try:
-            # Primary microphone with professional filters
-            primary_audio = self.detected_devices['audio_input_devices'][0]['name'] if self.detected_devices['audio_input_devices'] else 'Default Microphone'
+            # Try to find the actual microphone device name from OBS
+            primary_audio = None
+            
+            # Get all audio inputs to find the microphone
+            try:
+                input_list = self.obs_client.get_input_list()
+                audio_inputs = [inp for inp in input_list.inputs if 'audio' in inp.get('inputKind', '').lower() or 'mic' in inp.get('inputName', '').lower()]
+                if audio_inputs:
+                    primary_audio = audio_inputs[0]['inputName']
+                    print(f"🎙️  Found microphone: {primary_audio}")
+                else:
+                    print("⚠️  No microphone found, skipping audio filters")
+                    return
+            except Exception as e:
+                print(f"⚠️  Could not detect audio inputs: {e}")
+                return
             
             print(f"🎙️  Configuring primary microphone: {primary_audio}")
             
@@ -1006,10 +1099,16 @@ Examples:
         help='OBS WebSocket password'
     )
     
+    parser.add_argument(
+        '--import-json',
+        type=Path,
+        help='Import from existing OBS scene collection JSON file'
+    )
+    
     args = parser.parse_args()
     
-    if not args.create_live and not args.generate_json:
-        print("❌ Must specify either --create-live or --generate-json")
+    if not args.create_live and not args.generate_json and not args.import_json:
+        print("❌ Must specify --create-live, --generate-json, or --import-json")
         parser.print_help()
         sys.exit(1)
     
@@ -1027,7 +1126,23 @@ Examples:
     
     success = False
     
-    if args.create_live:
+    if args.import_json:
+        print("📦 Importing scene collection from JSON...")
+        print("💡 Make sure OBS is running with WebSocket server enabled")
+        print("   Tools → WebSocket Server Settings")
+        
+        success = await creator.import_scene_collection_live(args.import_json)
+        
+        if success:
+            print("\n🎉 Scene collection imported successfully!")
+            print("📋 Next steps:")
+            print("   1. Check scenes in OBS and test overlays")
+            print("   2. Configure device sources (cameras, microphones)")
+            print("   3. Assign hotkeys (F1-F7) if needed")
+        else:
+            print("\n❌ Failed to import scene collection.")
+            
+    elif args.create_live:
         print("🚀 Creating scenes in live OBS...")
         print("💡 Make sure OBS is running with WebSocket server enabled")
         print("   Tools → WebSocket Server Settings")
