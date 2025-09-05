@@ -32,7 +32,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add docs/guides/*.html
+        git add docs/guides/
         git diff --cached --quiet || git commit -m "Auto-generate HTML documentation from Markdown"
         git push || echo "No changes to push"
       env:

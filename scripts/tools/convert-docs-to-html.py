@@ -505,7 +505,8 @@ def convert_markdown_file(md_path: Path, output_path: Path, title: str, descript
 
 def main():
     """Convert all documentation files"""
-    root_dir = Path(__file__).parent.parent
+    # Script is in scripts/tools/, so go up 2 levels to project root
+    root_dir = Path(__file__).parent.parent.parent
     docs_dir = root_dir / "docs"
     guides_dir = docs_dir / "guides"
     
