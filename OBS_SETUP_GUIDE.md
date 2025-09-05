@@ -36,7 +36,7 @@ Complete guide for setting up OBS Studio to use the Artivisi overlay system for 
 
 ### Step 2: Create Base Scenes
 
-Create these 6 scenes (click **+** in Scenes panel):
+Create these 7 scenes (click **+** in Scenes panel):
 
 1. **🎬 Intro Scene**
 2. **👤 Talking Head** 
@@ -44,6 +44,7 @@ Create these 6 scenes (click **+** in Scenes panel):
 4. **🖥️ Screen Only**
 5. **📺 BRB / Technical**
 6. **🎯 Outro Scene**
+7. **👥 Dual Camera / Interview** (for guest interviews)
 
 ## Source Configuration
 
@@ -181,6 +182,91 @@ Create these 6 scenes (click **+** in Scenes panel):
 &type=java
 ```
 
+### Scene 7: 👥 Dual Camera / Interview
+
+**Sources to add:**
+
+1. **Video Capture Device** - "Main Camera"
+   - Device: Primary camera (Cam Link 1)
+   - Position: Left side
+   - Transform: Scale to 640x480px
+
+2. **Video Capture Device** - "Secondary Camera"
+   - Device: Second camera (Cam Link 2) 
+   - Position: Right side
+   - Transform: Scale to 640x480px
+
+3. **Audio Input Capture** - "Guest Microphone"
+   - Device: Second USB audio or Zoom audio
+   - Add noise suppression and compression filters
+
+4. **Browser Source** - "Dual Camera Overlay"
+   - URL: `https://[your-username].github.io/obs-scenes-setup/overlays/dual-cam.html`
+   - Width: `1920`, Height: `1080`
+
+**URL Parameters:**
+```
+?layout=balanced        # balanced, host-focus, guest-focus
+&host=Host Name
+&guest=Guest Name
+&platform=zoom         # zoom, teams, meet, local
+&topics=true
+&recording=true
+```
+
+**Layout Modes:**
+- `balanced` - Equal-sized camera frames
+- `host-focus` - Large host, small guest PiP
+- `guest-focus` - Large guest, small host PiP
+
+## Device Management
+
+### Cross-Platform Device Detection
+
+Before setting up scenes, run the device detection script:
+
+```bash
+# Scan all available devices
+python scripts/setup-scripts/device-manager.py --scan
+
+# Generate platform-specific profile
+python scripts/setup-scripts/device-manager.py --generate-profile
+
+# Test device connectivity
+python scripts/setup-scripts/device-manager.py --test-devices
+```
+
+### USB Hub Best Practices
+
+**Recommended Connection Order:**
+1. Connect USB hub to laptop first
+2. Connect primary Cam Link (becomes /dev/video0 or Device 1)
+3. Connect secondary Cam Link (becomes /dev/video1 or Device 2)  
+4. Connect USB audio devices
+5. Connect macropad last
+
+**Device Naming Patterns:**
+- **Primary Cam Link**: "*Cam Link*" or "Elgato Cam Link 4K"
+- **Secondary Cam Link**: "*Cam Link*" (2nd device)
+- **USB Audio**: "*USB Audio*" or "Hollyland Lark M2"
+
+### Multi-Camera Setup Requirements
+
+**Hardware Checklist:**
+- [ ] USB 3.0 hub with sufficient power
+- [ ] Primary Cam Link 4K + Nikon ZFC
+- [ ] Secondary Cam Link 4K + second camera
+- [ ] USB audio interface or two USB microphones
+- [ ] Consistent USB port usage
+
+**Audio Configuration for Interviews:**
+1. **Host Audio**: USB audio device (Hollyland Lark M2)
+2. **Guest Audio**: 
+   - Local: Second USB microphone
+   - Remote: Zoom/Teams audio capture
+3. **Mix-Minus Setup**: Separate remote audio from local audio
+4. **Monitor Audio**: Host hears guest, guest hears host (no echo)
+
 ## Hotkey Configuration
 
 ### Recommended Hotkey Setup
@@ -194,6 +280,7 @@ Go to **File** → **Settings** → **Hotkeys**
 - `F4` - Screen Only
 - `F5` - BRB / Technical
 - `F6` - Outro Scene
+- `F7` - Dual Camera / Interview
 
 **Recording Controls:**
 - `Ctrl+R` - Start/Stop Recording
@@ -202,13 +289,13 @@ Go to **File** → **Settings** → **Hotkeys**
 - `Ctrl+Shift+M` - Mute All Audio
 
 **Advanced Controls:**
-- `Ctrl+1` through `Ctrl+6` - Direct scene access
+- `Ctrl+1` through `Ctrl+7` - Direct scene access
 - `Ctrl+Plus/Minus` - Volume adjustment
 - `Ctrl+K` - Add Chapter Marker (if supported)
 
 ### Macropad Integration
 
-If using the 3x3 macropad, configure **Vial** to send these hotkeys:
+If using the 3x3 macropad, configure **Vial** firmware to send these hotkeys:
 
 **Layer 0 (Core Controls):**
 ```

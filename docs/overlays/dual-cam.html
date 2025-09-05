@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dual Camera Overlay</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* Dual Camera Specific Styles */
+        .dual-cam-container {
+            background: transparent;
+        }
+        
+        .speaker-frame {
+            position: absolute;
+            border: 3px solid var(--accent-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-accent);
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .speaker-frame.active {
+            border-color: var(--accent-light);
+            box-shadow: 0 0 20px rgba(88, 192, 52, 0.5);
+            transform: scale(1.02);
+        }
+        
+        .speaker-frame.host {
+            top: 60px;
+            left: 60px;
+            width: 640px;
+            height: 480px;
+        }
+        
+        .speaker-frame.guest {
+            top: 60px;
+            right: 60px;
+            width: 640px;
+            height: 480px;
+        }
+        
+        .speaker-frame.host-focus {
+            top: 60px;
+            left: 60px;
+            width: 960px;
+            height: 720px;
+        }
+        
+        .speaker-frame.guest-focus {
+            top: 60px;
+            right: 60px;
+            width: 960px;
+            height: 720px;
+        }
+        
+        .speaker-frame.host-pip {
+            bottom: 60px;
+            left: 60px;
+            width: 320px;
+            height: 240px;
+        }
+        
+        .speaker-frame.guest-pip {
+            bottom: 60px;
+            right: 60px;
+            width: 320px;
+            height: 240px;
+        }
+        
+        .speaker-info {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            right: 15px;
+            background: var(--overlay-bg-dark);
+            backdrop-filter: blur(10px);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .speaker-frame:hover .speaker-info,
+        .speaker-frame.active .speaker-info {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .audio-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 12px;
+            height: 12px;
+            background: #dc2626;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .audio-indicator.speaking {
+            background: var(--accent-color);
+            opacity: 1;
+            animation: audioActivity 0.5s ease infinite alternate;
+        }
+        
+        @keyframes audioActivity {
+            from { transform: scale(1); }
+            to { transform: scale(1.3); }
+        }
+        
+        .screen-share-frame {
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            right: 60px;
+            bottom: 200px;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            background: rgba(46, 49, 146, 0.05);
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.3s ease;
+        }
+        
+        .screen-share-frame.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .discussion-overlay {
+            position: absolute;
+            top: 580px;
+            left: 60px;
+            right: 60px;
+            background: var(--overlay-bg-dark);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--accent-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease;
+        }
+        
+        .discussion-overlay.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .discussion-overlay h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 12px;
+        }
+        
+        .discussion-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .topic-tag {
+            background: rgba(88, 192, 52, 0.2);
+            border: 1px solid var(--accent-color);
+            border-radius: 15px;
+            padding: 4px 12px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .remote-status {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--overlay-bg-dark);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--primary-color);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .remote-status.active {
+            opacity: 1;
+        }
+        
+        .remote-status.zoom { border-color: #2D8CFF; }
+        .remote-status.teams { border-color: #6264A7; }
+        .remote-status.meet { border-color: #34A853; }
+        
+        /* Layout modes */
+        .layout-balanced .speaker-frame.host,
+        .layout-balanced .speaker-frame.guest {
+            width: 640px;
+            height: 480px;
+        }
+        
+        .layout-host-focus .speaker-frame.host {
+            width: 960px;
+            height: 720px;
+        }
+        
+        .layout-host-focus .speaker-frame.guest {
+            width: 320px;
+            height: 240px;
+            top: auto;
+            bottom: 60px;
+            right: 60px;
+        }
+        
+        .layout-guest-focus .speaker-frame.guest {
+            width: 960px;
+            height: 720px;
+        }
+        
+        .layout-guest-focus .speaker-frame.host {
+            width: 320px;
+            height: 240px;
+            top: auto;
+            bottom: 60px;
+            left: 60px;
+        }
+        
+        /* Test mode styling */
+        .test-mode .speaker-frame {
+            background: linear-gradient(45deg, #2e3192 0%, #58c034 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .test-mode .screen-share-frame {
+            background: rgba(46, 49, 146, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        /* Animation for entry */
+        .animate-in .speaker-frame.host {
+            animation: slideInLeft 0.8s ease;
+        }
+        
+        .animate-in .speaker-frame.guest {
+            animation: slideInRight 0.8s ease;
+        }
+        
+        .animate-in .discussion-overlay {
+            animation: slideUpFade 1s ease 0.5s both;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideUpFade {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="dual-cam-container">
+    <div class="overlay-container animate-in">
+        <!-- Host camera frame -->
+        <div class="speaker-frame host" id="hostFrame">
+            <div class="test-mode">
+                📹 Host Camera (Cam Link 1)
+            </div>
+            <div class="audio-indicator" id="hostAudio"></div>
+            <div class="speaker-info">
+                <span id="hostName">Host Speaker</span>
+            </div>
+        </div>
+        
+        <!-- Guest camera frame -->
+        <div class="speaker-frame guest" id="guestFrame">
+            <div class="test-mode">
+                📹 Guest Camera (Cam Link 2)
+            </div>
+            <div class="audio-indicator" id="guestAudio"></div>
+            <div class="speaker-info">
+                <span id="guestName">Guest Speaker</span>
+            </div>
+        </div>
+        
+        <!-- Screen share frame (when active) -->
+        <div class="screen-share-frame" id="screenShare">
+            <div class="test-mode">
+                🖥️ Shared Screen Content
+            </div>
+        </div>
+        
+        <!-- Discussion topics overlay -->
+        <div class="discussion-overlay" id="discussionOverlay">
+            <h3>📋 Discussion Topics</h3>
+            <div class="discussion-topics">
+                <span class="topic-tag">Java Spring Boot</span>
+                <span class="topic-tag">Microservices Architecture</span>
+                <span class="topic-tag">DevOps Best Practices</span>
+                <span class="topic-tag">Q&A Session</span>
+            </div>
+        </div>
+        
+        <!-- Remote platform status -->
+        <div class="remote-status zoom" id="remoteStatus">
+            🔗 Connected via Zoom
+        </div>
+        
+        <!-- Recording status -->
+        <div class="recording-status" id="recordingStatus">
+            REC
+        </div>
+        
+        <!-- Topic indicator -->
+        <div class="topic-indicator" id="topicIndicator">
+            <span class="topic-icon">👥</span>
+            <span class="topic-text">Interview: Expert Discussion</span>
+        </div>
+        
+        <!-- Macropad layer indicator -->
+        <div class="macropad-indicator layer-2 active" id="macropadIndicator">
+            Layer 2: Discussion Mode
+        </div>
+    </div>
+
+    <script>
+        // URL parameters for configuration
+        const urlParams = new URLSearchParams(window.location.search);
+        const testMode = urlParams.get('test') === 'true';
+        const layout = urlParams.get('layout') || 'balanced'; // balanced, host-focus, guest-focus
+        const hostName = urlParams.get('host') || 'Host Speaker';
+        const guestName = urlParams.get('guest') || 'Guest Speaker';
+        const platform = urlParams.get('platform') || 'zoom'; // zoom, teams, meet
+        const showTopics = urlParams.get('topics') !== 'false';
+        const showScreenShare = urlParams.get('screen') === 'true';
+        const recording = urlParams.get('recording') === 'true';
+        
+        // Platform configurations
+        const platformConfig = {
+            zoom: { name: '🔗 Connected via Zoom', color: '#2D8CFF' },
+            teams: { name: '🔗 Connected via Teams', color: '#6264A7' },
+            meet: { name: '🔗 Connected via Meet', color: '#34A853' },
+            local: { name: '🎥 Local Interview', color: '#2e3192' }
+        };
+        
+        // Initialize overlay
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.body;
+            const hostFrame = document.getElementById('hostFrame');
+            const guestFrame = document.getElementById('guestFrame');
+            const remoteStatus = document.getElementById('remoteStatus');
+            const discussionOverlay = document.getElementById('discussionOverlay');
+            const screenShare = document.getElementById('screenShare');
+            const recordingStatus = document.getElementById('recordingStatus');
+            
+            // Apply test mode
+            if (testMode) {
+                body.classList.add('test-mode');
+            }
+            
+            // Apply layout
+            body.classList.add(`layout-${layout}`);
+            
+            // Update speaker names
+            document.getElementById('hostName').textContent = hostName;
+            document.getElementById('guestName').textContent = guestName;
+            
+            // Configure platform status
+            const config = platformConfig[platform] || platformConfig.zoom;
+            remoteStatus.textContent = config.name;
+            remoteStatus.className = `remote-status ${platform} active`;
+            
+            // Show/hide elements
+            if (showTopics) {
+                setTimeout(() => {
+                    discussionOverlay.classList.add('active');
+                }, 1200);
+            }
+            
+            if (showScreenShare) {
+                setTimeout(() => {
+                    screenShare.classList.add('active');
+                }, 800);
+            }
+            
+            if (recording) {
+                recordingStatus.classList.add('active');
+            }
+            
+            // Show indicators
+            setTimeout(() => {
+                remoteStatus.classList.add('active');
+            }, 1000);
+        });
+        
+        // Audio activity simulation (would integrate with actual audio detection)
+        function simulateAudioActivity() {
+            const hostAudio = document.getElementById('hostAudio');
+            const guestAudio = document.getElementById('guestAudio');
+            
+            // Simulate host speaking
+            setTimeout(() => {
+                hostAudio.classList.add('speaking');
+                document.getElementById('hostFrame').classList.add('active');
+                setTimeout(() => {
+                    hostAudio.classList.remove('speaking');
+                    document.getElementById('hostFrame').classList.remove('active');
+                }, 2000);
+            }, 2000);
+            
+            // Simulate guest speaking
+            setTimeout(() => {
+                guestAudio.classList.add('speaking');
+                document.getElementById('guestFrame').classList.add('active');
+                setTimeout(() => {
+                    guestAudio.classList.remove('speaking');
+                    document.getElementById('guestFrame').classList.remove('active');
+                }, 2000);
+            }, 5000);
+        }
+        
+        // Start audio activity simulation if in test mode
+        if (testMode) {
+            setTimeout(simulateAudioActivity, 3000);
+            setInterval(simulateAudioActivity, 10000);
+        }
+        
+        function setLayout(newLayout) {
+            document.body.className = document.body.className.replace(/layout-\w+/, `layout-${newLayout}`);
+        }
+        
+        function setSpeakerActive(speaker, isActive) {
+            const frame = document.getElementById(`${speaker}Frame`);
+            const audio = document.getElementById(`${speaker}Audio`);
+            
+            if (isActive) {
+                frame.classList.add('active');
+                audio.classList.add('speaking');
+            } else {
+                frame.classList.remove('active');
+                audio.classList.remove('speaking');
+            }
+        }
+        
+        function updateDiscussionTopics(topics) {
+            const topicsContainer = document.querySelector('.discussion-topics');
+            topicsContainer.innerHTML = topics.map(topic => 
+                `<span class="topic-tag">${topic}</span>`
+            ).join('');
+        }
+        
+        function toggleScreenShare(show) {
+            const screenShare = document.getElementById('screenShare');
+            if (show) {
+                screenShare.classList.add('active');
+            } else {
+                screenShare.classList.remove('active');
+            }
+        }
+        
+        function updateRecordingStatus(isRecording) {
+            const recordingStatus = document.getElementById('recordingStatus');
+            if (isRecording) {
+                recordingStatus.classList.add('active');
+            } else {
+                recordingStatus.classList.remove('active');
+            }
+        }
+        
+        function updatePlatformStatus(platform, customText) {
+            const remoteStatus = document.getElementById('remoteStatus');
+            const config = platformConfig[platform] || platformConfig.zoom;
+            
+            remoteStatus.textContent = customText || config.name;
+            remoteStatus.className = `remote-status ${platform} active`;
+        }
+        
+        function updateMacropadLayer(layerNumber, layerName) {
+            const indicator = document.getElementById('macropadIndicator');
+            indicator.className = `macropad-indicator layer-${layerNumber} active`;
+            indicator.textContent = `Layer ${layerNumber}: ${layerName}`;
+        }
+        
+        // Expose functions for OBS scripting
+        window.obsOverlay = {
+            setLayout,
+            setSpeakerActive,
+            updateDiscussionTopics,
+            toggleScreenShare,
+            updateRecordingStatus,
+            updatePlatformStatus,
+            updateMacropadLayer
+        };
+    </script>
+</body>
+</html>

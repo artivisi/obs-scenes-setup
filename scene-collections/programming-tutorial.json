@@ -25,6 +25,10 @@
     {
       "name": "🎯 Outro Scene",
       "uuid": "f8e5d8e2-1234-4567-8901-123456789abh"
+    },
+    {
+      "name": "👥 Dual Camera / Interview",
+      "uuid": "f8e5d8e2-1234-4567-8901-123456789abi"
     }
   ],
   "name": "Programming Tutorials - Artivisi",
@@ -292,6 +296,103 @@
       "settings": {
         "device_id": "default"
       }
+    },
+    {
+      "uuid": "a1b2c3d4-5678-9abc-def0-123456789011",
+      "versioned_id": "browser_source",
+      "name": "Dual Camera Overlay",
+      "type": "browser_source",
+      "flags": 0,
+      "volume": 1.0,
+      "sync": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {},
+      "settings": {
+        "url": "https://[your-username].github.io/obs-scenes-setup/overlays/dual-cam.html",
+        "width": 1920,
+        "height": 1080,
+        "fps": 30,
+        "css": "",
+        "shutdown": true,
+        "restart_when_active": true,
+        "webpage_control_level": 1
+      }
+    },
+    {
+      "uuid": "a1b2c3d4-5678-9abc-def0-123456789012",
+      "versioned_id": "v4l2_input",
+      "name": "Secondary Camera",
+      "type": "v4l2_input",
+      "flags": 0,
+      "volume": 1.0,
+      "sync": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "private_settings": {},
+      "settings": {
+        "device_id": "/dev/video1",
+        "input": 0,
+        "pixelformat": 1448695129,
+        "standard": 0,
+        "dv_timing": 0,
+        "resolution": "1920x1080",
+        "framerate": "30.00",
+        "auto_reset": false,
+        "timeout_frames": 5,
+        "input_format": 0,
+        "buffering_val": 1,
+        "audio_output_mode": 0
+      }
+    },
+    {
+      "uuid": "a1b2c3d4-5678-9abc-def0-123456789013",
+      "versioned_id": "pulse_input_capture",
+      "name": "Guest Microphone",
+      "type": "pulse_input_capture",
+      "flags": 0,
+      "volume": 0.7943282127380371,
+      "sync": 0,
+      "hotkeys": {},
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 2,
+      "private_settings": {},
+      "settings": {
+        "device_id": "default"
+      },
+      "filters": [
+        {
+          "uuid": "b1c2d3e4-5678-9abc-def0-123456789201",
+          "versioned_id": "noise_suppress_filter",
+          "name": "Guest Noise Suppression",
+          "type": "noise_suppress_filter",
+          "enabled": true,
+          "settings": {
+            "method": "rnnoise",
+            "suppress_level": -30
+          }
+        },
+        {
+          "uuid": "b1c2d3e4-5678-9abc-def0-123456789202",
+          "versioned_id": "compressor_filter",
+          "name": "Guest Compressor",
+          "type": "compressor_filter",
+          "enabled": true,
+          "settings": {
+            "ratio": 10.0,
+            "threshold": -18.0,
+            "attack_time": 6,
+            "release_time": 60,
+            "output_gain": 0.0,
+            "sidechain_source": "none"
+          }
+        }
+      ]
     }
   ],
   "scenes": [
@@ -699,6 +800,112 @@
           "blend_type": "normal"
         }
       ]
+    },
+    {
+      "uuid": "f8e5d8e2-1234-4567-8901-123456789abi",
+      "id": 7,
+      "name": "👥 Dual Camera / Interview",
+      "sources": [
+        {
+          "name": "Main Camera",
+          "source_uuid": "a1b2c3d4-5678-9abc-def0-123456789007",
+          "visible": true,
+          "locked": false,
+          "transform": {
+            "pos": {
+              "x": 60.0,
+              "y": 60.0
+            },
+            "rot": 0.0,
+            "scale": {
+              "x": 0.333,
+              "y": 0.444
+            },
+            "alignment": 5,
+            "bounds_type": 0,
+            "bounds_alignment": 0,
+            "bounds": {
+              "x": 640.0,
+              "y": 480.0
+            }
+          },
+          "crop": {
+            "left": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "scale_filter": "lanczos",
+          "blend_method": "default",
+          "blend_type": "normal"
+        },
+        {
+          "name": "Secondary Camera",
+          "source_uuid": "a1b2c3d4-5678-9abc-def0-123456789012",
+          "visible": true,
+          "locked": false,
+          "transform": {
+            "pos": {
+              "x": 1220.0,
+              "y": 60.0
+            },
+            "rot": 0.0,
+            "scale": {
+              "x": 0.333,
+              "y": 0.444
+            },
+            "alignment": 5,
+            "bounds_type": 0,
+            "bounds_alignment": 0,
+            "bounds": {
+              "x": 640.0,
+              "y": 480.0
+            }
+          },
+          "crop": {
+            "left": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "scale_filter": "lanczos",
+          "blend_method": "default",
+          "blend_type": "normal"
+        },
+        {
+          "name": "Dual Camera Overlay",
+          "source_uuid": "a1b2c3d4-5678-9abc-def0-123456789011",
+          "visible": true,
+          "locked": false,
+          "transform": {
+            "pos": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "rot": 0.0,
+            "scale": {
+              "x": 1.0,
+              "y": 1.0
+            },
+            "alignment": 5,
+            "bounds_type": 0,
+            "bounds_alignment": 0,
+            "bounds": {
+              "x": 0.0,
+              "y": 0.0
+            }
+          },
+          "crop": {
+            "left": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "scale_filter": "disable",
+          "blend_method": "default",
+          "blend_type": "normal"
+        }
+      ]
     }
   ],
   "quick_transitions": [
@@ -756,6 +963,11 @@
     "OBS_KEY_F6": [
       {
         "scene_name": "🎯 Outro Scene"
+      }
+    ],
+    "OBS_KEY_F7": [
+      {
+        "scene_name": "👥 Dual Camera / Interview"
       }
     ],
     "libobs.start_recording": [

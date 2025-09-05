@@ -1,0 +1,151 @@
+{
+  "name": "Artivisi OBS Macropad",
+  "vendorId": "0x1234",
+  "productId": "0x5678",
+  "matrix": {
+    "rows": 3,
+    "cols": 3
+  },
+  "layouts": {
+    "keymap": [
+      [
+        {"x": 0, "y": 0},
+        {"x": 1, "y": 0},
+        {"x": 2, "y": 0}
+      ],
+      [
+        {"x": 0, "y": 1},
+        {"x": 1, "y": 1},
+        {"x": 2, "y": 1}
+      ],
+      [
+        {"x": 0, "y": 2},
+        {"x": 1, "y": 2},
+        {"x": 2, "y": 2}
+      ],
+      [
+        {"x": 3.5, "y": 1, "w": 1, "h": 1}
+      ]
+    ]
+  },
+  "layers": [
+    [
+      "KC_F13",
+      "KC_F14", 
+      "KC_F15",
+      "KC_F16",
+      "KC_F17",
+      "KC_F18",
+      "KC_F19",
+      "KC_F20",
+      "KC_F21",
+      "KC_F22"
+    ],
+    [
+      "KC_F13",
+      "KC_F14",
+      "KC_F15", 
+      "KC_F16",
+      "KC_F17",
+      "KC_F18",
+      "KC_F19",
+      "KC_F20",
+      "KC_F21",
+      "KC_F22"
+    ],
+    [
+      "KC_F13",
+      "KC_F14",
+      "KC_F15",
+      "KC_F16", 
+      "KC_F17",
+      "KC_F18",
+      "KC_F19",
+      "KC_F20",
+      "KC_F21",
+      "KC_F22"
+    ],
+    [
+      "KC_F13",
+      "KC_F14",
+      "KC_F15",
+      "KC_F16",
+      "KC_F17",
+      "KC_F18",
+      "KC_F19",
+      "KC_F20",
+      "KC_F21",
+      "KC_F22"
+    ]
+  ],
+  "macros": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "customKeycodes": [
+    {
+      "name": "OBS_REC_TOGGLE",
+      "title": "Toggle Recording",
+      "shortName": "REC"
+    },
+    {
+      "name": "OBS_PAUSE",
+      "title": "Pause Recording", 
+      "shortName": "PAUSE"
+    },
+    {
+      "name": "OBS_MIC_MUTE",
+      "title": "Mute Microphone",
+      "shortName": "MIC"
+    },
+    {
+      "name": "OBS_SCENE_PREV",
+      "title": "Previous Scene",
+      "shortName": "SC-"
+    },
+    {
+      "name": "OBS_SCENE_NEXT", 
+      "title": "Next Scene",
+      "shortName": "SC+"
+    },
+    {
+      "name": "OBS_MUTE_ALL",
+      "title": "Mute All Audio",
+      "shortName": "MUTE"
+    },
+    {
+      "name": "OBS_MARKER",
+      "title": "Add Marker",
+      "shortName": "MARK"
+    },
+    {
+      "name": "OBS_SCREEN_ONLY",
+      "title": "Screen Only",
+      "shortName": "SCRN"
+    },
+    {
+      "name": "OBS_PANIC",
+      "title": "Panic Button", 
+      "shortName": "PANIC"
+    },
+    {
+      "name": "LAYER_SWITCH",
+      "title": "Switch Layer",
+      "shortName": "LAYER"
+    }
+  ]
+}
