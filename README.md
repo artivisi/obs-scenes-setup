@@ -49,12 +49,7 @@ obs-tutorial-setup/
 │       ├── import-scenes.py
 │       ├── export-scenes.py
 │       └── configure-obs.py
-├── remote-control/             # Macropad and mobile remote configs
-│   ├── macropad-config.json
-│   ├── qmk-keymap.c
-│   └── android-remote/
-│       ├── touch-portal-config.json
-│       └── custom-web-remote.html
+├── remote-control/             # Macropad and scenario configs
 └── media/                      # Static media assets
     ├── intro-video.mp4
     ├── outro-video.mp4
@@ -115,9 +110,9 @@ obs-tutorial-setup/
 
 ## GitHub Pages Integration
 
-Overlay files hosted at: `https://yourusername.github.io/obs-tutorial-setup/overlays/`
+## GitHub Pages Integration
 
-Benefits:
+**Complete setup hosted at:** `https://artivisi.github.io/obs-scenes-setup/`
 - Automatic deployment on git push
 - Same URLs work on any machine
 - Easy sharing and collaboration

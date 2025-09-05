@@ -114,7 +114,7 @@ Hybrid Mode: Show suggestions but don't auto-switch
 - Browser sources for all overlays
 - Local file:// URLs work but GitHub Pages preferred
 - OBS WebSocket for advanced remote control
-- QMK firmware for macropad configuration
+- Vial firmware for macropad configuration
 - Touch Portal or custom web interface for mobile
 
 ## Hardware Setup Details
