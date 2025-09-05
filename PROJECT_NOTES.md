@@ -125,11 +125,23 @@ Hybrid Mode: Show suggestions but don't auto-switch
 - **Resolution**: 1920x1080 or 1080x1080 (square for better framing)
 - **Format**: MJPEG or YUV422 (auto-detect)
 
+### Second Camera Setup (Two-Person Scenarios)
+- **Camera**: Another mirrorless camera (same model recommended for consistency)
+- **Capture**: HDMI to USB capture device (second Cam Link 4K or similar)
+- **Connection**: Different USB port for reliable device detection
+- **Device Pattern**: Will appear as second "*Cam Link*" device
+
 ### Microphone: Hollyland Lark M2
 - **Connection**: USB soundcard to laptop
 - **Device Name Pattern**: "*USB Audio*" or "Hollyland Lark M2"
 - **Sample Rate**: 48kHz (video production standard)
 - **Channels**: Mono or Stereo depending on receiver setup
+
+### Audio Configuration for Remote Scenarios
+- **Mix-Minus Setup**: Remote speaker audio from Zoom, local speaker from USB audio
+- **Zoom Audio**: Dedicated audio source for remote participants
+- **Local Audio**: USB audio interface for local speaker(s)
+- **Audio Separation**: Prevents echo and feedback in remote interviews
 
 ### Laptops (Dual Setup)
 - **Primary**: MacBook Pro M1 (macOS)

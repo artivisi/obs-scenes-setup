@@ -14,7 +14,7 @@ This project creates a version-controlled, reproducible OBS setup with:
 ## Folder Structure
 
 ```
-obs-scenes-setup/
+obs-tutorial-setup/
 ├── README.md                    # This file
 ├── PROJECT_NOTES.md            # Detailed project context
 ├── docs/                       # GitHub Pages content
@@ -64,7 +64,7 @@ obs-scenes-setup/
 - **GitHub Pages** - Hosting for overlay files
 - **Lua** - OBS scripting for automation
 - **Python** - Setup and import/export scripts
-- **Vial Firmware** - Macropad configuration (optional)
+- **QMK Firmware** - Macropad configuration (optional)
 
 ## Key Design Principles
 
@@ -110,18 +110,13 @@ obs-scenes-setup/
 
 ## GitHub Pages Integration
 
-**Complete setup will be hosted at:** `https://[your-username].github.io/obs-scenes-setup/`
-- Automatic deployment via GitHub Actions on git push
+## GitHub Pages Integration
+
+**Complete setup hosted at:** `https://artivisi.github.io/obs-scenes-setup/`
+- Automatic deployment on git push
 - Same URLs work on any machine
 - Easy sharing and collaboration
 - Version controlled visual designs
-
-### Setup Instructions:
-1. Push this repository to GitHub
-2. Go to Repository Settings → Pages
-3. Set Source to "GitHub Actions" 
-4. The workflow will automatically deploy on push to master
-5. Your overlays will be live at the GitHub Pages URL
 
 ## Next Steps for Claude Code
 
@@ -129,7 +124,7 @@ obs-scenes-setup/
 2. **Build scene collection JSON** - OBS configuration files
 3. **Develop Lua automation scripts** - Smart scene switching with manual override
 4. **Create setup/import scripts** - Python automation for OBS configuration
-5. **Design macropad integration** - Vial config and OBS hotkey mapping
+5. **Design macropad integration** - QMK config and OBS hotkey mapping
 6. **Build mobile remote interface** - Web-based remote control
 7. **Generate documentation** - Usage guides and troubleshooting
 
@@ -137,7 +132,7 @@ obs-scenes-setup/
 
 - **Camera**: Nikon ZFC via Cam Link 4K (USB capture card)
 - **Microphone**: Hollyland Lark M2 via USB soundcard  
-- **Control**: 3x3 macropad with 1 potentiometer/encoder with click function (cost-effective alternative to Stream Deck)
+- **Control**: 3x3 macropad with 1 potentiometer (cost-effective alternative to Stream Deck)
 - **Computers**: MacBook Pro M1 + Dell Latitude 2-in-1 (dual platform support)
 - **Challenge**: USB device address changes require robust device detection
 
