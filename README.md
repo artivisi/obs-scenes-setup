@@ -193,10 +193,10 @@ python scripts/setup-scripts/import-scenes.py --github-user [your-username]
 ```
 
 ### 5. Configure Macropad
-Follow the detailed setup guide:
+Follow the detailed setup guides:
 - **Vial Setup**: `macropad/vial-setup-guide.md`
 - **Key Reference**: `macropad/keymap-reference.md`
-- **Hardware Info**: `MACROPAD_DESIGN.md`
+- **Hardware Design**: [View online documentation](https://artivisi.github.io/obs-scenes-setup/guides/MACROPAD_DESIGN.html)
 
 ### 6. Validate Complete Setup
 ```bash
@@ -212,13 +212,20 @@ python scripts/test-complete-setup.py --full --save-report setup-report.json
 - Test scene switching with F1-F7 keys or macropad
 - Start recording with Ctrl+R
 
-## Detailed Documentation
+## 📚 Complete Documentation
 
-- **Automated Setup**: `AUTOMATED_SETUP.md` - Skip manual clicking! Auto-create all scenes
-- **OBS Setup Guide**: `OBS_SETUP_GUIDE.md` - Complete manual OBS configuration
-- **Device Management**: Cross-platform USB device handling 
-- **Macropad Design**: 4-layer control system with Vial firmware
-- **Overlay System**: HTML/CSS overlays with GitHub Pages hosting
-- **Multi-Camera Support**: Dual Cam Link setup for guest interviews
+**🌐 GitHub Pages Documentation Site**: https://artivisi.github.io/obs-scenes-setup/
+
+### Quick Access Links
+- **🤖 [Automated Setup](https://artivisi.github.io/obs-scenes-setup/guides/AUTOMATED_SETUP.html)** - Skip manual clicking! Auto-create all scenes
+- **🎛️ [Manual OBS Setup](https://artivisi.github.io/obs-scenes-setup/guides/OBS_SETUP_GUIDE.html)** - Complete step-by-step configuration
+- **🎹 [Macropad Design](https://artivisi.github.io/obs-scenes-setup/guides/MACROPAD_DESIGN.html)** - 4-layer control system with Vial firmware
+- **📋 [Project Architecture](https://artivisi.github.io/obs-scenes-setup/guides/PROJECT_NOTES.html)** - Technical deep-dive and system design
+
+### Live Overlay Previews
+- **👤 [Talking Head](https://artivisi.github.io/obs-scenes-setup/overlays/talking-head.html?test=true)** - Presenter-focused layout
+- **💻 [Code Demo](https://artivisi.github.io/obs-scenes-setup/overlays/code-demo.html?test=true)** - Split screen + webcam
+- **🖥️ [Screen Only](https://artivisi.github.io/obs-scenes-setup/overlays/screen-only.html?test=true)** - Full screen capture
+- **🎬 [All Overlays](https://artivisi.github.io/obs-scenes-setup/)** - Complete preview gallery
 
 Ready for professional programming tutorials! 🚀

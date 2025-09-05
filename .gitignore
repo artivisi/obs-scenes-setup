@@ -1,0 +1,21 @@
+# Generated documentation (created by GitHub Actions)
+docs/guides/*.html
+docs/guides/*.md
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local test files
+*.local.*

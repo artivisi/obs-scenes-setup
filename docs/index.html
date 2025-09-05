@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OBS Overlay System - Programming Tutorials</title>
+    <title>OBS Infrastructure-as-Code - Programming Tutorials Setup</title>
+    <meta name="description" content="Professional OBS setup system for programming tutorials with automated scene creation, multi-camera support, and Infrastructure-as-Code approach.">
     <style>
         * {
             margin: 0;
@@ -15,257 +16,493 @@
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
             min-height: 100vh;
-            padding: 2rem;
+            color: #333;
         }
         
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 2rem;
         }
         
-        h1 {
-            color: white;
+        .header {
             text-align: center;
-            margin-bottom: 2rem;
-            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .quick-start {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .quick-start h2 {
+            color: #2e3192;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        
+        .quick-start-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .quick-option {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-left: 5px solid #58c034;
+        }
+        
+        .quick-option h3 {
+            color: #2e3192;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quick-option .icon {
+            font-size: 1.5rem;
+        }
+        
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .documentation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .doc-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .doc-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        
+        .doc-card .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .doc-card h3 {
+            color: #2e3192;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .doc-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .doc-card .features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .doc-card .features li {
+            padding: 0.25rem 0;
+            color: #58c034;
+            font-weight: 500;
+        }
+        
+        .doc-card .features li:before {
+            content: "✅ ";
+            margin-right: 0.5rem;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s ease;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .overlay-preview {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 3rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        
+        .overlay-preview h2 {
+            color: #2e3192;
+            margin-bottom: 2rem;
+            text-align: center;
         }
         
         .overlay-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-        
-        .overlay-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .overlay-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-        }
-        
-        .overlay-card h2 {
-            color: #2e3192;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-        
-        .overlay-card p {
-            color: #666;
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-        
-        .overlay-preview {
-            width: 100%;
-            height: 150px;
-            background: #f0f0f0;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            color: #999;
-            border: 2px solid #e0e0e0;
-        }
-        
-        .overlay-links {
-            display: flex;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1rem;
         }
         
         .overlay-link {
-            flex: 1;
-            padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
-            color: white;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
             text-decoration: none;
-            border-radius: 6px;
+            color: #333;
+            transition: all 0.3s ease;
             text-align: center;
-            transition: opacity 0.3s ease;
         }
         
         .overlay-link:hover {
-            opacity: 0.9;
+            border-color: #58c034;
+            background: #f0f8f0;
         }
         
-        .status-section {
-            background: white;
-            border-radius: 12px;
+        .overlay-link .overlay-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .stats {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
             padding: 2rem;
-            margin-bottom: 2rem;
+            margin: 3rem 0;
+            backdrop-filter: blur(10px);
         }
         
-        .status-grid {
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
+            gap: 2rem;
+            text-align: center;
         }
         
-        .status-item {
-            padding: 1rem;
-            background: #f8f8f8;
-            border-radius: 8px;
-            border-left: 4px solid #58c034;
+        .stat-item {
+            color: white;
         }
         
-        .status-item h3 {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 0.5rem;
-        }
-        
-        .status-item p {
-            font-size: 1.2rem;
-            color: #333;
+        .stat-number {
+            font-size: 2.5rem;
             font-weight: bold;
+            display: block;
+            color: #58c034;
         }
         
-        .tech-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
         }
         
-        .tech-pill {
-            padding: 0.25rem 0.75rem;
-            background: #f0f0f0;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            color: #666;
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .documentation-grid,
+            .quick-start-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎬 OBS Overlay System</h1>
-        
-        <div class="status-section">
-            <h2>System Configuration</h2>
-            <div class="status-grid">
-                <div class="status-item">
-                    <h3>Resolution</h3>
-                    <p>1920×1080</p>
-                </div>
-                <div class="status-item">
-                    <h3>Frame Rate</h3>
-                    <p>30 FPS</p>
-                </div>
-                <div class="status-item">
-                    <h3>Overlays</h3>
-                    <p>5 Active</p>
-                </div>
-                <div class="status-item">
-                    <h3>Control</h3>
-                    <p>Macropad</p>
-                </div>
-            </div>
-            
-            <div class="tech-pills">
-                <span class="tech-pill">Java</span>
-                <span class="tech-pill">Linux</span>
-                <span class="tech-pill">DevOps</span>
-                <span class="tech-pill">Software Engineering</span>
-                <span class="tech-pill">Project Management</span>
+        <div class="header">
+            <h1>🎬 OBS Infrastructure-as-Code</h1>
+            <div class="subtitle">
+                Professional programming tutorial setup with automated scene creation, multi-camera support, and cross-platform compatibility
             </div>
         </div>
-        
-        <div class="overlay-grid">
-            <div class="overlay-card">
-                <h2>Talking Head</h2>
-                <div class="overlay-preview">
-                    <span>Preview Loading...</span>
-                </div>
-                <p>Full camera view for introductions and explanations. Clean, professional layout.</p>
-                <div class="overlay-links">
-                    <a href="overlays/talking-head.html" class="overlay-link">Open</a>
-                    <a href="overlays/talking-head.html?test=true" class="overlay-link">Test</a>
-                </div>
-            </div>
+
+        <div class="quick-start">
+            <h2>🚀 Quick Start - Choose Your Path</h2>
+            <p>Get up and running in minutes with professional OBS setup for programming tutorials, guest interviews, and live streaming.</p>
             
-            <div class="overlay-card">
-                <h2>Code + Camera</h2>
-                <div class="overlay-preview">
-                    <span>Preview Loading...</span>
+            <div class="quick-start-grid">
+                <div class="quick-option">
+                    <h3><span class="icon">🤖</span> Automated Setup (Recommended)</h3>
+                    <p>Skip the manual clicking! Auto-create all scenes, sources, and configurations.</p>
+                    <div class="code-block"># Install and run automation
+python scripts/install-dependencies.py
+python scripts/setup-scripts/auto-scene-creator.py --create-live --github-user [username]</div>
+                    <p><strong>Time:</strong> 2-3 minutes | <strong>Error Rate:</strong> Near zero</p>
                 </div>
-                <p>Split layout for live coding sessions. IDE/terminal with picture-in-picture.</p>
-                <div class="overlay-links">
-                    <a href="overlays/code-demo.html" class="overlay-link">Open</a>
-                    <a href="overlays/code-demo.html?test=true" class="overlay-link">Test</a>
-                </div>
-            </div>
-            
-            <div class="overlay-card">
-                <h2>Screen Only</h2>
-                <div class="overlay-preview">
-                    <span>Preview Loading...</span>
-                </div>
-                <p>Full screen capture for detailed demonstrations. Minimal overlay elements.</p>
-                <div class="overlay-links">
-                    <a href="overlays/screen-only.html" class="overlay-link">Open</a>
-                    <a href="overlays/screen-only.html?test=true" class="overlay-link">Test</a>
-                </div>
-            </div>
-            
-            <div class="overlay-card">
-                <h2>Intro Scene</h2>
-                <div class="overlay-preview">
-                    <span>Preview Loading...</span>
-                </div>
-                <p>Professional intro with animations and branding. Sets the stage for content.</p>
-                <div class="overlay-links">
-                    <a href="overlays/intro.html" class="overlay-link">Open</a>
-                    <a href="overlays/intro.html?test=true" class="overlay-link">Test</a>
-                </div>
-            </div>
-            
-            <div class="overlay-card">
-                <h2>Outro Scene</h2>
-                <div class="overlay-preview">
-                    <span>Preview Loading...</span>
-                </div>
-                <p>Closing sequence with calls to action. Subscribe, like, and follow prompts.</p>
-                <div class="overlay-links">
-                    <a href="overlays/outro.html" class="overlay-link">Open</a>
-                    <a href="overlays/outro.html?test=true" class="overlay-link">Test</a>
-                </div>
-            </div>
-            
-            <div class="overlay-card">
-                <h2>BRB / Technical</h2>
-                <div class="overlay-preview">
-                    <span>Preview Loading...</span>
-                </div>
-                <p>Be Right Back and Technical Difficulties scenes. Professional holding patterns.</p>
-                <div class="overlay-links">
-                    <a href="overlays/brb.html" class="overlay-link">Open</a>
-                    <a href="overlays/brb.html?test=true" class="overlay-link">Test</a>
+                
+                <div class="quick-option">
+                    <h3><span class="icon">🔧</span> Manual Setup</h3>
+                    <p>Step-by-step manual configuration with complete control over every setting.</p>
+                    <div class="code-block"># Import scene collection
+python scripts/setup-scripts/import-scenes.py --github-user [username]</div>
+                    <p><strong>Time:</strong> 30+ minutes | <strong>Control:</strong> Full customization</p>
                 </div>
             </div>
         </div>
-        
-        <div class="status-section">
-            <h2>Quick Setup Instructions</h2>
-            <ol style="line-height: 2; color: #666;">
-                <li>Push this repository to GitHub</li>
-                <li>Enable GitHub Pages in Repository Settings → Pages → Source: "GitHub Actions"</li>
-                <li>In OBS, add a new Browser Source</li>
-                <li>Set URL to: <code style="background: #f0f0f0; padding: 0.25rem 0.5rem; border-radius: 4px;">https://[your-username].github.io/obs-scenes-setup/overlays/[overlay-name].html</code></li>
-                <li>Set resolution to 1920×1080</li>
-                <li>Check "Shutdown source when not visible" for performance</li>
-                <li>Configure your macropad using the button mappings in MACROPAD_DESIGN.md</li>
-            </ol>
+
+        <div class="stats">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">2-3</span>
+                    <div class="stat-label">Minutes Setup Time</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">7</span>
+                    <div class="stat-label">Professional Scenes</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <div class="stat-label">Platforms Supported</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <div class="stat-label">Infrastructure-as-Code</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="documentation-grid">
+            <a href="guides/AUTOMATED_SETUP.html" class="doc-card">
+                <span class="icon">🤖</span>
+                <h3>Automated Setup Guide</h3>
+                <p>Complete automation system that eliminates manual OBS configuration. Perfect for users who want professional results without the complexity.</p>
+                <ul class="features">
+                    <li>One-command scene creation</li>
+                    <li>Auto-device detection</li>
+                    <li>Professional audio filters</li>
+                    <li>Error-free configuration</li>
+                </ul>
+                <span class="cta-button">Start Automation →</span>
+            </a>
+
+            <a href="guides/OBS_SETUP_GUIDE.html" class="doc-card">
+                <span class="icon">🎛️</span>
+                <h3>Manual OBS Setup</h3>
+                <p>Comprehensive manual configuration guide with step-by-step instructions for every scene, source, and setting.</p>
+                <ul class="features">
+                    <li>7 scene configurations</li>
+                    <li>Professional audio setup</li>
+                    <li>Multi-camera support</li>
+                    <li>Device management</li>
+                </ul>
+                <span class="cta-button">Manual Setup →</span>
+            </a>
+
+            <a href="guides/MACROPAD_DESIGN.html" class="doc-card">
+                <span class="icon">🎹</span>
+                <h3>Macropad Configuration</h3>
+                <p>4-layer macropad system with Vial firmware for physical scene control, recording management, and workflow automation.</p>
+                <ul class="features">
+                    <li>4-layer control system</li>
+                    <li>Vial firmware setup</li>
+                    <li>Scene switching hotkeys</li>
+                    <li>Emergency controls</li>
+                </ul>
+                <span class="cta-button">Setup Macropad →</span>
+            </a>
+
+            <a href="guides/PROJECT_NOTES.html" class="doc-card">
+                <span class="icon">📋</span>
+                <h3>Project Architecture</h3>
+                <p>Technical deep-dive into the Infrastructure-as-Code approach, system architecture, and design decisions.</p>
+                <ul class="features">
+                    <li>System architecture</li>
+                    <li>Design principles</li>
+                    <li>Hardware requirements</li>
+                    <li>Platform compatibility</li>
+                </ul>
+                <span class="cta-button">Technical Details →</span>
+            </a>
+
+            <div class="doc-card" style="background: linear-gradient(135deg, #2e3192 0%, #58c034 100%); color: white;">
+                <span class="icon">🎬</span>
+                <h3 style="color: white;">What You Get</h3>
+                <p style="color: rgba(255,255,255,0.9);">Complete professional OBS setup for programming tutorials, guest interviews, and live streaming.</p>
+                <ul class="features">
+                    <li>Intro/Outro scenes with branding</li>
+                    <li>Code + Camera layouts</li>
+                    <li>Screen-only presentations</li>
+                    <li>Dual camera interviews</li>
+                    <li>Professional audio processing</li>
+                    <li>Cross-platform compatibility</li>
+                </ul>
+            </div>
+
+            <div class="doc-card">
+                <span class="icon">🔧</span>
+                <h3>Advanced Features</h3>
+                <p>Enterprise-grade features for professional content creation and live streaming workflows.</p>
+                <ul class="features">
+                    <li>USB hub validation</li>
+                    <li>Device auto-detection</li>
+                    <li>Template variations</li>
+                    <li>Integration testing</li>
+                    <li>Backup & restore</li>
+                    <li>Remote control options</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="overlay-preview">
+            <h2>🎨 Live Overlay Previews</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">Preview all overlay designs in your browser before setting up OBS</p>
+            
+            <div class="overlay-grid">
+                <a href="overlays/talking-head.html?test=true" class="overlay-link" target="_blank">
+                    <span class="overlay-icon">👤</span>
+                    <strong>Talking Head</strong>
+                    <div>Presenter-focused layout</div>
+                </a>
+                
+                <a href="overlays/code-demo.html?test=true" class="overlay-link" target="_blank">
+                    <span class="overlay-icon">💻</span>
+                    <strong>Code Demo</strong>
+                    <div>Split screen + webcam</div>
+                </a>
+                
+                <a href="overlays/screen-only.html?test=true" class="overlay-link" target="_blank">
+                    <span class="overlay-icon">🖥️</span>
+                    <strong>Screen Only</strong>
+                    <div>Full screen capture</div>
+                </a>
+                
+                <a href="overlays/intro.html?test=true" class="overlay-link" target="_blank">
+                    <span class="overlay-icon">🎬</span>
+                    <strong>Intro Scene</strong>
+                    <div>Professional intro</div>
+                </a>
+                
+                <a href="overlays/outro.html?test=true" class="overlay-link" target="_blank">
+                    <span class="overlay-icon">🎯</span>
+                    <strong>Outro Scene</strong>
+                    <div>Call-to-action ending</div>
+                </a>
+                
+                <a href="overlays/brb.html?test=true" class="overlay-link" target="_blank">
+                    <span class="overlay-icon">📺</span>
+                    <strong>BRB / Technical</strong>
+                    <div>Break intermission</div>
+                </a>
+                
+                <a href="overlays/dual-cam.html?test=true" class="overlay-link" target="_blank">
+                    <span class="overlay-icon">👥</span>
+                    <strong>Dual Camera</strong>
+                    <div>Guest interviews</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🚀 <strong>OBS Infrastructure-as-Code</strong> - Professional programming tutorial setup</p>
+            <p>Built with ❤️ for content creators | Powered by GitHub Pages</p>
+            <p style="margin-top: 1rem; opacity: 0.7;">
+                <a href="https://github.com/artivisi/obs-scenes-setup" style="color: rgba(255,255,255,0.8);">📁 View Source on GitHub</a> |
+                <a href="mailto:support@example.com" style="color: rgba(255,255,255,0.8);">📧 Support</a>
+            </p>
         </div>
     </div>
+
+    <script>
+        // Add smooth scrolling and enhanced interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add fade-in animation for cards
+            const cards = document.querySelectorAll('.doc-card, .quick-option');
+            
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '0';
+                        entry.target.style.transform = 'translateY(20px)';
+                        entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                        
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, 100);
+                        
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            cards.forEach(card => observer.observe(card));
+            
+            // Add click tracking for documentation links
+            document.querySelectorAll('.doc-card, .overlay-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Add subtle animation feedback
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                });
+            });
+        });
+    </script>
 </body>
 </html>

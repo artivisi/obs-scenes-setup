@@ -1,0 +1,39 @@
+name: Build Documentation
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '*.md'
+      - 'docs/**'
+      - '.github/workflows/docs-builder.yml'
+      - 'scripts/convert-docs-to-html.py'
+  workflow_dispatch:
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Convert Markdown to HTML
+      run: |
+        echo "📚 Converting documentation to HTML..."
+        python scripts/convert-docs-to-html.py
+    
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add docs/guides/*.html
+        git diff --cached --quiet || git commit -m "Auto-generate HTML documentation from Markdown"
+        git push || echo "No changes to push"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
