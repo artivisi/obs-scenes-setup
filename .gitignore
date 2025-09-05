@@ -19,3 +19,7 @@ Thumbs.db
 
 # Local test files
 *.local.*
+
+# Generated scene collections
+*-configured.json
+*-configured.txt
