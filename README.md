@@ -19,14 +19,11 @@ This project creates a version-controlled, reproducible OBS setup with:
 # 1. Install dependencies
 python scripts/setup/install-dependencies.py
 
-# 2. Import complete scene collection via API
-python scripts/obs/auto-scene-creator.py --import-json scene-collections/programming-tutorial-configured.json --obs-host localhost --obs-password YOUR_PASSWORD
+# 2. Create scenes with online overlays (GitHub Pages)
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 
-# 3. Auto-detect and configure cameras
-python scripts/obs/detect-cameras.py --obs-host localhost --obs-password YOUR_PASSWORD
-
-# 4. Test complete system
-python scripts/tools/test-complete-setup.py --quick --github-user artivisi
+# OR for offline development (local overlay files)
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline
 ```
 **Total setup time: 2-3 minutes** ⚡
 
@@ -69,17 +66,12 @@ obs-tutorial-setup/
 │   │   ├── vial-setup-automation.py
 │   │   └── usb-hub-validator.py
 │   ├── obs/                    # OBS Studio automation and control
-│   │   ├── auto-scene-creator.py    # Scene creation via WebSocket
-│   │   ├── detect-cameras.py        # Camera detection and setup
-│   │   ├── device-manager.py        # Cross-platform device detection
-│   │   ├── import-scenes.py         # Scene collection import
+│   │   ├── auto-scene-creator.py    # Scene creation via WebSocket (supports --offline mode)
 │   │   └── lua-scripts/            # OBS Lua scripts
 │   │       ├── manual-control.lua   # Manual scene control
 │   │       └── scene-indicators.lua # Visual feedback
 │   └── tools/                  # Development and maintenance
-│       ├── test-complete-setup.py   # System testing
 │       └── convert-docs-to-html.py  # Documentation generation
-│       └── configure-obs.py
 ├── remote-control/             # Macropad and scenario configs
 └── media/                      # Static media assets
     ├── intro-video.mp4
@@ -190,40 +182,19 @@ python scripts/tools/test-complete-setup.py --full --github-user artivisi
 python scripts/tools/test-complete-setup.py --quick --github-user artivisi
 ```
 
-### 3. Hardware Detection and Setup
+### 3. Create OBS Scenes
+
 ```bash
-# Scan for cameras and audio devices
-python scripts/obs/device-manager.py --scan
+# Enable OBS WebSocket first (Tools → WebSocket Server Settings)
 
-# Detect and add cameras to OBS automatically
-python scripts/obs/detect-cameras.py --obs-host localhost --obs-password YOUR_PASSWORD
-
-# Validate USB hub for dual camera setup
-python scripts/setup/usb-hub-validator.py --validate
-```
-
-### 4. OBS Configuration (Choose One)
-
-**Option A: Automated Scene Creation (RECOMMENDED)**
-```bash
-# Install dependencies
-python scripts/setup/install-dependencies.py
-
-# Enable OBS WebSocket (Tools → WebSocket Server Settings)
-# Then import scene collection via API:
-python scripts/obs/auto-scene-creator.py --import-json scene-collections/programming-tutorial-configured.json --github-user artivisi
-
-# Or create scenes from templates:
+# Option A: Production mode with GitHub Pages overlays
 python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
-```
 
-**Option B: Manual Import**
-```bash
-# Import scene collection with your GitHub Pages URLs
-python scripts/obs/import-scenes.py --github-user artivisi
+# Option B: Development mode with local overlay files  
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline
 
-# Or manually import: OBS → Scene Collection → Import
-# File: scene-collections/programming-tutorial-configured.json
+# Option C: Generate JSON for manual import
+python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json [--offline]
 ```
 
 ### 5. Configure Macropad (Choose One)
@@ -243,12 +214,11 @@ Follow the detailed setup guides:
 - **Key Reference**: `macropad/keymap-reference.md`
 - **Hardware Design**: [View online documentation](https://artivisi.github.io/obs-scenes-setup/guides/MACROPAD_DESIGN.html)
 
-### 6. Validate Complete Setup
-```bash
-# Final validation test
-python scripts/tools/test-complete-setup.py --full --save-report setup-report.json
+### 6. Test Your Setup
 
-# Check that report shows "excellent" or "good" status
+```bash
+# Test overlays are accessible
+curl -I https://artivisi.github.io/obs-scenes-setup/overlays/intro.html
 ```
 
 ### 7. Start Recording! 🎬

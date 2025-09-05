@@ -16,6 +16,7 @@ Features:
 
 Usage:
     python auto-scene-creator.py --create-live --github-user username
+    python auto-scene-creator.py --create-live --github-user username --offline
     python auto-scene-creator.py --generate-json --output scenes.json
     python auto-scene-creator.py --template java-tutorial --github-user username
 """
@@ -62,30 +63,187 @@ class SceneConfig:
 class AutoSceneCreator:
     """Automated OBS scene creation system"""
     
-    def __init__(self, github_user: str = "artivisi", obs_host: str = "localhost", obs_port: int = 4455, obs_password: str = ""):
+    def __init__(self, github_user: str = "artivisi", obs_host: str = "localhost", obs_port: int = 4455, obs_password: str = "", offline_mode: bool = False):
         self.github_user = github_user
-        self.base_url = f"https://{github_user}.github.io/obs-scenes-setup"
+        self.offline_mode = offline_mode
+        # Get the project root directory (2 levels up from this script)
+        self.project_root = Path(__file__).resolve().parent.parent.parent
+        # Use the correct base URL that works
+        if offline_mode:
+            self.base_url = f"file://{self.project_root}"
+        elif github_user == "artivisi":
+            self.base_url = "https://artivisi.com/obs-scenes-setup"
+        else:
+            self.base_url = f"https://{github_user}.github.io/obs-scenes-setup"
         self.obs_client = None
         self.obs_host = obs_host
         self.obs_port = obs_port
         self.obs_password = obs_password
         self.detected_devices = {}
+        
         self.platform = platform.system().lower()
         
         # Scene templates
         self.scene_templates = self._create_scene_templates()
+        
+    def _get_overlay_url(self, overlay_name: str) -> str:
+        """Get overlay URL based on offline/online mode"""
+        if self.offline_mode:
+            # Use relative path from project root
+            overlay_path = self.project_root / "docs" / "overlays" / f"{overlay_name}.html"
+            return f"file://{overlay_path}"
+        else:
+            return f"https://{self.github_user}.github.io/obs-scenes-setup/overlays/{overlay_name}.html"
     
     def _create_scene_templates(self) -> List[SceneConfig]:
         """Create all scene configuration templates"""
-        return [
-            self._create_intro_scene(),
-            self._create_talking_head_scene(),
-            self._create_code_demo_scene(),
-            self._create_screen_only_scene(),
-            self._create_brb_scene(),
-            self._create_outro_scene(),
-            self._create_dual_camera_scene()
+        # Create source scenes first (these contain the actual devices)
+        source_scenes = [
+            self._create_camera_scene(),
+            self._create_audio_scene(),
+            self._create_screen_scene()
         ]
+        
+        # Add separator to distinguish source scenes from main scenes
+        separator_scene = [
+            SceneConfig(
+                name="═══════ SOURCE SCENES ═══════",
+                description="Separator - Source scenes start below this line",
+                sources=[]  # Empty scene used as visual separator
+            )
+        ]
+        
+        # Create main scenes in reverse order (OBS displays scenes in reverse creation order)
+        main_scenes = [
+            self._create_outro_scene(),          # F6 - Stream end (created first, appears last)
+            self._create_brb_scene(),            # F5 - Breaks/technical issues
+            self._create_screen_only_scene(),     # F4 - Full screen demos
+            self._create_code_demo_scene(),       # F3 - Main content (coding)
+            self._create_talking_head_scene(),    # F2 - Introduction/discussion
+            self._create_intro_scene()           # F1 - Stream start (created last, appears first)
+        ]
+        
+        return source_scenes + separator_scene + main_scenes
+    
+    def _create_camera_scene(self) -> SceneConfig:
+        """Create dedicated camera scene - edit camera settings here once"""
+        return SceneConfig(
+            name="📹 Camera Sources",
+            description="Camera sources - edit camera settings here (used by all scenes)",
+            sources=[
+                SceneSource(
+                    name="Main Camera",
+                    type="video_capture_device",
+                    settings={},  # Let OBS use the default camera device automatically
+                    transform={
+                        "scaleX": 1.5,   # More moderate scaling (640*1.5=960, well within 1920)
+                        "scaleY": 1.5,   # More moderate scaling (360*1.5=540, well within 1080) 
+                        "positionX": 0,   # Start at origin - OBS will center based on alignment
+                        "positionY": 0    # Start at origin - OBS will center based on alignment
+                    },
+                    visible=True
+                )
+            ]
+        )
+    
+    def _create_audio_scene(self) -> SceneConfig:
+        """Create dedicated audio scene - edit audio settings here once"""
+        return SceneConfig(
+            name="🎤 Audio Sources",
+            description="Audio sources - edit microphone settings here (used by all scenes)",
+            sources=[
+                SceneSource(
+                    name="Main Microphone",
+                    type="audio_input_capture",
+                    settings={
+                        "device_id": "default"  # User can change this once
+                    },
+                    filters=[
+                        {
+                            "name": "Noise Suppression",
+                            "type": "noise_suppress_filter",
+                            "settings": {"method": "rnnoise"}
+                        },
+                        {
+                            "name": "Compressor",
+                            "type": "compressor_filter",
+                            "settings": {"ratio": 10, "threshold": -18}
+                        },
+                        {
+                            "name": "Limiter",
+                            "type": "limiter_filter", 
+                            "settings": {"threshold": -6, "release_time": 60}
+                        }
+                    ],
+                    visible=True
+                ),
+                SceneSource(
+                    name="Guest Microphone",
+                    type="audio_input_capture", 
+                    settings={
+                        "device_id": "default"  # User can change this for guest
+                    },
+                    filters=[
+                        {
+                            "name": "Noise Suppression",
+                            "type": "noise_suppress_filter",
+                            "settings": {"method": "rnnoise"}
+                        }
+                    ],
+                    visible=False
+                )
+            ]
+        )
+    
+    def _create_screen_scene(self) -> SceneConfig:
+        """Create dedicated screen capture scene - edit screen settings here once"""
+        return SceneConfig(
+            name="🖥️ Screen Sources",
+            description="Screen sources - edit display/app/window settings here (used by all scenes)",
+            sources=[
+                SceneSource(
+                    name="Application Capture (VS Code Default)",
+                    type="window_capture",
+                    settings={
+                        "window": "Visual Studio Code"  # Set VS Code as default
+                    },
+                    transform={
+                        "scaleX": 1.0,
+                        "scaleY": 1.0,
+                        "positionX": 0,
+                        "positionY": 0
+                    },
+                    visible=True  # Default enabled
+                ),
+                SceneSource(
+                    name="Window Capture",
+                    type="window_capture", 
+                    settings={},  # User can configure specific window
+                    transform={
+                        "scaleX": 1.0,
+                        "scaleY": 1.0,
+                        "positionX": 0,
+                        "positionY": 0
+                    },
+                    visible=False  # Disabled by default
+                ),
+                SceneSource(
+                    name="Display Capture", 
+                    type="display_capture",
+                    settings={
+                        "method": "automatic"  # User can change to specific display
+                    },
+                    transform={
+                        "scaleX": 1.0,
+                        "scaleY": 1.0,
+                        "positionX": 0,
+                        "positionY": 0
+                    },
+                    visible=False  # Disabled by default
+                )
+            ]
+        )
+    
     
     def _create_intro_scene(self) -> SceneConfig:
         """Create intro scene configuration"""
@@ -95,36 +253,21 @@ class AutoSceneCreator:
             hotkey="F1",
             sources=[
                 SceneSource(
-                    name="Intro Overlay",
+                    name="Dynamic Intro Overlay",
                     type="browser_source",
                     settings={
-                        "url": f"{self.base_url}/overlays/intro.html?title=Java Development Mastery&subtitle=Building Enterprise Applications&countdown=true&autoexit=true&duration=10",
+                        "url": self._get_overlay_url("intro"),
                         "width": 1920,
                         "height": 1080,
+                        "fps": 30,
                         "shutdown_source_when_not_visible": True,
                         "restart_when_active": True,
-                        "css": ""
+                        "reroute_audio": False
                     },
                     visible=True
                 ),
-                SceneSource(
-                    name="Background Camera",
-                    type="video_capture_device",
-                    settings={
-                        "device": "AUTO_DETECT_PRIMARY_CAMERA",
-                        "resolution": "1920x1080",
-                        "fps": 30
-                    },
-                    transform={
-                        "scale_x": 1.0,
-                        "scale_y": 1.0,
-                        "rotation": 0.0,
-                        "pos_x": 0,
-                        "pos_y": 0,
-                        "opacity": 0.3  # Background effect
-                    },
-                    visible=True
-                )
+                # NO CAMERA IN INTRO - just overlay with title and countdown
+                # User instructions for customization
             ]
         )
     
@@ -137,18 +280,16 @@ class AutoSceneCreator:
             sources=[
                 SceneSource(
                     name="Main Camera",
-                    type="video_capture_device",
+                    type="scene_reference",
                     settings={
-                        "device": "AUTO_DETECT_PRIMARY_CAMERA",
-                        "resolution": "1920x1080",
-                        "fps": 30
+                        "scene_name": "📹 Camera Sources"
                     },
                     transform={
-                        "scale_x": 1.0,
-                        "scale_y": 1.0,
+                        "scaleX": 1.0,
+                        "scaleY": 1.0,
                         "rotation": 0.0,
-                        "pos_x": 0,
-                        "pos_y": 0
+                        "positionX": 0,
+                        "positionY": 0
                     },
                     visible=True
                 ),
@@ -156,14 +297,16 @@ class AutoSceneCreator:
                     name="Talking Head Overlay",
                     type="browser_source",
                     settings={
-                        "url": f"{self.base_url}/overlays/talking-head.html?topic=Java Programming&recording=true&hidetitle=false",
+                        "url": self._get_overlay_url("talking-head"),
                         "width": 1920,
                         "height": 1080,
+                        "fps": 30,
                         "shutdown_source_when_not_visible": True,
-                        "restart_when_active": True
+                        "restart_when_active": True,
+                        "reroute_audio": False
                     },
                     visible=True
-                )
+                ),
             ]
         )
     
@@ -176,31 +319,36 @@ class AutoSceneCreator:
             sources=[
                 SceneSource(
                     name="Screen Capture",
-                    type="display_capture",
+                    type="scene_reference",
                     settings={
-                        "method": "auto"
+                        "scene_name": "🖥️ Screen Sources"
                     },
                     transform={
-                        "scale_x": 0.75,
-                        "scale_y": 0.75,
-                        "pos_x": 0,
-                        "pos_y": 0
+                        "scaleX": 1.0,  # Fit to full screen
+                        "scaleY": 1.0,  # Fit to full screen
+                        "positionX": 0,
+                        "positionY": 0
                     },
                     visible=True
                 ),
                 SceneSource(
-                    name="PiP Camera",
-                    type="video_capture_device",
+                    name="PiP Camera (Small Lower Right)",
+                    type="scene_reference",
                     settings={
-                        "device": "AUTO_DETECT_PRIMARY_CAMERA",
-                        "resolution": "1920x1080",
-                        "fps": 30
+                        "scene_name": "📹 Camera Sources"
                     },
                     transform={
-                        "scale_x": 0.25,
-                        "scale_y": 0.25,
-                        "pos_x": 1440,
-                        "pos_y": 60
+                        "scaleX": 0.33,  # Maintain aspect ratio - scale both dimensions equally
+                        "scaleY": 0.33,  # Maintain aspect ratio - same scale as X
+                        "positionX": 1560, # Move left to align with blue frame left edge (right: 40px = 1920-40-320 = 1560)
+                        "positionY": 780,  # Adjust for new rectangle height (bottom: 120px = 1080-120-180 = 780)
+                        "cropLeft": 0,     # Crop settings to match blue rectangle exactly
+                        "cropTop": 0,
+                        "cropRight": 0,
+                        "cropBottom": 0,
+                        "boundsType": "OBS_BOUNDS_SCALE_INNER",  # Scale to fit within bounds while maintaining aspect ratio
+                        "boundsWidth": 320,  # Exact width of blue rectangle
+                        "boundsHeight": 180  # New height of blue rectangle (16:9 aspect ratio)
                     },
                     visible=True
                 ),
@@ -208,14 +356,16 @@ class AutoSceneCreator:
                     name="Code Demo Overlay",
                     type="browser_source",
                     settings={
-                        "url": f"{self.base_url}/overlays/code-demo.html?lang=java&file=Application.java&topic=Spring Boot Development&recording=true",
+                        "url": self._get_overlay_url("code-demo"),
                         "width": 1920,
                         "height": 1080,
+                        "fps": 30,
                         "shutdown_source_when_not_visible": True,
-                        "restart_when_active": True
+                        "restart_when_active": True,
+                        "reroute_audio": False
                     },
                     visible=True
-                )
+                ),
             ]
         )
     
@@ -230,41 +380,41 @@ class AutoSceneCreator:
                     name="Full Screen",
                     type="display_capture",
                     settings={
-                        "method": "auto"
+                        "method": "automatic"
                     },
                     transform={
-                        "scale_x": 1.0,
-                        "scale_y": 1.0,
-                        "pos_x": 0,
-                        "pos_y": 0
+                        "scaleX": 1.0,
+                        "scaleY": 1.0,
+                        "positionX": 0,
+                        "positionY": 0
                     },
                     visible=True
                 ),
                 SceneSource(
-                    name="Mini Camera",
-                    type="video_capture_device",
+                    name="Mini Camera (Toggleable)",
+                    type="scene_reference",
                     settings={
-                        "device": "AUTO_DETECT_PRIMARY_CAMERA",
-                        "resolution": "1920x1080",
-                        "fps": 30
+                        "scene_name": "📹 Camera Sources"
                     },
                     transform={
-                        "scale_x": 0.15,
-                        "scale_y": 0.15,
-                        "pos_x": 1632,
-                        "pos_y": 900
+                        "scaleX": 0.15,  # 15% of full camera (1920*0.15=288px wide)
+                        "scaleY": 0.15,  # 15% of full camera (1080*0.15=162px tall) 
+                        "positionX": 1632,    # Bottom right: 1920-288=1632
+                        "positionY": 918      # Bottom right: 1080-162=918
                     },
-                    visible=False  # Can be toggled via overlay
+                    visible=False  # Disabled by default - user can enable if wanted
                 ),
                 SceneSource(
                     name="Screen Only Overlay",
                     type="browser_source",
                     settings={
-                        "url": f"{self.base_url}/overlays/screen-only.html?hidecam=true&topic=Java Deep Dive&recording=true&progress=true",
+                        "url": self._get_overlay_url("screen-only"),
                         "width": 1920,
                         "height": 1080,
+                        "fps": 30,
                         "shutdown_source_when_not_visible": True,
-                        "restart_when_active": True
+                        "restart_when_active": True,
+                        "reroute_audio": False
                     },
                     visible=True
                 )
@@ -282,11 +432,13 @@ class AutoSceneCreator:
                     name="BRB Overlay",
                     type="browser_source",
                     settings={
-                        "url": f"{self.base_url}/overlays/brb.html?type=break&duration=5&music=true&message=Taking a quick break - back in 5 minutes",
+                        "url": self._get_overlay_url("brb"),
                         "width": 1920,
                         "height": 1080,
+                        "fps": 30,
                         "shutdown_source_when_not_visible": True,
-                        "restart_when_active": True
+                        "restart_when_active": True,
+                        "reroute_audio": False
                     },
                     visible=True
                 )
@@ -304,108 +456,20 @@ class AutoSceneCreator:
                     name="Outro Overlay",
                     type="browser_source",
                     settings={
-                        "url": f"{self.base_url}/overlays/outro.html?message=Hope you enjoyed this session&type=java",
+                        "url": self._get_overlay_url("outro"),
                         "width": 1920,
                         "height": 1080,
+                        "fps": 30,
                         "shutdown_source_when_not_visible": True,
-                        "restart_when_active": True
+                        "restart_when_active": True,
+                        "reroute_audio": False
                     },
                     visible=True
                 ),
-                SceneSource(
-                    name="Background Camera",
-                    type="video_capture_device",
-                    settings={
-                        "device": "AUTO_DETECT_PRIMARY_CAMERA",
-                        "resolution": "1920x1080",
-                        "fps": 30
-                    },
-                    transform={
-                        "scale_x": 1.0,
-                        "scale_y": 1.0,
-                        "rotation": 0.0,
-                        "pos_x": 0,
-                        "pos_y": 0,
-                        "opacity": 0.2
-                    },
-                    visible=True
-                )
+                # NO CAMERA IN OUTRO - just overlay with thank you message
             ]
         )
     
-    def _create_dual_camera_scene(self) -> SceneConfig:
-        """Create dual camera scene for interviews"""
-        return SceneConfig(
-            name="👥 Dual Camera / Interview",
-            description="Two camera setup for guest interviews",
-            hotkey="F7",
-            sources=[
-                SceneSource(
-                    name="Host Camera",
-                    type="video_capture_device",
-                    settings={
-                        "device": "AUTO_DETECT_PRIMARY_CAMERA",
-                        "resolution": "1920x1080",
-                        "fps": 30
-                    },
-                    transform={
-                        "scale_x": 0.5,
-                        "scale_y": 0.667,
-                        "pos_x": 60,
-                        "pos_y": 60
-                    },
-                    visible=True
-                ),
-                SceneSource(
-                    name="Guest Camera",
-                    type="video_capture_device",
-                    settings={
-                        "device": "AUTO_DETECT_SECONDARY_CAMERA",
-                        "resolution": "1920x1080",
-                        "fps": 30
-                    },
-                    transform={
-                        "scale_x": 0.5,
-                        "scale_y": 0.667,
-                        "pos_x": 1000,
-                        "pos_y": 60
-                    },
-                    visible=True
-                ),
-                SceneSource(
-                    name="Guest Audio",
-                    type="audio_input_capture",
-                    settings={
-                        "device": "AUTO_DETECT_SECONDARY_AUDIO"
-                    },
-                    filters=[
-                        {
-                            "name": "Noise Suppression",
-                            "type": "noise_suppress_filter",
-                            "settings": {"method": "rnnoise"}
-                        },
-                        {
-                            "name": "Compressor", 
-                            "type": "compressor_filter",
-                            "settings": {"ratio": 10, "threshold": -18}
-                        }
-                    ],
-                    visible=True
-                ),
-                SceneSource(
-                    name="Dual Camera Overlay",
-                    type="browser_source",
-                    settings={
-                        "url": f"{self.base_url}/overlays/dual-cam.html?layout=balanced&host=Host Name&guest=Guest Name&platform=zoom&topics=true&recording=true",
-                        "width": 1920,
-                        "height": 1080,
-                        "shutdown_source_when_not_visible": True,
-                        "restart_when_active": True
-                    },
-                    visible=True
-                )
-            ]
-        )
     
     async def connect_obs(self) -> bool:
         """Connect to OBS WebSocket"""
@@ -443,12 +507,47 @@ class AutoSceneCreator:
             'audio_output_devices': []
         }
         
+        # Try to get devices from OBS directly if connected
+        if self.obs_client:
+            try:
+                # Create a temporary video source to query available devices
+                temp_source_name = "temp_device_detection"
+                try:
+                    self.obs_client.create_input(
+                        inputName=temp_source_name,
+                        inputKind="av_capture_input_v2" if self.platform == 'darwin' else 'v4l2_source' if self.platform == 'linux' else 'dshow_input',
+                        inputSettings={}
+                    )
+                    
+                    # Query available devices
+                    input_props = self.obs_client.get_input_properties_list_property_items(
+                        input_name=temp_source_name,
+                        property_name="device"
+                    )
+                    
+                    for item in input_props.property_items:
+                        if item['itemValue'] and item['itemValue'] != 'None':
+                            devices['video_devices'].append({
+                                'name': item['itemValue'],
+                                'type': 'obs_detected'
+                            })
+                            print(f"📹 Detected camera: {item['itemValue']}")
+                    
+                    # Clean up temp source
+                    self.obs_client.remove_input(temp_source_name)
+                    
+                except Exception as e:
+                    print(f"⚠️  OBS device detection failed: {e}")
+                    
+            except Exception as e:
+                print(f"⚠️  Could not query OBS devices: {e}")
+        
         # Run device detection script if available
         script_path = Path(__file__).parent / "device-manager.py"
         if script_path.exists():
             try:
                 result = subprocess.run([
-                    'python', str(script_path), '--scan'
+                    'python3', str(script_path), '--scan'
                 ], capture_output=True, text=True, timeout=30)
                 
                 if result.returncode == 0:
@@ -458,10 +557,11 @@ class AutoSceneCreator:
                     
                     for line in output_lines:
                         if 'cam link' in line.lower() or 'camera' in line.lower():
-                            devices['video_devices'].append({
-                                'name': line.strip(),
-                                'type': 'usb_camera'
-                            })
+                            if not any(dev['name'] == line.strip() for dev in devices['video_devices']):
+                                devices['video_devices'].append({
+                                    'name': line.strip(),
+                                    'type': 'usb_camera'
+                                })
                         elif 'audio' in line.lower() or 'microphone' in line.lower():
                             devices['audio_input_devices'].append({
                                 'name': line.strip(),
@@ -471,12 +571,18 @@ class AutoSceneCreator:
             except Exception as e:
                 print(f"⚠️  Device detection warning: {e}")
         
-        # Fallback device names
+        # Fallback device names for macOS
         if not devices['video_devices']:
-            devices['video_devices'] = [
-                {'name': 'Primary Camera', 'type': 'built_in'},
-                {'name': 'Secondary Camera', 'type': 'built_in'}
-            ]
+            if self.platform == 'darwin':
+                devices['video_devices'] = [
+                    {'name': 'FaceTime HD Camera', 'type': 'built_in'},
+                    {'name': 'FaceTime HD Camera (Built-in)', 'type': 'built_in'}
+                ]
+            else:
+                devices['video_devices'] = [
+                    {'name': 'Primary Camera', 'type': 'built_in'},
+                    {'name': 'Secondary Camera', 'type': 'built_in'}
+                ]
         
         if not devices['audio_input_devices']:
             devices['audio_input_devices'] = [
@@ -493,9 +599,24 @@ class AutoSceneCreator:
         """Replace device placeholders with actual device names"""
         resolved_settings = settings.copy()
         
+        # Get actual device names from OBS for more reliable detection
+        if self.obs_client:
+            try:
+                # Get available video devices
+                input_props = self.obs_client.get_input_properties_list_property_items(
+                    input_name="temp_video_source",
+                    property_name="device"
+                )
+                video_device_names = [item['itemValue'] for item in input_props.property_items if item['itemValue']]
+            except:
+                video_device_names = []
+        else:
+            video_device_names = []
+        
+        # Fallback device mapping
         device_mapping = {
-            'AUTO_DETECT_PRIMARY_CAMERA': self.detected_devices['video_devices'][0]['name'] if self.detected_devices['video_devices'] else 'Default Camera',
-            'AUTO_DETECT_SECONDARY_CAMERA': self.detected_devices['video_devices'][1]['name'] if len(self.detected_devices['video_devices']) > 1 else self.detected_devices['video_devices'][0]['name'] if self.detected_devices['video_devices'] else 'Default Camera',
+            'AUTO_DETECT_PRIMARY_CAMERA': video_device_names[0] if video_device_names else 'FaceTime HD Camera',
+            'AUTO_DETECT_SECONDARY_CAMERA': video_device_names[1] if len(video_device_names) > 1 else video_device_names[0] if video_device_names else 'FaceTime HD Camera',
             'AUTO_DETECT_PRIMARY_AUDIO': self.detected_devices['audio_input_devices'][0]['name'] if self.detected_devices['audio_input_devices'] else 'Default Microphone',
             'AUTO_DETECT_SECONDARY_AUDIO': self.detected_devices['audio_input_devices'][1]['name'] if len(self.detected_devices['audio_input_devices']) > 1 else self.detected_devices['audio_input_devices'][0]['name'] if self.detected_devices['audio_input_devices'] else 'Default Microphone'
         }
@@ -504,6 +625,15 @@ class AutoSceneCreator:
             if isinstance(value, str) and value in device_mapping:
                 resolved_settings[key] = device_mapping[value]
                 print(f"🔧 Resolved {value} → {resolved_settings[key]}")
+        
+        # For macOS video capture, ensure proper settings
+        if self.platform == 'darwin' and 'device' in resolved_settings:
+            # Remove incompatible settings for macOS
+            resolved_settings.pop('resolution', None)
+            resolved_settings.pop('fps', None)
+            # Add macOS-specific settings if needed
+            if 'device' in resolved_settings and resolved_settings['device']:
+                resolved_settings['device_id'] = resolved_settings['device']
         
         return resolved_settings
     
@@ -528,47 +658,119 @@ class AutoSceneCreator:
             # Create the scene
             self.obs_client.create_scene(scene_config.name)
             
-            # Add sources in reverse order (bottom to top)
-            for source in reversed(scene_config.sources):
+            # Add sources in order (first = bottom layer, last = top layer)
+            for source in scene_config.sources:
                 print(f"  📎 Adding source: {source.name} ({source.type})")
                 
-                # Resolve device placeholders
-                resolved_settings = self.resolve_device_placeholders(source.settings)
+                # Use settings directly since we're using default devices
+                resolved_settings = source.settings.copy()
                 
-                # Create the source
-                self.obs_client.create_input(
-                    inputName=source.name,
-                    inputKind=self._map_source_type(source.type),
-                    inputSettings=resolved_settings,
-                    sceneName=scene_config.name,
-                    sceneItemEnabled=source.visible
-                )
+                # For device sources, make sure we have valid settings
+                if source.type == 'video_capture_device':
+                    if 'device_id' in resolved_settings:
+                        if resolved_settings['device_id'] == 'default':
+                            # Remove device_id for default device selection
+                            resolved_settings.pop('device_id', None)
+                elif source.type == 'audio_input_capture':
+                    if 'device_id' in resolved_settings:
+                        if resolved_settings['device_id'] == 'default':
+                            resolved_settings.pop('device_id', None)
+                elif source.type == 'display_capture':
+                    if resolved_settings.get('method') == 'automatic':
+                        # Let OBS use automatic display selection
+                        resolved_settings = {}
+                
+                # Create unique source name to avoid conflicts
+                unique_source_name = f"{scene_config.name.replace('🎬', '').replace('👤', '').replace('💻', '').replace('🖥️', '').replace('📺', '').replace('🎯', '').replace('👥', '').strip().replace(' ', '_')}_{source.name.replace(' ', '_')}"
+                
+                # Handle scene references differently than regular sources
+                if source.type == 'scene_reference':
+                    try:
+                        # Add scene as a source to current scene
+                        scene_to_reference = resolved_settings.get('scene_name')
+                        if scene_to_reference:
+                            self.obs_client.create_scene_item(
+                                scene_name=scene_config.name,
+                                source_name=scene_to_reference
+                            )
+                            print(f"    ✅ Added scene reference: {scene_to_reference}")
+                            source_name_for_transform = scene_to_reference
+                        else:
+                            print(f"    ⚠️  No scene_name provided for scene reference: {source.name}")
+                            continue
+                    except Exception as source_error:
+                        print(f"    ⚠️  Failed to add scene reference {source.name}: {source_error}")
+                        continue
+                else:
+                    # Create regular source
+                    try:
+                        self.obs_client.create_input(
+                            inputName=unique_source_name,
+                            inputKind=self._map_source_type(source.type),
+                            inputSettings=resolved_settings,
+                            sceneName=scene_config.name,
+                            sceneItemEnabled=source.visible
+                        )
+                        print(f"    ✅ Created source: {unique_source_name}")
+                        source_name_for_transform = unique_source_name
+                    except Exception as source_error:
+                        print(f"    ⚠️  Failed to create source {unique_source_name}: {source_error}")
+                        continue
                 
                 # Apply transform if specified
                 if source.transform:
-                    transform_info = {
-                        'scene_name': scene_config.name,
-                        'source_name': source.name,
-                        'transform': source.transform
-                    }
-                    self.obs_client.set_scene_item_transform(**transform_info)
+                    try:
+                        # Get scene item ID for transform
+                        scene_items = self.obs_client.get_scene_item_list(scene_config.name)
+                        for item in scene_items.scene_items:
+                            if item['sourceName'] == source_name_for_transform:
+                                self.obs_client.set_scene_item_transform(
+                                    scene_name=scene_config.name,
+                                    item_id=item['sceneItemId'],
+                                    transform=source.transform
+                                )
+                                break
+                    except Exception as e:
+                        print(f"    ⚠️  Could not set transform for {unique_source_name}: {e}")
                 
-                # Set visibility
-                self.obs_client.set_scene_item_enabled(
-                    scene_name=scene_config.name,
-                    source_name=source.name,
-                    enabled=source.visible
-                )
+                # Set visibility - need to get scene item ID first
+                if source.visible != True:  # Only change if not default
+                    try:
+                        scene_items = self.obs_client.get_scene_item_list(scene_config.name)
+                        for item in scene_items.scene_items:
+                            if item['sourceName'] == source_name_for_transform:
+                                self.obs_client.set_scene_item_enabled(
+                                    scene_name=scene_config.name,
+                                    item_id=item['sceneItemId'],
+                                    enabled=source.visible
+                                )
+                                break
+                    except Exception as e:
+                        print(f"    ⚠️  Could not set visibility for {unique_source_name}: {e}")
                 
                 # Apply filters
                 if source.filters:
                     for filter_config in source.filters:
-                        self.obs_client.create_source_filter(
-                            source_name=source.name,
-                            filter_name=filter_config['name'],
-                            filter_kind=filter_config['type'],
-                            filter_settings=filter_config.get('settings', {})
-                        )
+                        try:
+                            # Check if filter already exists
+                            existing_filters = self.obs_client.get_source_filter_list(unique_source_name)
+                            filter_exists = any(f['filterName'] == filter_config['name'] for f in existing_filters.filters)
+                            
+                            if not filter_exists:
+                                self.obs_client.create_source_filter(
+                                    source_name=unique_source_name,
+                                    filter_name=filter_config['name'],
+                                    filter_kind=filter_config['type'],
+                                    filter_settings=filter_config.get('settings', {})
+                                )
+                                print(f"    ✅ Added filter: {filter_config['name']}")
+                            else:
+                                print(f"    ⚠️  Filter already exists: {filter_config['name']}")
+                        except Exception as e:
+                            print(f"    ⚠️  Could not add filter {filter_config['name']}: {e}")
+            
+            # Fix layer ordering - move overlays to top
+            self._fix_source_ordering(scene_config)
             
             print(f"✅ Scene '{scene_config.name}' created successfully")
             return True
@@ -581,11 +783,48 @@ class AutoSceneCreator:
         """Map our source types to OBS source kinds"""
         mapping = {
             'browser_source': 'browser_source',
-            'video_capture_device': 'v4l2_source' if self.platform == 'linux' else 'dshow_input' if self.platform == 'windows' else 'av_capture_input',
+            'video_capture_device': 'v4l2_source' if self.platform == 'linux' else 'dshow_input' if self.platform == 'windows' else 'av_capture_input_v2',
             'display_capture': 'xshm_input' if self.platform == 'linux' else 'monitor_capture' if self.platform == 'windows' else 'display_capture',
-            'audio_input_capture': 'pulse_input_capture' if self.platform == 'linux' else 'wasapi_input_capture' if self.platform == 'windows' else 'coreaudio_input_capture'
+            'audio_input_capture': 'pulse_input_capture' if self.platform == 'linux' else 'wasapi_input_capture' if self.platform == 'windows' else 'coreaudio_input_capture',
+            'text_gdiplus': 'text_gdiplus_v2' if self.platform == 'windows' else 'text_ft2_source_v2'  # Text sources
         }
+            
         return mapping.get(source_type, source_type)
+    
+    def _fix_source_ordering(self, scene_config: SceneConfig):
+        """Ensure overlays are on top by reordering sources"""
+        try:
+            # Get current scene items
+            scene_items = self.obs_client.get_scene_item_list(scene_config.name)
+            items = scene_items.scene_items
+            
+            # Find overlay sources (browser_source types) and move them to top
+            overlay_items = []
+            for item in items:
+                source_name = item['sourceName']
+                # Check if this is an overlay (browser source)
+                if any('overlay' in source.name.lower() or source.type == 'browser_source' 
+                       for source in scene_config.sources if source.name.replace(' ', '_').replace(':', '_').replace('(', '_').replace(')', '_') in source_name):
+                    overlay_items.append(item)
+            
+            # Move overlay items to top (highest index means top layer)
+            for i, overlay_item in enumerate(overlay_items):
+                try:
+                    # Get current scene item count to determine top index
+                    current_items = self.obs_client.get_scene_item_list(scene_config.name)
+                    top_index = len(current_items.scene_items) - 1  # Highest index is top layer
+                    
+                    self.obs_client.set_scene_item_index(
+                        scene_name=scene_config.name,
+                        item_id=overlay_item['sceneItemId'],
+                        item_index=top_index  # Move to highest index (top layer)
+                    )
+                    print(f"    ✅ Moved {overlay_item['sourceName']} to top layer (index {top_index})")
+                except Exception as e:
+                    print(f"    ⚠️  Could not reorder overlay {overlay_item['sourceName']}: {e}")
+                    
+        except Exception as e:
+            print(f"    ⚠️  Could not fix source ordering: {e}")
     
     async def import_scene_collection_live(self, json_path: Path) -> bool:
         """Import scene collection from JSON file into live OBS"""
@@ -656,13 +895,80 @@ class AutoSceneCreator:
             print(f"❌ Failed to import scene collection: {e}")
             return False
     
+    def _cleanup_all_scenes(self):
+        """Remove all existing scenes and sources to start fresh"""
+        try:
+            print("\n🧹 Cleaning up existing scenes and sources...")
+            
+            # Get all scenes
+            scene_list = self.obs_client.get_scene_list()
+            scenes_to_remove = []
+            
+            for scene in scene_list.scenes:
+                scene_name = scene['sceneName']
+                # Don't remove the default scene if it's the only one
+                if len(scene_list.scenes) > 1 or scene_name not in ['Scene', 'Default']:
+                    scenes_to_remove.append(scene_name)
+            
+            # Remove scenes (this also removes their sources)
+            for scene_name in scenes_to_remove:
+                try:
+                    self.obs_client.remove_scene(scene_name)
+                    print(f"  🗑️  Removed scene: {scene_name}")
+                except Exception as e:
+                    print(f"  ⚠️  Could not remove scene {scene_name}: {e}")
+            
+            # Wait a moment for OBS to process the removals
+            import time
+            time.sleep(0.5)
+            
+            # Get all global sources and remove them - be more thorough
+            try:
+                input_list = self.obs_client.get_input_list()
+                sources_to_remove = []
+                for input_source in input_list.inputs:
+                    source_name = input_source['inputName']
+                    # Collect all sources first
+                    sources_to_remove.append(source_name)
+                
+                # Remove all sources
+                for source_name in sources_to_remove:
+                    try:
+                        self.obs_client.remove_input(source_name)
+                        print(f"  🗑️  Removed global source: {source_name}")
+                    except Exception as e:
+                        print(f"  ⚠️  Could not remove source {source_name}: {e}")
+                        
+                # Double-check - try to remove any remaining camera sources specifically
+                camera_source_patterns = [
+                    "📹_Camera_Sources_Main_Camera",
+                    "Camera_Sources_Main_Camera", 
+                    "Main_Camera",
+                    "📹_Camera_Sources_Main_Camera"
+                ]
+                
+                for pattern in camera_source_patterns:
+                    try:
+                        self.obs_client.remove_input(pattern)
+                        print(f"  🗑️  Cleaned up camera source: {pattern}")
+                    except Exception:
+                        pass  # Expected to fail if source doesn't exist
+                        
+            except Exception as e:
+                print(f"  ⚠️  Could not cleanup global sources: {e}")
+            
+            print("✅ Cleanup completed")
+            
+        except Exception as e:
+            print(f"⚠️  Cleanup warning: {e}")
+    
     async def create_all_scenes_live(self) -> bool:
         """Create all scenes in live OBS"""
         if not await self.connect_obs():
             return False
         
-        # Detect devices first
-        self.detect_devices()
+        # Clean up all existing scenes and sources first
+        self._cleanup_all_scenes()
         
         success_count = 0
         for scene_config in self.scene_templates:
@@ -681,9 +987,6 @@ class AutoSceneCreator:
                 await asyncio.sleep(0.5)
         
         print(f"\n🎉 Created {success_count}/{len(self.scene_templates)} scenes successfully")
-        
-        # Set up audio sources
-        await self._setup_audio_sources()
         
         # Configure global settings
         await self._configure_global_settings()
@@ -747,13 +1050,20 @@ class AutoSceneCreator:
             # Apply filters to microphone source
             for filter_config in audio_filters:
                 try:
-                    self.obs_client.create_source_filter(
-                        source_name=primary_audio,
-                        filter_name=filter_config['name'],
-                        filter_kind=filter_config['type'],
-                        filter_settings=filter_config['settings']
-                    )
-                    print(f"  ✅ Added {filter_config['name']} filter")
+                    # Check if filter already exists
+                    existing_filters = self.obs_client.get_source_filter_list(primary_audio)
+                    filter_exists = any(f['filterName'] == filter_config['name'] for f in existing_filters.filters)
+                    
+                    if not filter_exists:
+                        self.obs_client.create_source_filter(
+                            source_name=primary_audio,
+                            filter_name=filter_config['name'],
+                            filter_kind=filter_config['type'],
+                            filter_settings=filter_config['settings']
+                        )
+                        print(f"  ✅ Added {filter_config['name']} filter")
+                    else:
+                        print(f"  ⚠️  Filter already exists: {filter_config['name']}")
                 except Exception as e:
                     print(f"  ⚠️  Could not add {filter_config['name']}: {e}")
             
@@ -975,7 +1285,7 @@ class AutoSceneCreator:
                     name="Terminal Screen",
                     type="display_capture",
                     settings={"method": "auto"},
-                    transform={"scale_x": 1.0, "scale_y": 1.0},
+                    transform={"scaleX": 1.0, "scaleY": 1.0},
                     visible=True
                 ),
                 SceneSource(
@@ -1105,6 +1415,12 @@ Examples:
         help='Import from existing OBS scene collection JSON file'
     )
     
+    parser.add_argument(
+        '--offline',
+        action='store_true',
+        help='Use local overlay files instead of GitHub Pages URLs'
+    )
+    
     args = parser.parse_args()
     
     if not args.create_live and not args.generate_json and not args.import_json:
@@ -1116,7 +1432,8 @@ Examples:
         github_user=args.github_user,
         obs_host=args.obs_host,
         obs_port=args.obs_port,
-        obs_password=args.obs_password
+        obs_password=args.obs_password,
+        offline_mode=args.offline
     )
     
     # Apply template modifications

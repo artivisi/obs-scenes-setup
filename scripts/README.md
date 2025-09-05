@@ -29,14 +29,14 @@ python scripts/setup/usb-hub-validator.py
 
 ### 2. OBS Configuration
 ```bash
-# Detect cameras automatically
-python scripts/obs/detect-cameras.py --obs-host 192.168.100.11 --obs-password YOUR_PASSWORD
+# Create scenes with GitHub Pages overlays (production)
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 
-# Import scene collection via API
-python scripts/obs/auto-scene-creator.py --import-json scene-collections/programming-tutorial-configured.json --obs-host 192.168.100.11 --obs-password YOUR_PASSWORD
+# Or create scenes with local overlays (development)
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline
 
-# Alternative: Create scenes from templates
-python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --obs-host 192.168.100.11 --obs-password YOUR_PASSWORD
+# Generate scene collection JSON for manual import
+python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json [--offline]
 ```
 
 ### 3. Development Tools
@@ -63,10 +63,7 @@ python scripts/tools/convert-docs-to-html.py
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
-| `detect-cameras.py` | **NEW** - Detect and add cameras to OBS scenes | `python scripts/obs/detect-cameras.py --obs-host HOST --obs-password PASS` |
-| `auto-scene-creator.py` | Create/import OBS scenes via WebSocket API | `python scripts/obs/auto-scene-creator.py --import-json FILE` |
-| `device-manager.py` | Cross-platform device detection | Used by other scripts |
-| `import-scenes.py` | Legacy scene import utility | Use auto-scene-creator.py instead |
+| `auto-scene-creator.py` | Create OBS scenes via WebSocket API (supports --offline mode) | `python scripts/obs/auto-scene-creator.py --create-live [--offline]` |
 
 ### Lua Scripts (`scripts/obs/lua-scripts/`)
 
@@ -89,26 +86,20 @@ python scripts/tools/convert-docs-to-html.py
 # 1. Setup system
 python scripts/setup/install-dependencies.py
 
-# 2. Import scenes (easiest method)
-python scripts/obs/auto-scene-creator.py --import-json scene-collections/programming-tutorial-configured.json --obs-host 192.168.100.11 --obs-password YOUR_PASSWORD
+# 2. Create scenes automatically
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 
-# 3. Add cameras automatically
-python scripts/obs/detect-cameras.py --obs-host 192.168.100.11 --obs-password YOUR_PASSWORD
-
-# 4. Test everything
-python scripts/tools/test-complete-setup.py
+# 3. Test everything
+curl -I https://artivisi.github.io/obs-scenes-setup/overlays/intro.html
 ```
 
 ### Development/Testing
 ```bash
-# Full system test
-python scripts/tools/test-complete-setup.py
+# Use local overlays for development
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline
 
-# Camera detection only
-python scripts/obs/detect-cameras.py --detect-only
-
-# Validate hardware setup
-python scripts/setup/usb-hub-validator.py
+# Generate documentation
+python scripts/tools/convert-docs-to-html.py
 ```
 
 ## 🔧 Configuration
@@ -118,6 +109,7 @@ Most scripts support these common options:
 - `--obs-port`: OBS WebSocket port (default: 4455)  
 - `--obs-password`: OBS WebSocket password
 - `--github-user`: GitHub username for overlay URLs (default: artivisi)
+- `--offline`: Use local overlay files instead of GitHub Pages URLs
 
 ## 📚 Documentation
 

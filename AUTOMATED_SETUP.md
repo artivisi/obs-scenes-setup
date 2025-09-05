@@ -20,11 +20,14 @@ python scripts/setup/install-dependencies.py
 
 ### 3. Create All Scenes Automatically
 ```bash
-# Create scenes directly in OBS (RECOMMENDED)
+# Production mode with GitHub Pages overlays (RECOMMENDED)
 python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 
-# Or generate JSON file for manual import
-python scripts/obs/auto-scene-creator.py --generate-json --github-user artivisi
+# Development mode with local overlay files
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline
+
+# Generate JSON file for manual import
+python scripts/obs/auto-scene-creator.py --generate-json --github-user artivisi [--offline]
 ```
 
 **That's it! 🎉** All 7 scenes with sources, overlays, and configurations are created automatically.
@@ -72,8 +75,11 @@ python scripts/obs/auto-scene-creator.py --create-live --template interview
 
 ### Generate JSON for Manual Import
 ```bash
-# Create scene collection file
+# Create scene collection file with GitHub Pages overlays
 python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json
+
+# Or with local overlays for development
+python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json --offline
 
 # Then in OBS: Scene Collection → Import → Select my-scenes.json
 ```
@@ -130,10 +136,13 @@ python scripts/obs/usb-hub-validator.py --validate
 ```
 
 ### "GitHub Pages URLs not working"
-**Solution**: Verify deployment
+**Solution**: Use offline mode for development or verify deployment
 ```bash
-# Test overlay accessibility
-python scripts/tools/test-complete-setup.py --overlays-only --github-user artivisi
+# Use local overlays instead
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline
+
+# Or test overlay accessibility
+curl -I https://artivisi.github.io/obs-scenes-setup/overlays/intro.html
 ```
 
 ### "Scenes created but sources missing"
@@ -181,7 +190,7 @@ Ctrl+M - Mute Microphone
 | Task | Manual Process | Automated Process |
 |------|---------------|-------------------|
 | **Scene Creation** | Click 7 times, name each | 1 command |
-| **Browser Sources** | 7+ sources, copy URLs manually | Auto-configured URLs |
+| **Browser Sources** | 7+ sources, copy URLs manually | Auto-configured URLs (online/offline) |
 | **Camera Setup** | Find device names, configure each | Auto-detected and assigned |
 | **Audio Filters** | Add 3+ filters per source manually | Professional filters auto-applied |
 | **Positioning** | Click and drag each source | Calculated positions |
