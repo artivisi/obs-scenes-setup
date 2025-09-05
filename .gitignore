@@ -1,5 +1,5 @@
 # Generated documentation (created by GitHub Actions)
-docs/guides/*.html
+# Note: HTML files are committed by GitHub Actions for GitHub Pages
 docs/guides/*.md
 
 # Python cache

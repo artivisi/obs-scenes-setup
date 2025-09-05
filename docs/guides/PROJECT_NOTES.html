@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Architecture - OBS Infrastructure-as-Code</title>
+    <meta name="description" content="Technical deep-dive into the Infrastructure-as-Code approach.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+        }
+        
+        .nav-bar {
+            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-brand {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .doc-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .doc-title {
+            color: #2e3192;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .doc-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .breadcrumb {
+            font-size: 0.9rem;
+            color: #58c034;
+            margin-bottom: 1rem;
+        }
+        
+        .breadcrumb a {
+            color: #58c034;
+            text-decoration: none;
+        }
+        
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .content h1 {
+            color: #2e3192;
+            font-size: 2rem;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #58c034;
+        }
+        
+        .content h2 {
+            color: #2e3192;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        .content h3 {
+            color: #2e3192;
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        .content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        
+        .content ul, .content ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+        
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .content code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+        
+        .content pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .content pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        
+        .content blockquote {
+            border-left: 4px solid #58c034;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .content th, .content td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .content th {
+            background: #2e3192;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .content tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .warning::before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .info::before {
+            content: "💡 ";
+            font-weight: bold;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .success::before {
+            content: "✅ ";
+            font-weight: bold;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .toc h3 {
+            color: #2e3192;
+            margin-bottom: 1rem;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc a {
+            color: #58c034;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #58c034;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: #45a029;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .doc-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-brand">🎬 OBS Infrastructure-as-Code</a>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="AUTOMATED_SETUP.html">Automation</a>
+                <a href="OBS_SETUP_GUIDE.html">Manual Setup</a>
+                <a href="MACROPAD_DESIGN.html">Macropad</a>
+                <a href="../overlays/">Overlays</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="doc-header">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <a href="#">Architecture</a>
+            </div>
+            <h1 class="doc-title">Project Architecture</h1>
+            <p class="doc-subtitle">Technical deep-dive into the Infrastructure-as-Code approach.</p>
+        </div>
+
+        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#project-context-and-requirements">Project Context and Requirements</a></li><li style="margin-left: 1.5rem;"><a href="#user-background">User Background</a></li><li style="margin-left: 1.5rem;"><a href="#key-requirements-discussed">Key Requirements Discussed</a></li><li style="margin-left: 3.0rem;"><a href="#scene-layouts-needed">Scene Layouts Needed</a></li><li style="margin-left: 3.0rem;"><a href="#control-philosophy">Control Philosophy</a></li><li style="margin-left: 3.0rem;"><a href="#technical-preferences">Technical Preferences</a></li><li style="margin-left: 3.0rem;"><a href="#hardware-context">Hardware Context</a></li><li style="margin-left: 3.0rem;"><a href="#auto-switching-features-optional">Auto-Switching Features (Optional)</a></li><li style="margin-left: 3.0rem;"><a href="#scene-switching-logic">Scene Switching Logic</a></li><li style="margin-left: 3.0rem;"><a href="#control-methods-priority">Control Methods Priority</a></li><li style="margin-left: 3.0rem;"><a href="#macropad-layout-concept-multi-layer-with-visual-reference">Macropad Layout Concept (Multi-Layer with Visual Reference)</a></li><li style="margin-left: 3.0rem;"><a href="#technical-evolution-context">Technical Evolution Context</a></li><li style="margin-left: 1.5rem;"><a href="#technical-evolution-context">Technical Evolution Context</a></li><li style="margin-left: 3.0rem;"><a href="#file-organization">File Organization</a></li><li style="margin-left: 1.5rem;"><a href="#implementation-priority">Implementation Priority</a></li><li style="margin-left: 1.5rem;"><a href="#key-technical-notes">Key Technical Notes</a></li><li style="margin-left: 1.5rem;"><a href="#hardware-setup-details">Hardware Setup Details</a></li><li style="margin-left: 3.0rem;"><a href="#camera-nikon-zfc--cam-link-4k">Camera: Nikon ZFC + Cam Link 4K</a></li><li style="margin-left: 3.0rem;"><a href="#second-camera-setup-two-person-scenarios">Second Camera Setup (Two-Person Scenarios)</a></li><li style="margin-left: 3.0rem;"><a href="#microphone-hollyland-lark-m2">Microphone: Hollyland Lark M2</a></li><li style="margin-left: 3.0rem;"><a href="#audio-configuration-for-remote-scenarios">Audio Configuration for Remote Scenarios</a></li><li style="margin-left: 3.0rem;"><a href="#laptops-dual-setup">Laptops (Dual Setup)</a></li><li style="margin-left: 3.0rem;"><a href="#macropad-3x3--1-potentiometer-with-click">Macropad: 3x3 + 1 Potentiometer with Click</a></li><li style="margin-left: 1.5rem;"><a href="#device-management-strategy">Device Management Strategy</a></li><li style="margin-left: 3.0rem;"><a href="#usb-connection-best-practices">USB Connection Best Practices</a></li><li style="margin-left: 3.0rem;"><a href="#cross-platform-compatibility">Cross-Platform Compatibility</a></li><li style="margin-left: 3.0rem;"><a href="#device-detection-requirements">Device Detection Requirements</a></li><li style="margin-left: 1.5rem;"><a href="#budget-and-constraints">Budget and Constraints</a></li></ul></div>
+
+        <div class="content">
+            <h1>Project Context and Requirements</h1>
+<h2>User Background</h2>
+<ul>
+<li>Experienced OBS user (used PNG overlays in the past)</li>
+<li>Creating programming tutorials (recording + possible streaming/video calls)</li>
+<li>Wants modern, maintainable, code-based approach</li>
+<li>Budget-conscious (avoiding Stream Deck, using 3x3 macropad)</li>
+</ul>
+<h2>Key Requirements Discussed</h2>
+<h3>Scene Layouts Needed</h3>
+<ol>
+<li><strong>Talking Head</strong> - Centered presenter, minimal overlays</li>
+<li><strong>Code + Webcam</strong> - Split layout for programming demos</li>
+<li><strong>Screen Only</strong> - Full screen capture for detailed code work</li>
+<li><strong>Intro Scene</strong> - Professional opening with branding</li>
+<li><strong>Outro Scene</strong> - Closing sequence</li>
+</ul>
+<h3>Control Philosophy</h3>
+<ul>
+<li><strong>Manual control is primary</strong> - User wants full control</li>
+<li><strong>Auto-switching is optional</strong> - Helpful suggestions, not forced changes</li>
+<li><strong>Manual override always wins</strong> - If user switches manually, stay in manual mode</li>
+<li><strong>Hybrid mode</strong> - Show suggestions but don't auto-switch</li>
+</ul>
+<h3>Technical Preferences</h3>
+<ul>
+<li><strong>Infrastructure as Code</strong> - Everything version controlled</li>
+<li><strong>GitHub Pages hosting</strong> - For overlay files (user confirmed no security concerns)</li>
+<li><strong>No expensive hardware</strong> - 3x3 macropad instead of Stream Deck</li>
+<li><strong>Modern overlay approach</strong> - HTML/CSS/JS instead of PNG with cutouts</li>
+</ul>
+<h3>Hardware Context</h3>
+<ul>
+<li><strong>3x3 Macropad</strong> with potentiometers</li>
+</ul>
+<p>  - 9 buttons for scene switching and controls</p>
+<p>  - 3 potentiometers for volume/opacity/etc</p>
+<p>  - Uses Vial firmware</p>
+<ul>
+<li><strong>Android device</strong> for secondary remote control</li>
+<li><strong>No Stream Deck</strong> (too expensive)</li>
+</ul>
+<h3>Auto-Switching Features (Optional)</h3>
+<ul>
+<li><strong>Application-based</strong> - Switch scenes based on active window (VS Code, browser, terminal)</li>
+<li><strong>Audio-level based</strong> - Switch based on speaking vs silence</li>
+<li><strong>Timer-based</strong> - Auto intro/outro sequences</li>
+<li><strong>All with manual override</strong> - Stop auto-switching when user takes manual control</li>
+</ul>
+<h3>Scene Switching Logic</h3>
+<pre><code>Manual Mode: Only respond to manual inputs
+<p>Auto Mode: Automatic switching based on triggers</p>
+<p>Hybrid Mode: Show suggestions but don't auto-switch</code></pre></p>
+<h3>Control Methods Priority</h3>
+<ol>
+<li><strong>OBS Hotkeys</strong> - Always work (F1-F5 for scenes)</li>
+<li><strong>Macropad</strong> - Physical buttons for main controls</li>
+<li><strong>Android Remote</strong> - Web interface or Touch Portal app</li>
+<li><strong>Emergency Manual Override</strong> - Force return to manual control</li>
+</ul>
+<h3>Macropad Layout Concept (Multi-Layer with Visual Reference)</h3>
+<p>#### Layer 0 (Base) - Core Controls</p>
+<pre><code>[Record]   [Stop]     [Mute]
+<p>[Prev]     [Next]     [Layer+]</p>
+<p>[Vol-]     [Vol+]     [Emergency]</code></pre></p>
+<p>#### Layer 1 - Solo Programming Mode</p>
+<pre><code>[Intro]    [Talk]     [Code]
+<p>[Split]    [Screen]   [Focus]</p>
+<p>[Cam+]     [Cam-]     [Auto]</code></pre></p>
+<p>#### Layer 2 - Discussion/Interview Mode</p>
+<pre><code>[Intro]    [Dual]     [Focus A]
+<p>[Focus B]  [A+Screen] [B+Screen]</p>
+<p>[Shared]   [Podcast]  [Balance]</code></pre></p>
+<p>#### Layer 3 - Zoom/Remote Mode</p>
+<pre><code>[Intro]    [Present]  [Moderate]
+<p>[Zoom]     [Grid]     [Screen]</p>
+<p>[Local]    [Remote]   [Share]</code></pre></p>
+<p>#### Visual Reference System</p>
+<ul>
+<li><strong>OBS overlay</strong> showing current layer and button functions</li>
+<li><strong>Color-coded functions</strong> for quick recognition</li>
+<li><strong>Always visible</strong> in OBS preview (not recorded)</li>
+<li><strong>Auto-updates</strong> when layer changes</li>
+</ul>
+<h3>Technical Evolution Context</h3>
+<h2>Technical Evolution Context</h2>
+<ul>
+<li><strong>Modern approach</strong>: HTML/CSS browser sources with dynamic content</li>
+<li><strong>Benefits</strong>: Responsive design, animations, real-time updates, version control</li>
+</ul>
+<h3>File Organization</h3>
+<ul>
+<li><strong>docs/</strong> folder for GitHub Pages</li>
+<li><strong>scene-collections/</strong> for OBS JSON exports</li>
+<li><strong>scripts/</strong> for Lua automation and Python tools</li>
+<li><strong>All version controlled</strong> with git</li>
+</ul>
+<h2>Implementation Priority</h2>
+<ol>
+<li>Start with basic HTML/CSS overlays</li>
+<li>Create scene collection configurations</li>
+<li>Build manual control system</li>
+<li>Add optional auto-switching features</li>
+<li>Integrate macropad and mobile remote</li>
+<li>Create setup/import automation</li>
+</ul>
+<h2>Key Technical Notes</h2>
+<ul>
+<li>Use CSS Grid/Flexbox for responsive layouts</li>
+<li>Browser sources for all overlays</li>
+<li>Local file:// URLs work but GitHub Pages preferred</li>
+<li>OBS WebSocket for advanced remote control</li>
+<li>Vial firmware for macropad configuration</li>
+<li>Touch Portal or custom web interface for mobile</li>
+</ul>
+<h2>Hardware Setup Details</h2>
+<h3>Camera: Nikon ZFC + Cam Link 4K</h3>
+<ul>
+<li><strong>Connection</strong>: USB capture card to laptop</li>
+<li><strong>Device Name Pattern</strong>: "<em>Cam Link</em>" or "Elgato Cam Link 4K"</li>
+<li><strong>Resolution</strong>: 1920x1080 or 1080x1080 (square for better framing)</li>
+<li><strong>Format</strong>: MJPEG or YUV422 (auto-detect)</li>
+</ul>
+<h3>Second Camera Setup (Two-Person Scenarios)</h3>
+<ul>
+<li><strong>Camera</strong>: Another mirrorless camera (same model recommended for consistency)</li>
+<li><strong>Capture</strong>: HDMI to USB capture device (second Cam Link 4K or similar)</li>
+<li><strong>Connection</strong>: Different USB port for reliable device detection</li>
+<li><strong>Device Pattern</strong>: Will appear as second "<em>Cam Link</em>" device</li>
+</ul>
+<h3>Microphone: Hollyland Lark M2</h3>
+<ul>
+<li><strong>Connection</strong>: USB soundcard to laptop</li>
+<li><strong>Device Name Pattern</strong>: "<em>USB Audio</em>" or "Hollyland Lark M2"</li>
+<li><strong>Sample Rate</strong>: 48kHz (video production standard)</li>
+<li><strong>Channels</strong>: Mono or Stereo depending on receiver setup</li>
+</ul>
+<h3>Audio Configuration for Remote Scenarios</h3>
+<ul>
+<li><strong>Mix-Minus Setup</strong>: Remote speaker audio from Zoom, local speaker from USB audio</li>
+<li><strong>Zoom Audio</strong>: Dedicated audio source for remote participants</li>
+<li><strong>Local Audio</strong>: USB audio interface for local speaker(s)</li>
+<li><strong>Audio Separation</strong>: Prevents echo and feedback in remote interviews</li>
+</ul>
+<h3>Laptops (Dual Setup)</h3>
+<ul>
+<li><strong>Primary</strong>: MacBook Pro M1 (macOS)</li>
+<li><strong>Secondary</strong>: Dell Latitude 2-in-1 (Windows)</li>
+<li><strong>Challenge</strong>: USB device addresses change between connections and platforms</li>
+</ul>
+<h3>Macropad: 3x3 + 1 Potentiometer with Click</h3>
+<ul>
+<li><strong>Layout</strong>: 9 buttons for scene switching and controls</li>
+<li><strong>Potentiometer</strong>: Rotary encoder with push/click function</li>
+</ul>
+<p>  - <strong>Rotation</strong>: Volume control (headphone/monitor/source switching)</p>
+<p>  - <strong>Click</strong>: Toggle function (mute/unmute, mode switch, or layer change)</p>
+<ul>
+<li><strong>Firmware</strong>: Vial-compatible (GUI-based configuration)</li>
+<li><strong>Connection</strong>: USB to laptop</li>
+</ul>
+<h2>Device Management Strategy</h2>
+<h3>USB Connection Best Practices</h3>
+<ul>
+<li><strong>Consistent USB ports</strong>: Always use same ports for same devices</li>
+<li><strong>Connection order</strong>: Camera first, then microphone</li>
+<li><strong>Device naming</strong>: Use device name patterns, not USB paths</li>
+<li><strong>Fallback sources</strong>: Built-in camera/mic as backup</li>
+</ul>
+<h3>Cross-Platform Compatibility</h3>
+<ul>
+<li><strong>Platform-specific profiles</strong>: macbook-recording.ini, dell-recording.ini</li>
+<li><strong>Device detection scripts</strong>: Auto-find Cam Link and USB audio</li>
+<li><strong>Shared scene layouts</strong>: Same visual setup, different device configs</li>
+<li><strong>Automatic source switching</strong>: Detect available devices and configure</li>
+</ul>
+<h3>Device Detection Requirements</h3>
+<ul>
+<li><strong>Camera detection</strong>: Find "Cam Link" pattern in video devices</li>
+<li><strong>Audio detection</strong>: Find USB audio device pattern</li>
+<li><strong>Platform detection</strong>: macOS vs Windows device enumeration</li>
+<li><strong>Error handling</strong>: Graceful fallback to built-in devices</li>
+<li><strong>Status reporting</strong>: Show which devices are connected/missing</li>
+</ul>
+<h2>Budget and Constraints</h2>
+<ul>
+<li>Avoid expensive hardware (no Stream Deck)</li>
+<li>Use free tools and services (GitHub Pages, OBS, etc)</li>
+<li>Maximize flexibility and reusability</li>
+<li>Focus on maintainable, shareable solutions</li>
+<li>Handle device connectivity robustly across platforms</li>
+</ul>
+        </div>
+    </div>
+
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top">
+        ↑
+    </button>
+
+    <script>
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            const button = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

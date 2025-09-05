@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automated OBS Setup - OBS Infrastructure-as-Code</title>
+    <meta name="description" content="Skip the manual clicking! Complete automation guide for OBS scene creation.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+        }
+        
+        .nav-bar {
+            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-brand {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .doc-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .doc-title {
+            color: #2e3192;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .doc-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .breadcrumb {
+            font-size: 0.9rem;
+            color: #58c034;
+            margin-bottom: 1rem;
+        }
+        
+        .breadcrumb a {
+            color: #58c034;
+            text-decoration: none;
+        }
+        
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .content h1 {
+            color: #2e3192;
+            font-size: 2rem;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #58c034;
+        }
+        
+        .content h2 {
+            color: #2e3192;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        .content h3 {
+            color: #2e3192;
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        .content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        
+        .content ul, .content ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+        
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .content code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+        
+        .content pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .content pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        
+        .content blockquote {
+            border-left: 4px solid #58c034;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .content th, .content td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .content th {
+            background: #2e3192;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .content tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .warning::before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .info::before {
+            content: "💡 ";
+            font-weight: bold;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .success::before {
+            content: "✅ ";
+            font-weight: bold;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .toc h3 {
+            color: #2e3192;
+            margin-bottom: 1rem;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc a {
+            color: #58c034;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #58c034;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: #45a029;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .doc-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-brand">🎬 OBS Infrastructure-as-Code</a>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="AUTOMATED_SETUP.html">Automation</a>
+                <a href="OBS_SETUP_GUIDE.html">Manual Setup</a>
+                <a href="MACROPAD_DESIGN.html">Macropad</a>
+                <a href="../overlays/">Overlays</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="doc-header">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <a href="#">Automated Setup</a>
+            </div>
+            <h1 class="doc-title">Automated OBS Setup</h1>
+            <p class="doc-subtitle">Skip the manual clicking! Complete automation guide for OBS scene creation.</p>
+        </div>
+
+        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#automated-obs-scene-creation-guide">Automated OBS Scene Creation Guide</a></li><li style="margin-left: 1.5rem;"><a href="#quick-start-recommended">Quick Start (Recommended)</a></li><li style="margin-left: 3.0rem;"><a href="#1-install-dependencies">1. Install Dependencies</a></li><li style=""><a href="#install-required-python-libraries">Install required Python libraries</a></li><li style="margin-left: 3.0rem;"><a href="#2-enable-obs-websocket-server">2. Enable OBS WebSocket Server</a></li><li style="margin-left: 3.0rem;"><a href="#3-create-all-scenes-automatically">3. Create All Scenes Automatically</a></li><li style=""><a href="#create-scenes-directly-in-obs-recommended">Create scenes directly in OBS (RECOMMENDED)</a></li><li style=""><a href="#or-generate-json-file-for-manual-import">Or generate JSON file for manual import</a></li><li style="margin-left: 1.5rem;"><a href="#what-gets-created">What Gets Created</a></li><li style="margin-left: 3.0rem;"><a href="#-7-complete-scenes">📺 7 Complete Scenes</a></li><li style="margin-left: 3.0rem;"><a href="#-auto-configured-sources">🎥 Auto-Configured Sources</a></li><li style="margin-left: 3.0rem;"><a href="#-professional-audio-setup">🎛️ Professional Audio Setup</a></li><li style="margin-left: 1.5rem;"><a href="#advanced-usage">Advanced Usage</a></li><li style="margin-left: 3.0rem;"><a href="#content-specific-templates">Content-Specific Templates</a></li><li style=""><a href="#java-development-focus">Java development focus</a></li><li style=""><a href="#linux-administration-">Linux administration </a></li><li style=""><a href="#devops-with-diagrams">DevOps with diagrams</a></li><li style=""><a href="#interview-only-setup">Interview-only setup</a></li><li style="margin-left: 3.0rem;"><a href="#generate-json-for-manual-import">Generate JSON for Manual Import</a></li><li style=""><a href="#create-scene-collection-file">Create scene collection file</a></li><li style=""><a href="#then-in-obs-scene-collection--import--select-my-scenesjson">Then in OBS: Scene Collection → Import → Select my-scenes.json</a></li><li style="margin-left: 3.0rem;"><a href="#custom-obs-connection">Custom OBS Connection</a></li><li style=""><a href="#different-hostport">Different host/port</a></li><li style=""><a href="#with-password">With password</a></li><li style="margin-left: 1.5rem;"><a href="#before-you-start">Before You Start</a></li><li style="margin-left: 3.0rem;"><a href="#prerequisites-checklist">Prerequisites Checklist</a></li><li style="margin-left: 3.0rem;"><a href="#quick-validation">Quick Validation</a></li><li style=""><a href="#test-your-complete-setup-first">Test your complete setup first</a></li><li style=""><a href="#check-device-detection">Check device detection</a></li><li style="margin-left: 1.5rem;"><a href="#troubleshooting">Troubleshooting</a></li><li style="margin-left: 3.0rem;"><a href="#cannot-connect-to-obs">"Cannot connect to OBS"</a></li><li style="margin-left: 3.0rem;"><a href="#obsws-python-not-found-">"obsws-python not found" </a></li><li style=""><a href="#or-manually-pip-install-obsws-python-requests">OR manually: pip install obsws-python requests</a></li><li style="margin-left: 3.0rem;"><a href="#no-devices-detected">"No devices detected"</a></li><li style=""><a href="#run-device-scan">Run device scan</a></li><li style=""><a href="#for-dual-camera-setup">For dual camera setup</a></li><li style="margin-left: 3.0rem;"><a href="#github-pages-urls-not-working">"GitHub Pages URLs not working"</a></li><li style=""><a href="#test-overlay-accessibility">Test overlay accessibility</a></li><li style="margin-left: 3.0rem;"><a href="#scenes-created-but-sources-missing">"Scenes created but sources missing"</a></li><li style="margin-left: 1.5rem;"><a href="#manual-adjustments-after-creation">Manual Adjustments After Creation</a></li><li style="margin-left: 3.0rem;"><a href="#1-device-names">1. Device Names</a></li><li style="margin-left: 3.0rem;"><a href="#2-positioning-and-scaling--">2. Positioning and Scaling  </a></li><li style="margin-left: 3.0rem;"><a href="#3-hotkeys-assignment">3. Hotkeys Assignment</a></li><li style=""><a href="#recommended-hotkey-assignments-set-manually-in-obs">Recommended hotkey assignments (set manually in OBS):</a></li><li style="margin-left: 3.0rem;"><a href="#4-audio-levels">4. Audio Levels</a></li><li style="margin-left: 1.5rem;"><a href="#comparison-manual-vs-automated">Comparison: Manual vs Automated</a></li><li style="margin-left: 1.5rem;"><a href="#integration-with-existing-workflow">Integration with Existing Workflow</a></li><li style="margin-left: 3.0rem;"><a href="#if-you-already-have-scenes">If You Already Have Scenes</a></li><li style=""><a href="#backup-existing-scenes-first">Backup existing scenes first</a></li><li style=""><a href="#scene-collection--export--save-current-setup">Scene Collection → Export → Save current setup</a></li><li style=""><a href="#create-new-collection-with-automation">Create new collection with automation</a></li><li style=""><a href="#switch-between-collections-as-needed">Switch between collections as needed</a></li><li style="margin-left: 3.0rem;"><a href="#if-you-have-custom-sources">If You Have Custom Sources</a></li><li style="margin-left: 1.5rem;"><a href="#next-steps-after-automation">Next Steps After Automation</a></li><li style="margin-left: 1.5rem;"><a href="#advanced-customization">Advanced Customization</a></li><li style="margin-left: 3.0rem;"><a href="#modify-source-templates">Modify Source Templates</a></li><li style="margin-left: 3.0rem;"><a href="#create-custom-templates--">Create Custom Templates  </a></li><li style="margin-left: 3.0rem;"><a href="#batch-operations">Batch Operations</a></li><li style=""><a href="#create-multiple-variations">Create multiple variations</a></li><li style="margin-left: 1.5rem;"><a href="#why-use-automated-setup">Why Use Automated Setup?</a></li></ul></div>
+
+        <div class="content">
+            <h1>Automated OBS Scene Creation Guide</h1>
+<p>Skip the manual clicking! This guide shows you how to automatically create all your OBS scenes, sources, and configurations with a single command.</p>
+<h2>Quick Start (Recommended)</h2>
+<h3>1. Install Dependencies</h3>
+<pre><code><h1>Install required Python libraries</h1>
+<p>python scripts/install-dependencies.py</code></pre></p>
+<h3>2. Enable OBS WebSocket Server</h3>
+<ol>
+<li><strong>Open OBS Studio</strong></li>
+<li><strong>Go to Tools → WebSocket Server Settings</strong></li>
+<li><strong>Check "Enable WebSocket server"</strong></li>
+<li><strong>Set Server Port: 4455</strong> (default)</li>
+<li><strong>Set Password</strong> (optional but recommended)</li>
+<li><strong>Click Apply/OK</strong></li>
+</ul>
+<h3>3. Create All Scenes Automatically</h3>
+<pre><code><h1>Create scenes directly in OBS (RECOMMENDED)</h1>
+<p>python scripts/setup-scripts/auto-scene-creator.py --create-live --github-user [your-username]</p>
+<h1>Or generate JSON file for manual import</h1>
+<p>python scripts/setup-scripts/auto-scene-creator.py --generate-json --github-user [your-username]</code></pre></p>
+<strong>That's it! 🎉</strong> All 7 scenes with sources, overlays, and configurations are created automatically.
+<h2>What Gets Created</h2>
+<h3>📺 7 Complete Scenes</h3>
+<ol>
+<li><strong>🎬 Intro Scene</strong> - Professional intro with countdown</li>
+<li><strong>👤 Talking Head</strong> - Full camera view with overlay</li>
+<li><strong>💻 Code + Camera</strong> - Screen capture + PiP camera</li>
+<li><strong>🖥️ Screen Only</strong> - Full screen for detailed work</li>
+<li><strong>📺 BRB / Technical</strong> - Break screen with timer</li>
+<li><strong>🎯 Outro Scene</strong> - Professional outro with CTA</li>
+<li><strong>👥 Dual Camera</strong> - Interview setup with guest</li>
+</ul>
+<h3>🎥 Auto-Configured Sources</h3>
+<ul>
+<li><strong>Browser Sources</strong> with your GitHub Pages URLs</li>
+<li><strong>Camera Sources</strong> with auto-detected devices</li>
+<li><strong>Screen Capture</strong> optimized for coding</li>
+<li><strong>Audio Sources</strong> with professional filters</li>
+<li><strong>Overlays</strong> with Artivisi branding</li>
+</ul>
+<h3>🎛️ Professional Audio Setup</h3>
+<ul>
+<li><strong>Noise Suppression</strong> (RNNoise)</li>
+<li><strong>Compressor</strong> for consistent levels</li>
+<li><strong>Limiter</strong> to prevent peaking</li>
+<li><strong>Monitor + Output</strong> configuration</li>
+</ul>
+<h2>Advanced Usage</h2>
+<h3>Content-Specific Templates</h3>
+<pre><code><h1>Java development focus</h1>
+<p>python scripts/setup-scripts/auto-scene-creator.py --create-live --template java</p>
+<h1>Linux administration </h1>
+<p>python scripts/setup-scripts/auto-scene-creator.py --create-live --template linux</p>
+<h1>DevOps with diagrams</h1>
+<p>python scripts/setup-scripts/auto-scene-creator.py --create-live --template devops</p>
+<h1>Interview-only setup</h1>
+<p>python scripts/setup-scripts/auto-scene-creator.py --create-live --template interview</code></pre></p>
+<h3>Generate JSON for Manual Import</h3>
+<pre><code><h1>Create scene collection file</h1>
+<p>python scripts/setup-scripts/auto-scene-creator.py --generate-json --output my-scenes.json</p>
+<h1>Then in OBS: Scene Collection → Import → Select my-scenes.json</h1></code></pre>
+<h3>Custom OBS Connection</h3>
+<pre><code><h1>Different host/port</h1>
+<p>python scripts/setup-scripts/auto-scene-creator.py --create-live --obs-host 192.168.1.100 --obs-port 4455</p>
+<h1>With password</h1>
+<p>python scripts/setup-scripts/auto-scene-creator.py --create-live --obs-password mypassword</code></pre></p>
+<h2>Before You Start</h2>
+<h3>Prerequisites Checklist</h3>
+<ul>
+<li>[ ] <strong>OBS Studio 28+</strong> installed and running</li>
+<li>[ ] <strong>GitHub Pages</strong> enabled with your overlays deployed</li>
+<li>[ ] <strong>Python 3.7+</strong> available</li>
+<li>[ ] <strong>Camera/microphone</strong> connected (will auto-detect)</li>
+</ul>
+<h3>Quick Validation</h3>
+<pre><code><h1>Test your complete setup first</h1>
+<p>python scripts/test-complete-setup.py --quick --github-user [your-username]</p>
+<h1>Check device detection</h1>
+<p>python scripts/setup-scripts/device-manager.py --scan</code></pre></p>
+<h2>Troubleshooting</h2>
+<h3>"Cannot connect to OBS"</h3>
+<strong>Solution</strong>: Enable WebSocket server in OBS
+<ol>
+<li>Tools → WebSocket Server Settings</li>
+<li>Enable WebSocket server</li>
+<li>Port: 4455, Password: (optional)</li>
+</ul>
+<h3>"obsws-python not found" </h3>
+<strong>Solution</strong>: Install dependencies
+<pre><code>python scripts/install-dependencies.py
+<h1>OR manually: pip install obsws-python requests</h1></code></pre>
+<h3>"No devices detected"</h3>
+<strong>Solution</strong>: Check hardware connections
+<pre><code><h1>Run device scan</h1>
+<p>python scripts/setup-scripts/device-manager.py --scan</p>
+<h1>For dual camera setup</h1>
+<p>python scripts/setup-scripts/usb-hub-validator.py --validate</code></pre></p>
+<h3>"GitHub Pages URLs not working"</h3>
+<strong>Solution</strong>: Verify deployment
+<pre><code><h1>Test overlay accessibility</h1>
+<p>python scripts/test-complete-setup.py --overlays-only --github-user [your-username]</code></pre></p>
+<h3>"Scenes created but sources missing"</h3>
+<strong>Cause</strong>: Device detection failed or names don't match
+<strong>Solution</strong>: 
+<ol>
+<li>Check camera/microphone are connected</li>
+<li>Update device names in OBS manually</li>
+<li>Re-run with verbose output for debugging</li>
+</ul>
+<h2>Manual Adjustments After Creation</h2>
+<p>The automated setup creates everything, but you might want to adjust:</p>
+<h3>1. Device Names</h3>
+<ul>
+<li><strong>Video sources</strong> may need device selection if multiple cameras</li>
+<li><strong>Audio sources</strong> may need correct microphone selection</li>
+</ul>
+<h3>2. Positioning and Scaling  </h3>
+<ul>
+<li><strong>Camera positions</strong> are auto-calculated but can be tweaked</li>
+<li><strong>Screen capture</strong> areas may need adjustment for your display</li>
+</ul>
+<h3>3. Hotkeys Assignment</h3>
+<pre><code><h1>Recommended hotkey assignments (set manually in OBS):</h1>
+<p>F1 - Intro Scene</p>
+<p>F2 - Talking Head  </p>
+<p>F3 - Code + Camera</p>
+<p>F4 - Screen Only</p>
+<p>F5 - BRB / Technical</p>
+<p>F6 - Outro Scene</p>
+<p>F7 - Dual Camera</p>
+<p>Ctrl+R - Start/Stop Recording</p>
+<p>Ctrl+P - Pause Recording  </p>
+<p>Ctrl+M - Mute Microphone</code></pre></p>
+<h3>4. Audio Levels</h3>
+<ul>
+<li>Check <strong>microphone levels</strong> (-12dB to -6dB target)</li>
+<li>Adjust <strong>desktop audio</strong> volume (usually lower than mic)</li>
+<li>Test <strong>noise suppression</strong> effectiveness</li>
+</ul>
+<h2>Comparison: Manual vs Automated</h2>
+<p>| Task | Manual Process | Automated Process |</p>
+<p>|------|---------------|-------------------|</p>
+<p>| <strong>Scene Creation</strong> | Click 7 times, name each | 1 command |</p>
+<p>| <strong>Browser Sources</strong> | 7+ sources, copy URLs manually | Auto-configured URLs |</p>
+<p>| <strong>Camera Setup</strong> | Find device names, configure each | Auto-detected and assigned |</p>
+<p>| <strong>Audio Filters</strong> | Add 3+ filters per source manually | Professional filters auto-applied |</p>
+<p>| <strong>Positioning</strong> | Click and drag each source | Calculated positions |</p>
+<p>| <strong>Error Rate</strong> | High (typos, wrong URLs, missing filters) | Low (validated configurations) |</p>
+<p>| <strong>Time Required</strong> | 30-60 minutes | 2-3 minutes |</p>
+<p>| <strong>Reproducibility</strong> | Manual steps, hard to replicate | Identical results every time |</p>
+<h2>Integration with Existing Workflow</h2>
+<h3>If You Already Have Scenes</h3>
+<pre><code><h1>Backup existing scenes first</h1>
+<h1>Scene Collection → Export → Save current setup</h1>
+<h1>Create new collection with automation</h1>
+<p>python scripts/setup-scripts/auto-scene-creator.py --create-live --github-user [your-username]</p>
+<h1>Switch between collections as needed</h1></code></pre>
+<h3>If You Have Custom Sources</h3>
+<p>The automated creator won't interfere with:</p>
+<ul>
+<li><strong>Existing scenes</strong> (creates new ones)</li>
+<li><strong>Global sources</strong> (adds professional audio filters)</li>
+<li><strong>Settings</strong> (preserves your OBS configuration)</li>
+</ul>
+<h2>Next Steps After Automation</h2>
+<ol>
+<li><strong>Test Each Scene</strong> - Switch through F1-F7 to verify</li>
+<li><strong>Adjust Camera Positioning</strong> - Fine-tune if needed  </li>
+<li><strong>Set Recording Settings</strong> - Configure output quality</li>
+<li><strong>Setup Macropad</strong> - Follow <code>macropad/vial-setup-guide.md</code></li>
+<li><strong>Practice Workflow</strong> - Get familiar with scene switching</li>
+<li><strong>Start Creating Content!</strong> 🎬</li>
+</ul>
+<h2>Advanced Customization</h2>
+<h3>Modify Source Templates</h3>
+<p>Edit <code>scripts/setup-scripts/auto-scene-creator.py</code> to customize:</p>
+<ul>
+<li><strong>Overlay URLs</strong> with different parameters</li>
+<li><strong>Camera positions</strong> and scaling</li>
+<li><strong>Audio filter</strong> settings</li>
+<li><strong>Scene names</strong> and descriptions</li>
+</ul>
+<h3>Create Custom Templates  </h3>
+<p>Add your own template functions:</p>
+<pre><code>def _create_my_custom_scenes(self) -> List[SceneConfig]:
+<p>    # Your custom scene configurations</p>
+<p>    pass</code></pre></p>
+<h3>Batch Operations</h3>
+<pre><code><h1>Create multiple variations</h1>
+<p>for template in java linux devops; do</p>
+<p>    python scripts/setup-scripts/auto-scene-creator.py --generate-json --template $template --output scenes-$template.json</p>
+<p>done</code></pre></p>
+<p>---</p>
+<h2>Why Use Automated Setup?</h2>
+<div class="success">✅ <strong>Eliminates human error</strong> - No more typos in URLs or missing sources</div>
+<div class="success">✅ <strong>Consistent results</strong> - Same setup every time, on any machine</div>
+<div class="success">✅ <strong>Saves time</strong> - 2 minutes vs 30+ minutes of clicking</div>
+<div class="success">✅ <strong>Professional quality</strong> - Proper audio filters and positioning</div>
+<div class="success">✅ <strong>Version controlled</strong> - Scene configurations in code</div>
+<div class="success">✅ <strong>Easy sharing</strong> - Team members get identical setups</div>
+<div class="success">✅ <strong>Quick iteration</strong> - Test changes rapidly</div>
+<strong>Ready to automate your OBS setup? Run the commands above and start creating professional content in minutes instead of hours!</strong> 🚀
+        </div>
+    </div>
+
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top">
+        ↑
+    </button>
+
+    <script>
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            const button = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
