@@ -28,7 +28,7 @@
 
 body {
     font-family: var(--font-main);
-    font-size: 16px;
+    font-size: 18px; /* Optimized for 1080p presenter display */
     line-height: 1.6;
     color: var(--text-light);
     background: transparent;
@@ -118,14 +118,14 @@ body {
 }
 
 .lower-third h1 {
-    font-size: 2.5rem;
+    font-size: 3rem; /* Optimized for streaming/recording visibility */
     font-weight: 700;
     margin-bottom: 8px;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .lower-third h2 {
-    font-size: 1.25rem;
+    font-size: 1.5rem; /* Clear and readable at 1080p */
     font-weight: 400;
     opacity: 0.9;
 }
@@ -159,7 +159,7 @@ body {
 }
 
 .topic-indicator .topic-text {
-    font-size: 1rem;
+    font-size: 1.2rem; /* Clear and readable for streaming */
     font-weight: 600;
     vertical-align: middle;
 }
@@ -297,15 +297,71 @@ body {
     --shadow-accent: 0 4px 12px rgba(55, 118, 171, 0.3);
 }
 
+/* ArtiVisi Branding */
+.artivisi-logo {
+    position: absolute;
+    bottom: 60px;
+    right: 60px;
+    width: 120px;
+    height: auto;
+    opacity: 0.9;
+    z-index: 1000;
+}
+
+.artivisi-logo img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.artivisi-branding {
+    position: absolute;
+    bottom: 60px;
+    left: 60px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--overlay-bg);
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--accent-color);
+}
+
+.artivisi-branding img {
+    width: 32px;
+    height: 32px;
+}
+
+.artivisi-branding .company-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.artivisi-branding .company-tagline {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    color: var(--text-light);
+    margin-top: 2px;
+}
+
 /* Utility Classes */
 .hidden { display: none !important; }
 .invisible { opacity: 0 !important; }
 .no-pointer { pointer-events: none; }
 
-/* Responsive Helpers (for testing in browser) */
-@media (max-width: 1920px) {
-    body {
-        transform: scale(0.8);
-        transform-origin: top left;
-    }
+/* OBS Studio Optimization */
+/* Ensure crisp rendering in OBS browser source */
+.overlay-container {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    font-smooth: always;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Performance optimization for OBS */
+* {
+    will-change: transform, opacity;
 }

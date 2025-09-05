@@ -526,15 +526,15 @@
             },
             "rot": 0.0,
             "scale": {
-              "x": 0.75,
-              "y": 0.75
+              "x": 1.0,
+              "y": 1.0
             },
             "alignment": 5,
             "bounds_type": 0,
             "bounds_alignment": 0,
             "bounds": {
-              "x": 1440.0,
-              "y": 810.0
+              "x": 1920.0,
+              "y": 1080.0
             }
           },
           "crop": {
@@ -554,7 +554,7 @@
           "locked": false,
           "transform": {
             "pos": {
-              "x": 1520.0,
+              "x": 1620.0,
               "y": 60.0
             },
             "rot": 0.0,
