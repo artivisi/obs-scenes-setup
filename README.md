@@ -7,9 +7,28 @@ Infrastructure-as-Code approach for OBS Studio scene management, designed for pr
 This project creates a version-controlled, reproducible OBS setup with:
 - Multiple scene layouts (talking head, code demo, screen only, intro/outro)
 - Code-based overlays using HTML/CSS/JavaScript
-- Manual scene control with optional automation
+- Manual scene control with optional automation  
 - Support for 3x3 macropad or Android remote control
 - GitHub Pages hosting for overlays
+- **Complete Infrastructure-as-Code automation** with organized script structure
+
+## 🚀 Quick Start
+
+**For immediate setup on fresh OBS:**
+```bash
+# 1. Install dependencies
+python scripts/setup/install-dependencies.py
+
+# 2. Import complete scene collection via API
+python scripts/obs/auto-scene-creator.py --import-json scene-collections/programming-tutorial-configured.json --obs-host localhost --obs-password YOUR_PASSWORD
+
+# 3. Auto-detect and configure cameras
+python scripts/obs/detect-cameras.py --obs-host localhost --obs-password YOUR_PASSWORD
+
+# 4. Test complete system
+python scripts/tools/test-complete-setup.py --quick --github-user artivisi
+```
+**Total setup time: 2-3 minutes** ⚡
 
 ## Folder Structure
 
@@ -42,12 +61,24 @@ obs-tutorial-setup/
 ├── profiles/                   # OBS profile configurations
 │   ├── recording-profile.ini
 │   └── streaming-profile.ini
-├── scripts/                    # OBS Lua scripts and automation
-│   ├── auto-scene-switcher.lua
-│   ├── manual-control.lua
-│   └── setup-scripts/
-│       ├── import-scenes.py
-│       ├── export-scenes.py
+├── scripts/                    # Organized automation scripts
+│   ├── README.md               # Complete script documentation
+│   ├── setup/                  # System setup and hardware config
+│   │   ├── install-dependencies.py
+│   │   ├── setup-macropad.py
+│   │   ├── vial-setup-automation.py
+│   │   └── usb-hub-validator.py
+│   ├── obs/                    # OBS Studio automation and control
+│   │   ├── auto-scene-creator.py    # Scene creation via WebSocket
+│   │   ├── detect-cameras.py        # Camera detection and setup
+│   │   ├── device-manager.py        # Cross-platform device detection
+│   │   ├── import-scenes.py         # Scene collection import
+│   │   └── lua-scripts/            # OBS Lua scripts
+│   │       ├── manual-control.lua   # Manual scene control
+│   │       └── scene-indicators.lua # Visual feedback
+│   └── tools/                  # Development and maintenance
+│       ├── test-complete-setup.py   # System testing
+│       └── convert-docs-to-html.py  # Documentation generation
 │       └── configure-obs.py
 ├── remote-control/             # Macropad and scenario configs
 └── media/                      # Static media assets
@@ -153,22 +184,22 @@ cd obs-scenes-setup
 ### 2. Run Complete Integration Test
 ```bash
 # Test entire setup (overlays, devices, scenes, macropad)
-python scripts/test-complete-setup.py --full --github-user [your-username]
+python scripts/tools/test-complete-setup.py --full --github-user artivisi
 
 # Quick test (just overlays and basic validation)  
-python scripts/test-complete-setup.py --quick --github-user [your-username]
+python scripts/tools/test-complete-setup.py --quick --github-user artivisi
 ```
 
 ### 3. Hardware Detection and Setup
 ```bash
 # Scan for cameras and audio devices
-python scripts/setup-scripts/device-manager.py --scan
+python scripts/obs/device-manager.py --scan
 
-# Generate device profile for OBS
-python scripts/setup-scripts/device-manager.py --generate-profile
+# Detect and add cameras to OBS automatically
+python scripts/obs/detect-cameras.py --obs-host localhost --obs-password YOUR_PASSWORD
 
 # Validate USB hub for dual camera setup
-python scripts/setup-scripts/usb-hub-validator.py --validate
+python scripts/setup/usb-hub-validator.py --validate
 ```
 
 ### 4. OBS Configuration (Choose One)
@@ -176,20 +207,23 @@ python scripts/setup-scripts/usb-hub-validator.py --validate
 **Option A: Automated Scene Creation (RECOMMENDED)**
 ```bash
 # Install dependencies
-python scripts/install-dependencies.py
+python scripts/setup/install-dependencies.py
 
 # Enable OBS WebSocket (Tools → WebSocket Server Settings)
-# Then create all scenes automatically:
-python scripts/setup-scripts/auto-scene-creator.py --create-live --github-user [your-username]
+# Then import scene collection via API:
+python scripts/obs/auto-scene-creator.py --import-json scene-collections/programming-tutorial-configured.json --github-user artivisi
+
+# Or create scenes from templates:
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 ```
 
 **Option B: Manual Import**
 ```bash
 # Import scene collection with your GitHub Pages URLs
-python scripts/setup-scripts/import-scenes.py --github-user [your-username]
+python scripts/obs/import-scenes.py --github-user artivisi
 
 # Or manually import: OBS → Scene Collection → Import
-# File: scene-collections/programming-tutorial.json
+# File: scene-collections/programming-tutorial-configured.json
 ```
 
 ### 5. Configure Macropad (Choose One)
@@ -197,10 +231,10 @@ python scripts/setup-scripts/import-scenes.py --github-user [your-username]
 **Option A: Automated Vial Setup (RECOMMENDED)**
 ```bash
 # One-command macropad setup
-python scripts/setup-macropad.py
+python scripts/setup/setup-macropad.py
 
 # Or quick setup without prompts
-python scripts/setup-macropad.py --quick
+python scripts/setup/setup-macropad.py --quick
 ```
 
 **Option B: Manual Setup**
@@ -212,7 +246,7 @@ Follow the detailed setup guides:
 ### 6. Validate Complete Setup
 ```bash
 # Final validation test
-python scripts/test-complete-setup.py --full --save-report setup-report.json
+python scripts/tools/test-complete-setup.py --full --save-report setup-report.json
 
 # Check that report shows "excellent" or "good" status
 ```
