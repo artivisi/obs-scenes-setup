@@ -110,13 +110,18 @@ obs-scenes-setup/
 
 ## GitHub Pages Integration
 
-## GitHub Pages Integration
-
-**Complete setup hosted at:** `https://artivisi.github.io/obs-scenes-setup/`
-- Automatic deployment on git push
+**Complete setup will be hosted at:** `https://[your-username].github.io/obs-scenes-setup/`
+- Automatic deployment via GitHub Actions on git push
 - Same URLs work on any machine
 - Easy sharing and collaboration
 - Version controlled visual designs
+
+### Setup Instructions:
+1. Push this repository to GitHub
+2. Go to Repository Settings → Pages
+3. Set Source to "GitHub Actions" 
+4. The workflow will automatically deploy on push to master
+5. Your overlays will be live at the GitHub Pages URL
 
 ## Next Steps for Claude Code
 
