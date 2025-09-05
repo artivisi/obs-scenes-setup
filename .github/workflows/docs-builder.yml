@@ -7,7 +7,7 @@ on:
       - '*.md'
       - 'docs/**'
       - '.github/workflows/docs-builder.yml'
-      - 'scripts/convert-docs-to-html.py'
+      - 'scripts/tools/convert-docs-to-html.py'
   workflow_dispatch:
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
     - name: Convert Markdown to HTML
       run: |
         echo "📚 Converting documentation to HTML..."
-        python scripts/convert-docs-to-html.py
+        python scripts/tools/convert-docs-to-html.py
     
     - name: Commit and push changes
       run: |
