@@ -31,7 +31,7 @@
 - **3x3 Macropad** with potentiometers
   - 9 buttons for scene switching and controls
   - 3 potentiometers for volume/opacity/etc
-  - Uses QMK firmware
+  - Uses Vial firmware
 - **Android device** for secondary remote control
 - **No Stream Deck** (too expensive)
 

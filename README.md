@@ -14,7 +14,7 @@ This project creates a version-controlled, reproducible OBS setup with:
 ## Folder Structure
 
 ```
-obs-tutorial-setup/
+obs-scenes-setup/
 ├── README.md                    # This file
 ├── PROJECT_NOTES.md            # Detailed project context
 ├── docs/                       # GitHub Pages content
@@ -64,7 +64,7 @@ obs-tutorial-setup/
 - **GitHub Pages** - Hosting for overlay files
 - **Lua** - OBS scripting for automation
 - **Python** - Setup and import/export scripts
-- **QMK Firmware** - Macropad configuration (optional)
+- **Vial Firmware** - Macropad configuration (optional)
 
 ## Key Design Principles
 
@@ -124,7 +124,7 @@ obs-tutorial-setup/
 2. **Build scene collection JSON** - OBS configuration files
 3. **Develop Lua automation scripts** - Smart scene switching with manual override
 4. **Create setup/import scripts** - Python automation for OBS configuration
-5. **Design macropad integration** - QMK config and OBS hotkey mapping
+5. **Design macropad integration** - Vial config and OBS hotkey mapping
 6. **Build mobile remote interface** - Web-based remote control
 7. **Generate documentation** - Usage guides and troubleshooting
 

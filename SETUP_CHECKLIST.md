@@ -3,10 +3,10 @@
 ## Before Starting with Claude Code
 
 ### 1. Create GitHub Repository
-- [ ] Create new repo: `obs-tutorial-setup`
+- [ ] Create new repo: `obs-scenes-setup`
 - [ ] Enable GitHub Pages in Settings
 - [ ] Set source to `/docs` folder
-- [ ] Note your GitHub Pages URL: `https://yourusername.github.io/obs-tutorial-setup/`
+- [ ] Note your GitHub Pages URL: `https://artivisi.github.io/obs-scenes-setup/`
 
 ### 2. Local Workspace Setup
 - [ ] Clone repo to local machine
@@ -40,7 +40,7 @@ When starting in Claude Code, provide:
 
 ### Phase 3: Control Systems
 1. **manual-control.lua** - Priority manual switching
-2. **Macropad configuration** - QMK keymap
+2. **Macropad configuration** - Vial keymap
 3. **Mobile remote** - Simple web interface
 
 ### Phase 4: Automation (Optional)
