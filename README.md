@@ -171,7 +171,19 @@ python scripts/setup-scripts/device-manager.py --generate-profile
 python scripts/setup-scripts/usb-hub-validator.py --validate
 ```
 
-### 4. OBS Configuration  
+### 4. OBS Configuration (Choose One)
+
+**Option A: Automated Scene Creation (RECOMMENDED)**
+```bash
+# Install dependencies
+python scripts/install-dependencies.py
+
+# Enable OBS WebSocket (Tools → WebSocket Server Settings)
+# Then create all scenes automatically:
+python scripts/setup-scripts/auto-scene-creator.py --create-live --github-user [your-username]
+```
+
+**Option B: Manual Import**
 ```bash
 # Import scene collection with your GitHub Pages URLs
 python scripts/setup-scripts/import-scenes.py --github-user [your-username]
@@ -202,7 +214,8 @@ python scripts/test-complete-setup.py --full --save-report setup-report.json
 
 ## Detailed Documentation
 
-- **OBS Setup Guide**: `OBS_SETUP_GUIDE.md` - Complete OBS configuration
+- **Automated Setup**: `AUTOMATED_SETUP.md` - Skip manual clicking! Auto-create all scenes
+- **OBS Setup Guide**: `OBS_SETUP_GUIDE.md` - Complete manual OBS configuration
 - **Device Management**: Cross-platform USB device handling 
 - **Macropad Design**: 4-layer control system with Vial firmware
 - **Overlay System**: HTML/CSS overlays with GitHub Pages hosting
