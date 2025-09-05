@@ -341,65 +341,132 @@
             <p class="doc-subtitle">Comprehensive step-by-step manual configuration for professional OBS setup.</p>
         </div>
 
-        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#obs-studio-setup-guide">OBS Studio Setup Guide</a></li><li style="margin-left: 1.5rem;"><a href="#table-of-contents">Table of Contents</a></li><li style="margin-left: 1.5rem;"><a href="#prerequisites">Prerequisites</a></li><li style="margin-left: 3.0rem;"><a href="#required-software">Required Software</a></li><li style="margin-left: 3.0rem;"><a href="#hardware-requirements">Hardware Requirements</a></li><li style="margin-left: 1.5rem;"><a href="#scene-collection-setup">Scene Collection Setup</a></li><li style="margin-left: 3.0rem;"><a href="#step-1-create-new-scene-collection">Step 1: Create New Scene Collection</a></li><li style="margin-left: 3.0rem;"><a href="#step-2-create-base-scenes">Step 2: Create Base Scenes</a></li><li style="margin-left: 1.5rem;"><a href="#source-configuration">Source Configuration</a></li><li style="margin-left: 3.0rem;"><a href="#scene-1--intro-scene">Scene 1: 🎬 Intro Scene</a></li><li style="margin-left: 3.0rem;"><a href="#scene-2--talking-head">Scene 2: 👤 Talking Head</a></li><li style="margin-left: 3.0rem;"><a href="#scene-3--code--camera">Scene 3: 💻 Code + Camera</a></li><li style="margin-left: 3.0rem;"><a href="#scene-4--screen-only">Scene 4: 🖥️ Screen Only</a></li><li style="margin-left: 3.0rem;"><a href="#scene-5--brb--technical">Scene 5: 📺 BRB / Technical</a></li><li style="margin-left: 3.0rem;"><a href="#scene-6--outro-scene">Scene 6: 🎯 Outro Scene</a></li><li style="margin-left: 3.0rem;"><a href="#scene-7--dual-camera--interview">Scene 7: 👥 Dual Camera / Interview</a></li><li style="margin-left: 1.5rem;"><a href="#device-management">Device Management</a></li><li style="margin-left: 3.0rem;"><a href="#cross-platform-device-detection">Cross-Platform Device Detection</a></li><li style=""><a href="#scan-all-available-devices">Scan all available devices</a></li><li style=""><a href="#generate-platform-specific-profile">Generate platform-specific profile</a></li><li style=""><a href="#test-device-connectivity">Test device connectivity</a></li><li style="margin-left: 3.0rem;"><a href="#usb-hub-best-practices">USB Hub Best Practices</a></li><li style="margin-left: 3.0rem;"><a href="#multi-camera-setup-requirements">Multi-Camera Setup Requirements</a></li><li style="margin-left: 1.5rem;"><a href="#hotkey-configuration">Hotkey Configuration</a></li><li style="margin-left: 3.0rem;"><a href="#recommended-hotkey-setup">Recommended Hotkey Setup</a></li><li style="margin-left: 3.0rem;"><a href="#macropad-integration">Macropad Integration</a></li><li style="margin-left: 1.5rem;"><a href="#audio-setup">Audio Setup</a></li><li style="margin-left: 3.0rem;"><a href="#audio-sources-configuration">Audio Sources Configuration</a></li><li style="margin-left: 3.0rem;"><a href="#recommended-audio-filters">Recommended Audio Filters</a></li><li style="margin-left: 1.5rem;"><a href="#recordingstreaming-settings">Recording/Streaming Settings</a></li><li style="margin-left: 3.0rem;"><a href="#video-settings">Video Settings</a></li><li style="margin-left: 3.0rem;"><a href="#output-settings">Output Settings</a></li><li style="margin-left: 3.0rem;"><a href="#advanced-settings">Advanced Settings</a></li><li style="margin-left: 1.5rem;"><a href="#testing-your-setup">Testing Your Setup</a></li><li style="margin-left: 3.0rem;"><a href="#pre-recording-checklist">Pre-Recording Checklist</a></li><li style="margin-left: 3.0rem;"><a href="#performance-optimization">Performance Optimization</a></li><li style="margin-left: 1.5rem;"><a href="#troubleshooting">Troubleshooting</a></li><li style="margin-left: 3.0rem;"><a href="#common-issues">Common Issues</a></li><li style="margin-left: 3.0rem;"><a href="#browser-source-debug">Browser Source Debug</a></li><li style="margin-left: 3.0rem;"><a href="#scene-collection-exportimport">Scene Collection Export/Import</a></li><li style="margin-left: 1.5rem;"><a href="#next-steps">Next Steps</a></li><li style="margin-left: 1.5rem;"><a href="#advanced-features">Advanced Features</a></li><li style="margin-left: 3.0rem;"><a href="#scene-transitions">Scene Transitions</a></li><li style="margin-left: 3.0rem;"><a href="#studio-mode">Studio Mode</a></li><li style="margin-left: 3.0rem;"><a href="#multiple-audio-tracks">Multiple Audio Tracks</a></li><li style="margin-left: 1.5rem;"><a href="#support">Support</a></li></ul></div>
+        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#obs-studio-setup-guide">OBS Studio Setup Guide</a></li><li style="margin-left: 1.5rem;"><a href="#-quick-start-recommended">🚀 Quick Start (Recommended)</a></li><li style=""><a href="#1-install-dependencies">1. Install dependencies</a></li><li style=""><a href="#2-enable-obs-websocket-tools--websocket-server-settings">2. Enable OBS WebSocket (Tools → WebSocket Server Settings)</a></li><li style=""><a href="#3-create-all-scenes-automatically">3. Create all scenes automatically</a></li><li style="margin-left: 1.5rem;"><a href="#table-of-contents">Table of Contents</a></li><li style="margin-left: 1.5rem;"><a href="#automated-setup">Automated Setup</a></li><li style="margin-left: 3.0rem;"><a href="#prerequisites">Prerequisites</a></li><li style="margin-left: 3.0rem;"><a href="#required-software">Required Software</a></li><li style="margin-left: 3.0rem;"><a href="#hardware-requirements">Hardware Requirements</a></li><li style="margin-left: 3.0rem;"><a href="#step-1-enable-obs-websocket-server">Step 1: Enable OBS WebSocket Server</a></li><li style="margin-left: 3.0rem;"><a href="#step-2-run-automated-scene-creator">Step 2: Run Automated Scene Creator</a></li><li style=""><a href="#production-mode-with-github-pages-overlays-recommended">Production mode with GitHub Pages overlays (RECOMMENDED)</a></li><li style=""><a href="#development-mode-with-local-overlay-files">Development mode with local overlay files</a></li><li style=""><a href="#generate-json-file-for-manual-import">Generate JSON file for manual import</a></li><li style="margin-left: 3.0rem;"><a href="#what-gets-created-automatically">What Gets Created Automatically</a></li><li style="margin-left: 1.5rem;"><a href="#manual-setup">Manual Setup</a></li><li style="margin-left: 1.5rem;"><a href="#scene-reference">Scene Reference</a></li><li style="margin-left: 3.0rem;"><a href="#main-scenes-f1-f6">Main Scenes (F1-F6)</a></li><li style="margin-left: 3.0rem;"><a href="#source-scenes-edit-once-use-everywhere">Source Scenes (Edit Once, Use Everywhere)</a></li><li style="margin-left: 1.5rem;"><a href="#manual-scene-collection-setup-if-not-using-automation">Manual Scene Collection Setup (If Not Using Automation)</a></li><li style="margin-left: 3.0rem;"><a href="#create-new-scene-collection">Create New Scene Collection</a></li><li style="margin-left: 1.5rem;"><a href="#device-configuration">Device Configuration</a></li><li style="margin-left: 3.0rem;"><a href="#camera-setup">Camera Setup</a></li><li style="margin-left: 3.0rem;"><a href="#audio-configuration">Audio Configuration</a></li><li style="margin-left: 3.0rem;"><a href="#browser-source-configuration">Browser Source Configuration</a></li><li style="margin-left: 3.0rem;"><a href="#scene-2--talking-head">Scene 2: 👤 Talking Head</a></li><li style="margin-left: 3.0rem;"><a href="#scene-3--code--camera">Scene 3: 💻 Code + Camera</a></li><li style="margin-left: 3.0rem;"><a href="#scene-4--screen-only">Scene 4: 🖥️ Screen Only</a></li><li style="margin-left: 3.0rem;"><a href="#scene-5--brb--technical">Scene 5: 📺 BRB / Technical</a></li><li style="margin-left: 3.0rem;"><a href="#scene-6--outro-scene">Scene 6: 🎯 Outro Scene</a></li><li style="margin-left: 3.0rem;"><a href="#scene-7--dual-camera--interview">Scene 7: 👥 Dual Camera / Interview</a></li><li style="margin-left: 1.5rem;"><a href="#device-management">Device Management</a></li><li style="margin-left: 3.0rem;"><a href="#cross-platform-device-detection">Cross-Platform Device Detection</a></li><li style=""><a href="#scan-all-available-devices">Scan all available devices</a></li><li style=""><a href="#generate-platform-specific-profile">Generate platform-specific profile</a></li><li style=""><a href="#test-device-connectivity">Test device connectivity</a></li><li style="margin-left: 3.0rem;"><a href="#usb-hub-best-practices">USB Hub Best Practices</a></li><li style="margin-left: 3.0rem;"><a href="#multi-camera-setup-requirements">Multi-Camera Setup Requirements</a></li><li style="margin-left: 1.5rem;"><a href="#hotkey-configuration">Hotkey Configuration</a></li><li style="margin-left: 3.0rem;"><a href="#recommended-hotkey-setup">Recommended Hotkey Setup</a></li><li style="margin-left: 3.0rem;"><a href="#macropad-integration">Macropad Integration</a></li><li style="margin-left: 1.5rem;"><a href="#audio-setup">Audio Setup</a></li><li style="margin-left: 3.0rem;"><a href="#audio-sources-configuration">Audio Sources Configuration</a></li><li style="margin-left: 3.0rem;"><a href="#recommended-audio-filters">Recommended Audio Filters</a></li><li style="margin-left: 1.5rem;"><a href="#recordingstreaming-settings">Recording/Streaming Settings</a></li><li style="margin-left: 3.0rem;"><a href="#video-settings">Video Settings</a></li><li style="margin-left: 3.0rem;"><a href="#output-settings">Output Settings</a></li><li style="margin-left: 3.0rem;"><a href="#advanced-settings">Advanced Settings</a></li><li style="margin-left: 1.5rem;"><a href="#testing-your-setup">Testing Your Setup</a></li><li style="margin-left: 3.0rem;"><a href="#pre-recording-checklist">Pre-Recording Checklist</a></li><li style="margin-left: 3.0rem;"><a href="#performance-optimization">Performance Optimization</a></li><li style="margin-left: 1.5rem;"><a href="#troubleshooting">Troubleshooting</a></li><li style="margin-left: 3.0rem;"><a href="#common-issues">Common Issues</a></li><li style="margin-left: 3.0rem;"><a href="#browser-source-debug">Browser Source Debug</a></li><li style="margin-left: 3.0rem;"><a href="#scene-collection-exportimport">Scene Collection Export/Import</a></li><li style="margin-left: 1.5rem;"><a href="#next-steps">Next Steps</a></li><li style="margin-left: 1.5rem;"><a href="#advanced-features">Advanced Features</a></li><li style="margin-left: 3.0rem;"><a href="#scene-transitions">Scene Transitions</a></li><li style="margin-left: 3.0rem;"><a href="#studio-mode">Studio Mode</a></li><li style="margin-left: 3.0rem;"><a href="#multiple-audio-tracks">Multiple Audio Tracks</a></li><li style="margin-left: 1.5rem;"><a href="#support">Support</a></li></ul></div>
 
         <div class="content">
             <h1>OBS Studio Setup Guide</h1>
-<p>Complete guide for setting up OBS Studio to use the Artivisi overlay system for programming tutorials.</p>
+<p>Comprehensive guide for setting up OBS Studio with automated scene creation and professional overlay system for programming tutorials.</p>
+<h2>🚀 Quick Start (Recommended)</h2>
+<p>For immediate setup, use our <strong>automated scene creator</strong>:</p>
+<pre><code><h1>1. Install dependencies</h1>
+<p>python scripts/setup/install-dependencies.py</p>
+<h1>2. Enable OBS WebSocket (Tools → WebSocket Server Settings)</h1>
+<h1>3. Create all scenes automatically</h1>
+<p>python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi</code></pre></p>
+<strong>Setup time: 2-3 minutes</strong> ⚡
 <h2>Table of Contents</h2>
 <ol>
-<li><a href="#prerequisites">Prerequisites</a></li>
-<li><a href="#scene-collection-setup">Scene Collection Setup</a></li>
-<li><a href="#source-configuration">Source Configuration</a></li>
+<li><a href="#automated-setup">Automated Setup</a> <strong>← Start Here</strong></li>
+<li><a href="#manual-setup">Manual Setup</a> (if needed)</li>
+<li><a href="#scene-reference">Scene Reference</a></li>
+<li><a href="#device-configuration">Device Configuration</a></li>
+<li><a href="#audio-processing">Audio Processing</a></li>
 <li><a href="#hotkey-configuration">Hotkey Configuration</a></li>
-<li><a href="#audio-setup">Audio Setup</a></li>
-<li><a href="#recordingstreaming-settings">Recording/Streaming Settings</a></li>
-<li><a href="#testing-your-setup">Testing Your Setup</a></li>
+<li><a href="#recording-settings">Recording Settings</a></li>
 <li><a href="#troubleshooting">Troubleshooting</a></li>
 </ul>
-<h2>Prerequisites</h2>
+<h2>Automated Setup</h2>
+<h3>Prerequisites</h3>
 <h3>Required Software</h3>
 <ul>
-<li><strong>OBS Studio 30.0+</strong> (latest version recommended)</li>
-<li><strong>Web browser</strong> for testing overlays</li>
-<li><strong>Your GitHub Pages URL</strong> ready: <code>https://artivisi.github.io/obs-scenes-setup/</code></li>
+<li><strong>OBS Studio 28.0+</strong> with WebSocket plugin</li>
+<li><strong>Python 3.7+</strong> for automation scripts</li>
+<li><strong>Git</strong> for version control</li>
+<li><strong>GitHub Pages</strong> enabled (or local overlay files)</li>
 </ul>
 <h3>Hardware Requirements</h3>
 <ul>
-<li><strong>Camera</strong>: Nikon ZFC via Cam Link 4K (or any USB camera)</li>
-<li><strong>Microphone</strong>: Hollyland Lark M2 via USB (or any USB microphone)</li>
-<li><strong>3x3 Macropad</strong> (optional but recommended)</li>
+<li><strong>Camera</strong>: Any USB camera or capture card</li>
+<li><strong>Microphone</strong>: USB audio device or built-in mic</li>
+<li><strong>3x3 Macropad</strong> (optional) with Vial firmware</li>
 </ul>
-<h2>Scene Collection Setup</h2>
-<h3>Step 1: Create New Scene Collection</h3>
+<h3>Step 1: Enable OBS WebSocket Server</h3>
 <ol>
 <li>Open OBS Studio</li>
+<li>Go to <strong>Tools → WebSocket Server Settings</strong></li>
+<li>Check <strong>"Enable WebSocket server"</strong></li>
+<li>Set <strong>Server Port: 4455</strong> (default)</li>
+<li>Set <strong>Password</strong> (optional)</li>
+<li>Click <strong>Apply/OK</strong></li>
+</ul>
+<h3>Step 2: Run Automated Scene Creator</h3>
+<pre><code><h1>Production mode with GitHub Pages overlays (RECOMMENDED)</h1>
+<p>python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi</p>
+<h1>Development mode with local overlay files</h1>
+<p>python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline</p>
+<h1>Generate JSON file for manual import</h1>
+<p>python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json</code></pre></p>
+<h3>What Gets Created Automatically</h3>
+<div class="success">✅ <strong>7 Professional Scenes</strong> with proper source ordering</div>
+<div class="success">✅ <strong>Browser Sources</strong> with correct GitHub Pages URLs</div>
+<div class="success">✅ <strong>Camera Auto-Detection</strong> and configuration</div>
+<div class="success">✅ <strong>Audio Processing</strong> with noise suppression, compression, and limiting</div>
+<div class="success">✅ <strong>Screen Capture</strong> optimized for programming</div>
+<div class="success">✅ <strong>Source References</strong> for easy editing (edit once, used everywhere)</div>
+<h2>Manual Setup</h2>
+<h2>Scene Reference</h2>
+<p>The automated system creates these 7 scenes with optimized layouts:</p>
+<h3>Main Scenes (F1-F6)</h3>
+<ol>
+<li><strong>🎬 Intro Scene</strong> - Professional intro with countdown</li>
+<li><strong>👤 Talking Head</strong> - Full camera view for presentations</li>
+<li><strong>💻 Code + Camera</strong> - Split layout with PiP camera</li>
+<li><strong>🖥️ Screen Only</strong> - Full screen capture for detailed work</li>
+<li><strong>📺 BRB / Technical</strong> - Break screen with timer</li>
+<li><strong>🎯 Outro Scene</strong> - Professional outro with call-to-action</li>
+</ul>
+<h3>Source Scenes (Edit Once, Use Everywhere)</h3>
+<ul>
+<li><strong>📹 Camera Sources</strong> - Edit camera settings here</li>
+<li><strong>🎤 Audio Sources</strong> - Edit microphone settings here  </li>
+<li><strong>🖥️ Screen Sources</strong> - Edit screen capture settings here</li>
+</ul>
+<p>All main scenes reference these source scenes, so you only need to configure devices once.</p>
+<h2>Manual Scene Collection Setup (If Not Using Automation)</h2>
+<p>Only follow this section if you cannot use the automated setup:</p>
+<h3>Create New Scene Collection</h3>
+<ol>
 <li>Go to <strong>Scene Collection</strong> → <strong>New</strong></li>
-<li>Name it: <code>Programming Tutorials - Artivisi</code></li>
-<li>Click <strong>OK</strong></li>
+<li>Name: <code>Programming Tutorials - Artivisi</code></li>
+<li>Manually create the 7 scenes listed above</li>
 </ul>
-<h3>Step 2: Create Base Scenes</h3>
-<p>Create these 7 scenes (click <strong>+</strong> in Scenes panel):</p>
-<ol>
-<li><strong>🎬 Intro Scene</strong></li>
-<li><strong>👤 Talking Head</strong> </li>
-<li><strong>💻 Code + Camera</strong></li>
-<li><strong>🖥️ Screen Only</strong></li>
-<li><strong>📺 BRB / Technical</strong></li>
-<li><strong>🎯 Outro Scene</strong></li>
-<li><strong>👥 Dual Camera / Interview</strong> (for guest interviews)</li>
+<h2>Device Configuration</h2>
+<h3>Camera Setup</h3>
+<p>The automated system detects cameras automatically. For manual setup:</p>
+<strong>Recommended Camera Settings:</strong>
+<ul>
+<li><strong>Resolution</strong>: 1920x1080 or 1080x1080 (square for better framing)</li>
+<li><strong>FPS</strong>: 30 (matches recording settings)</li>
+<li><strong>Format</strong>: Auto-detect (MJPEG or YUV422)</li>
 </ul>
-<h2>Source Configuration</h2>
-<h3>Scene 1: 🎬 Intro Scene</h3>
-<strong>Sources to add:</strong>
-<ol>
-<li><strong>Browser Source</strong> - "Intro Overlay"</li>
+<strong>Multi-Camera Setup:</strong>
+<ul>
+<li><strong>Primary Camera</strong>: Main presenter camera</li>
+<li><strong>Secondary Camera</strong>: Guest or alternate angle</li>
+<li>Connect in consistent order for reliable device detection</li>
 </ul>
-<p>   - URL: <code>https://artivisi.github.io/obs-scenes-setup/overlays/intro.html</code></p>
-<p>   - Width: <code>1920</code>, Height: <code>1080</code></p>
-<p>   - ✅ Custom CSS: Leave blank</p>
-<p>   - ✅ Shutdown source when not visible</p>
-<p>   - ✅ Refresh browser when scene becomes active</p>
+<h3>Audio Configuration</h3>
+<p>The system automatically applies professional audio processing:</p>
+<strong>Applied Filters:</strong>
+<ul>
+<li><strong>Noise Suppression</strong> (RNNoise method)</li>
+<li><strong>Compressor</strong> (10:1 ratio, -18dB threshold) </li>
+<li><strong>Limiter</strong> (-6dB threshold, 60ms release)</li>
+</ul>
+<h3>Browser Source Configuration</h3>
+<p>All overlays use these optimized settings:</p>
+<ul>
+<li><strong>Width</strong>: 1920, <strong>Height</strong>: 1080</li>
+<li><strong>FPS</strong>: 30</li>
+<li>✅ <strong>Shutdown source when not visible</strong></li>
+<li>✅ <strong>Restart when active</strong> (ensures fresh loading)</li>
+<li>❌ <strong>Reroute audio</strong> (keep disabled)</li>
+</ul>
+<strong>Overlay URLs:</strong>
+<ul>
+<li>Production: <code>https://artivisi.github.io/obs-scenes-setup/overlays/[scene].html</code></li>
+<li>Development: <code>file://[project-path]/docs/overlays/[scene].html</code></li>
+</ul>
 <ol>
 <li><strong>Video Capture Device</strong> - "Background Camera" (Optional)</li>
 </ul>
