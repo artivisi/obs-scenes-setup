@@ -213,9 +213,42 @@ The automated creator won't interfere with:
 1. **Test Each Scene** - Switch through F1-F7 to verify
 2. **Adjust Camera Positioning** - Fine-tune if needed  
 3. **Set Recording Settings** - Configure output quality
-4. **Setup Macropad** - Follow `macropad/vial-setup-guide.md`
+4. **Setup Macropad** - Automated setup available!
+   ```bash
+   # One-command macropad configuration
+   python scripts/setup-macropad.py
+   ```
 5. **Practice Workflow** - Get familiar with scene switching
 6. **Start Creating Content!** 🎬
+
+## Automated Macropad Setup
+
+Skip the manual Vial configuration with automated macropad setup:
+
+### Quick Macropad Setup
+```bash
+# Interactive setup wizard (recommended)
+python scripts/setup-macropad.py
+
+# Quick setup without prompts  
+python scripts/setup-macropad.py --quick
+
+# Test current setup
+python scripts/setup-macropad.py --test
+```
+
+### What It Does
+- ✅ **Detects connected macropad** automatically
+- ✅ **Generates Vial keymap** with 4-layer OBS control system
+- ✅ **Creates setup instructions** with step-by-step guidance
+- ✅ **Validates configuration** to ensure correctness
+- ✅ **Maps all OBS hotkeys** for seamless integration
+
+### Generated Files
+- `macropad/obs-control-keymap.json` - Vial configuration file
+- `macropad/automated-setup-instructions.md` - Setup guide
+
+Simply load the generated keymap in Vial GUI and you're ready to go!
 
 ## Advanced Customization
 

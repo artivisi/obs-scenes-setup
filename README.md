@@ -192,7 +192,18 @@ python scripts/setup-scripts/import-scenes.py --github-user [your-username]
 # File: scene-collections/programming-tutorial.json
 ```
 
-### 5. Configure Macropad
+### 5. Configure Macropad (Choose One)
+
+**Option A: Automated Vial Setup (RECOMMENDED)**
+```bash
+# One-command macropad setup
+python scripts/setup-macropad.py
+
+# Or quick setup without prompts
+python scripts/setup-macropad.py --quick
+```
+
+**Option B: Manual Setup**
 Follow the detailed setup guides:
 - **Vial Setup**: `macropad/vial-setup-guide.md`
 - **Key Reference**: `macropad/keymap-reference.md`
