@@ -462,10 +462,17 @@
 <li>✅ <strong>Restart when active</strong> (ensures fresh loading)</li>
 <li>❌ <strong>Reroute audio</strong> (keep disabled)</li>
 </ul>
-<strong>Overlay URLs:</strong>
+<strong>Overlay URLs (Auto-detected by script):</strong>
 <ul>
-<li>Production: <code>https://artivisi.github.io/obs-scenes-setup/overlays/[scene].html</code></li>
-<li>Development: <code>file://[project-path]/docs/overlays/[scene].html</code></li>
+<li><strong>Custom overlays</strong>: <code>http://[detected-ip]:8080/[scene].html</code> (HTTP server automatically started)</li>
+<li><strong>Offline mode</strong>: <code>http://[detected-ip]:8080/[scene].html</code> (Default templates)</li>
+<li><strong>Online mode</strong>: <code>https://artivisi.github.io/obs-scenes-setup/overlays/[scene].html</code></li>
+</ul>
+<strong>Cross-Platform IP Detection:</strong>
+<ul>
+<li><strong>WSL + Windows</strong>: Automatically detects WSL IP (e.g., <code>172.29.130.195:8080</code>) accessible from Windows OBS</li>
+<li><strong>macOS/Linux</strong>: Uses standard network interface detection (e.g., <code>192.168.1.100:8080</code>)</li>
+<li><strong>HTTP Server</strong>: Automatically started on available port (8080+) with quiet logging</li>
 </ul>
 <ol>
 <li><strong>Video Capture Device</strong> - "Background Camera" (Optional)</li>
