@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBS Scenes Setup - OBS Infrastructure-as-Code</title>
+    <meta name="description" content="Automated OBS Studio scene creation for programming tutorials and content creation.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+        }
+        
+        .nav-bar {
+            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-brand {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .doc-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .doc-title {
+            color: #2e3192;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .doc-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .breadcrumb {
+            font-size: 0.9rem;
+            color: #58c034;
+            margin-bottom: 1rem;
+        }
+        
+        .breadcrumb a {
+            color: #58c034;
+            text-decoration: none;
+        }
+        
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .content h1 {
+            color: #2e3192;
+            font-size: 2rem;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #58c034;
+        }
+        
+        .content h2 {
+            color: #2e3192;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        .content h3 {
+            color: #2e3192;
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        .content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        
+        .content ul, .content ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+        
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .content code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+        
+        .content pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .content pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        
+        .content blockquote {
+            border-left: 4px solid #58c034;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .content th, .content td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .content th {
+            background: #2e3192;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .content tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .warning::before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .info::before {
+            content: "💡 ";
+            font-weight: bold;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .success::before {
+            content: "✅ ";
+            font-weight: bold;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .toc h3 {
+            color: #2e3192;
+            margin-bottom: 1rem;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc a {
+            color: #58c034;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #58c034;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: #45a029;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .doc-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-brand">🎬 OBS Scenes Setup</a>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="README.html">Getting Started</a>
+                <a href="TECHNICAL.html">Technical Docs</a>
+                <a href="../overlays/">Overlays</a>
+                <a href="https://github.com/artivisi/obs-scenes-setup">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="doc-header">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <a href="#">Getting Started</a>
+            </div>
+            <h1 class="doc-title">OBS Scenes Setup</h1>
+            <p class="doc-subtitle">Automated OBS Studio scene creation for programming tutorials and content creation.</p>
+        </div>
+
+        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#obs-scenes-setup">OBS Scenes Setup</a></li><li style="margin-left: 1.5rem;"><a href="#quick-start">Quick Start</a></li><li style="margin-left: 3.0rem;"><a href="#option-1-fastest-setup-2-3-minutes">Option 1: Fastest Setup (2-3 minutes)</a></li><li style=""><a href="#install-dependencies-and-create-scenes-with-defaults">Install dependencies and create scenes with defaults</a></li><li style=""><a href="#or-use-a-specific-template">Or use a specific template</a></li><li style="margin-left: 3.0rem;"><a href="#option-2-custom-event-setup">Option 2: Custom Event Setup</a></li><li style=""><a href="#interactive-setup-with-your-event-details">Interactive setup with your event details</a></li><li style=""><a href="#or-start-with-a-template">Or start with a template</a></li><li style="margin-left: 3.0rem;"><a href="#option-3-direct-obs-creation">Option 3: Direct OBS Creation</a></li><li style=""><a href="#just-create-obs-scenes-if-you-already-have-overlays">Just create OBS scenes (if you already have overlays)</a></li><li style="margin-left: 1.5rem;"><a href="#what-you-get">What You Get</a></li><li style="margin-left: 1.5rem;"><a href="#prerequisites">Prerequisites</a></li><li style="margin-left: 1.5rem;"><a href="#installation">Installation</a></li><li style=""><a href="#clone-the-repository">Clone the repository</a></li><li style=""><a href="#run-the-quick-setup">Run the quick setup</a></li><li style="margin-left: 1.5rem;"><a href="#enable-obs-websocket">Enable OBS WebSocket</a></li><li style="margin-left: 1.5rem;"><a href="#advanced-usage">Advanced Usage</a></li><li style="margin-left: 3.0rem;"><a href="#generate-custom-overlays">Generate Custom Overlays</a></li><li style="margin-left: 3.0rem;"><a href="#use-custom-overlays">Use Custom Overlays</a></li><li style="margin-left: 3.0rem;"><a href="#export-scene-collection">Export Scene Collection</a></li><li style="margin-left: 1.5rem;"><a href="#templates-available">Templates Available</a></li><li style="margin-left: 1.5rem;"><a href="#documentation">Documentation</a></li><li style="margin-left: 1.5rem;"><a href="#project-structure">Project Structure</a></li><li style="margin-left: 1.5rem;"><a href="#support">Support</a></li><li style="margin-left: 1.5rem;"><a href="#license">License</a></li></ul></div>
+
+        <div class="content">
+            <h1>OBS Scenes Setup</h1>
+<p>Automated OBS Studio scene creation for programming tutorials and content creation. Set up professional streaming scenes in 2-3 minutes.</p>
+<h2>Quick Start</h2>
+<h3>Option 1: Fastest Setup (2-3 minutes)</h3>
+<pre><code><h1>Install dependencies and create scenes with defaults</h1>
+<p>python scripts/workflow.py --quick</p>
+<h1>Or use a specific template</h1>
+<p>python scripts/workflow.py --quick --template python-workshop</code></pre></p>
+<h3>Option 2: Custom Event Setup</h3>
+<pre><code><h1>Interactive setup with your event details</h1>
+<p>python scripts/workflow.py --event my-workshop</p>
+<h1>Or start with a template</h1>
+<p>python scripts/workflow.py --event my-workshop --template java</code></pre></p>
+<h3>Option 3: Direct OBS Creation</h3>
+<pre><code><h1>Just create OBS scenes (if you already have overlays)</h1>
+<p>python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi</code></pre></p>
+<h2>What You Get</h2>
+<div class="success">✅ <strong>7 Professional Scenes</strong></div>
+<ul>
+<li>🎬 Intro Scene (F1) - Professional intro with countdown</li>
+<li>👤 Talking Head (F2) - Full camera view</li>
+<li>💻 Code + Camera (F3) - Split screen with PiP</li>
+<li>🖥️ Screen Only (F4) - Full screen capture</li>
+<li>📺 BRB/Technical (F5) - Break screen</li>
+<li>🎯 Outro Scene (F6) - Professional closing</li>
+</ul>
+<div class="success">✅ <strong>Professional Audio</strong> - Automatic noise suppression, compression, and limiting</div>
+<div class="success">✅ <strong>Dynamic Overlays</strong> - HTML/CSS overlays with your branding</div>
+<div class="success">✅ <strong>Cross-Platform</strong> - Works on Windows, Linux, macOS, and WSL</div>
+<h2>Prerequisites</h2>
+<ul>
+<li>Python 3.8+</li>
+<li>OBS Studio 28+ with WebSocket enabled</li>
+<li>Git (for cloning the repository)</li>
+</ul>
+<h2>Installation</h2>
+<pre><code><h1>Clone the repository</h1>
+<p>git clone https://github.com/artivisi/obs-scenes-setup.git</p>
+<p>cd obs-scenes-setup</p>
+<h1>Run the quick setup</h1>
+<p>python scripts/workflow.py --quick</code></pre></p>
+<h2>Enable OBS WebSocket</h2>
+<ol>
+<li>Open OBS Studio</li>
+<li>Go to Tools → WebSocket Server Settings</li>
+<li>Check "Enable WebSocket server"</li>
+<li>Use default port 4455 (no password needed for local use)</li>
+</ul>
+<h2>Advanced Usage</h2>
+<h3>Generate Custom Overlays</h3>
+<pre><code>python scripts/tools/populate-overlays.py --template python-workshop --preview</code></pre>
+<h3>Use Custom Overlays</h3>
+<pre><code>python scripts/obs/auto-scene-creator.py --create-live --overlay-path my-overlays</code></pre>
+<h3>Export Scene Collection</h3>
+<pre><code>python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json</code></pre>
+<h2>Templates Available</h2>
+<ul>
+<li><code>java</code> - Java development with Spring Boot</li>
+<li><code>python-workshop</code> - Python with FastAPI</li>
+<li><code>linux-admin</code> - Linux administration</li>
+<li>More templates in <code>docs/resources/templates/</code></li>
+</ul>
+<h2>Documentation</h2>
+<ul>
+<li><a href="docs/TECHNICAL.md">Technical Documentation</a> - Architecture and API details</li>
+<li><a href="CLAUDE.md">Claude Code Integration</a> - AI assistant configuration</li>
+</ul>
+<h2>Project Structure</h2>
+<pre><code>obs-scenes-setup/
+<p>├── scripts/           # Automation scripts</p>
+<p>│   ├── workflow.py    # Main workflow orchestrator</p>
+<p>│   ├── obs/          # OBS integration</p>
+<p>│   ├── tools/        # Overlay generation</p>
+<p>│   └── utils/        # Utility modules</p>
+<p>├── docs/             # Documentation and web assets</p>
+<p>│   ├── overlays/     # HTML overlay templates</p>
+<p>│   └── resources/    # Event templates</p>
+<p>└── generated-overlays/ # Your custom overlays (created automatically)</code></pre></p>
+<h2>Support</h2>
+<ul>
+<li>Issues: <a href="https://github.com/artivisi/obs-scenes-setup/issues">GitHub Issues</a></li>
+<li>Documentation: <a href="docs/TECHNICAL.md">Technical Details</a></li>
+</ul>
+<h2>License</h2>
+<p>MIT License - Feel free to customize and use for your content creation!</p>
+        </div>
+    </div>
+
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top">
+        ↑
+    </button>
+
+    <script>
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            const button = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

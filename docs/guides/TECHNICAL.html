@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Documentation - OBS Infrastructure-as-Code</title>
+    <meta name="description" content="Architecture, API reference, and development guidelines.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+        }
+        
+        .nav-bar {
+            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-brand {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .doc-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .doc-title {
+            color: #2e3192;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .doc-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .breadcrumb {
+            font-size: 0.9rem;
+            color: #58c034;
+            margin-bottom: 1rem;
+        }
+        
+        .breadcrumb a {
+            color: #58c034;
+            text-decoration: none;
+        }
+        
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .content h1 {
+            color: #2e3192;
+            font-size: 2rem;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #58c034;
+        }
+        
+        .content h2 {
+            color: #2e3192;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        .content h3 {
+            color: #2e3192;
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        .content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        
+        .content ul, .content ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+        
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .content code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+        
+        .content pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .content pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        
+        .content blockquote {
+            border-left: 4px solid #58c034;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .content th, .content td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .content th {
+            background: #2e3192;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .content tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .warning::before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .info::before {
+            content: "💡 ";
+            font-weight: bold;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .success::before {
+            content: "✅ ";
+            font-weight: bold;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .toc h3 {
+            color: #2e3192;
+            margin-bottom: 1rem;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc a {
+            color: #58c034;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #58c034;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: #45a029;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .doc-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-brand">🎬 OBS Scenes Setup</a>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="README.html">Getting Started</a>
+                <a href="TECHNICAL.html">Technical Docs</a>
+                <a href="../overlays/">Overlays</a>
+                <a href="https://github.com/artivisi/obs-scenes-setup">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="doc-header">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <a href="#">Technical Docs</a>
+            </div>
+            <h1 class="doc-title">Technical Documentation</h1>
+            <p class="doc-subtitle">Architecture, API reference, and development guidelines.</p>
+        </div>
+
+        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#technical-documentation">Technical Documentation</a></li><li style="margin-left: 1.5rem;"><a href="#architecture-overview">Architecture Overview</a></li><li style="margin-left: 1.5rem;"><a href="#core-components">Core Components</a></li><li style="margin-left: 3.0rem;"><a href="#workflow-orchestration-scriptsworkflowpy">Workflow Orchestration (`scripts/workflow.py`)</a></li><li style="margin-left: 3.0rem;"><a href="#obs-integration-scriptsobsauto-scene-creatorpy">OBS Integration (`scripts/obs/auto-scene-creator.py`)</a></li><li style="margin-left: 3.0rem;"><a href="#overlay-system-scriptstoolspopulate-overlayspy">Overlay System (`scripts/tools/populate-overlays.py`)</a></li><li style="margin-left: 1.5rem;"><a href="#utility-modules">Utility Modules</a></li><li style="margin-left: 3.0rem;"><a href="#scriptsutilsobs_utilspy">`scripts/utils/obs_utils.py`</a></li><li style="margin-left: 3.0rem;"><a href="#scriptsutilsscene_generatorpy">`scripts/utils/scene_generator.py`</a></li><li style="margin-left: 3.0rem;"><a href="#scriptsutilstext_customizerpy">`scripts/utils/text_customizer.py`</a></li><li style="margin-left: 1.5rem;"><a href="#network-architecture">Network Architecture</a></li><li style="margin-left: 3.0rem;"><a href="#wsl-support">WSL Support</a></li><li style="margin-left: 3.0rem;"><a href="#overlay-serving-priority">Overlay Serving Priority</a></li><li style="margin-left: 1.5rem;"><a href="#scene-templates">Scene Templates</a></li><li style="margin-left: 1.5rem;"><a href="#audio-processing-chain">Audio Processing Chain</a></li><li style="margin-left: 1.5rem;"><a href="#event-configuration-schema">Event Configuration Schema</a></li><li style="margin-left: 1.5rem;"><a href="#api-reference">API Reference</a></li><li style="margin-left: 3.0rem;"><a href="#workflow-class">Workflow Class</a></li><li style="margin-left: 3.0rem;"><a href="#scene-creator-class">Scene Creator Class</a></li><li style="margin-left: 3.0rem;"><a href="#overlay-populator-class">Overlay Populator Class</a></li><li style="margin-left: 1.5rem;"><a href="#macropad-integration-optional">Macropad Integration (Optional)</a></li><li style="margin-left: 3.0rem;"><a href="#vial-configuration">Vial Configuration</a></li><li style="margin-left: 3.0rem;"><a href="#key-mappings">Key Mappings</a></li><li style="margin-left: 1.5rem;"><a href="#development-guidelines">Development Guidelines</a></li><li style="margin-left: 3.0rem;"><a href="#adding-new-scene-templates">Adding New Scene Templates</a></li><li style="margin-left: 3.0rem;"><a href="#creating-event-templates">Creating Event Templates</a></li><li style="margin-left: 3.0rem;"><a href="#cross-platform-considerations">Cross-Platform Considerations</a></li><li style="margin-left: 1.5rem;"><a href="#troubleshooting">Troubleshooting</a></li><li style="margin-left: 3.0rem;"><a href="#obs-websocket-connection">OBS WebSocket Connection</a></li><li style="margin-left: 3.0rem;"><a href="#overlay-issues">Overlay Issues</a></li><li style="margin-left: 3.0rem;"><a href="#device-detection">Device Detection</a></li></ul></div>
+
+        <div class="content">
+            <h1>Technical Documentation</h1>
+<h2>Architecture Overview</h2>
+<p>This OBS automation system uses an Infrastructure-as-Code approach with a 4-stage workflow pipeline:</p>
+<ol>
+<li><strong>Environment Setup</strong> - Dependency installation and system validation</li>
+<li><strong>Event Configuration</strong> - JSON-based event customization</li>
+<li><strong>Overlay Generation</strong> - HTML/CSS/JS overlay creation from templates</li>
+<li><strong>OBS Integration</strong> - Automated scene creation via WebSocket</li>
+</ul>
+<h2>Core Components</h2>
+<h3>Workflow Orchestration (<code>scripts/workflow.py</code>)</h3>
+<ul>
+<li>Master controller managing the complete pipeline</li>
+<li>Supports quick setup (2-3 minutes) and full customization</li>
+<li>Template support for different content types</li>
+</ul>
+<h3>OBS Integration (<code>scripts/obs/auto-scene-creator.py</code>)</h3>
+<ul>
+<li>Creates 7 professional scenes automatically</li>
+<li>Cross-platform device detection</li>
+<li>Automatic HTTP server for local overlay serving</li>
+<li>Professional audio filter chain configuration</li>
+</ul>
+<h3>Overlay System (<code>scripts/tools/populate-overlays.py</code>)</h3>
+<ul>
+<li>Dynamic HTML/CSS/JS overlays</li>
+<li>Event-specific content generation</li>
+<li>GitHub Pages hosting with offline fallback</li>
+</ul>
+<h2>Utility Modules</h2>
+<h3><code>scripts/utils/obs_utils.py</code></h3>
+<ul>
+<li>OBS WebSocket connection management</li>
+<li>Automatic WSL/Windows bridge detection</li>
+<li>Scene and source management classes</li>
+</ul>
+<h3><code>scripts/utils/scene_generator.py</code></h3>
+<ul>
+<li>Scene layout templates and positioning</li>
+<li>Transform calculations for sources</li>
+<li>Scene collection building utilities</li>
+</ul>
+<h3><code>scripts/utils/text_customizer.py</code></h3>
+<ul>
+<li>Text processing and content personalization</li>
+<li>Event-specific text replacement</li>
+</ul>
+<h2>Network Architecture</h2>
+<h3>WSL Support</h3>
+<p>The system automatically detects WSL environments and configures networking:</p>
+<ul>
+<li>Windows host IP detection for OBS WebSocket</li>
+<li>ETH0 IP address for HTTP server</li>
+<li>Cross-platform path handling</li>
+</ul>
+<h3>Overlay Serving Priority</h3>
+<ol>
+<li><strong>Custom overlays</strong> - User-generated content</li>
+<li><strong>Local overlays</strong> - Offline mode with HTTP server</li>
+<li><strong>GitHub Pages</strong> - Online mode fallback</li>
+</ul>
+<h2>Scene Templates</h2>
+<p>| Scene | Hotkey | Description |</p>
+<p>|-------|--------|-------------|</p>
+<p>| 🎬 Intro | F1 | Professional intro with countdown |</p>
+<p>| 👤 Talking Head | F2 | Full camera for presentations |</p>
+<p>| 💻 Code + Camera | F3 | Split screen with PiP camera |</p>
+<p>| 🖥️ Screen Only | F4 | Full screen capture |</p>
+<p>| 📺 BRB/Technical | F5 | Break screen |</p>
+<p>| 🎯 Outro | F6 | Professional closing |</p>
+<h2>Audio Processing Chain</h2>
+<p>Each microphone source automatically receives:</p>
+<ol>
+<li><strong>Noise Suppression</strong> (RNNoise method)</li>
+<li><strong>Compressor</strong> (10:1 ratio, -18dB threshold)</li>
+<li><strong>Limiter</strong> (-6dB threshold, 60ms release)</li>
+</ul>
+<h2>Event Configuration Schema</h2>
+<pre><code>{
+<p>  "event": {</p>
+<p>    "title": "Event Title",</p>
+<p>    "subtitle": "Event Subtitle",</p>
+<p>    "duration": "90 minutes",</p>
+<p>    "type": "Workshop"</p>
+<p>  },</p>
+<p>  "presenter": {</p>
+<p>    "name": "Name",</p>
+<p>    "title": "Title",</p>
+<p>    "company": "Company"</p>
+<p>  },</p>
+<p>  "session": {</p>
+<p>    "topics": ["Topic 1", "Topic 2"],</p>
+<p>    "tech_stack": [</p>
+<p>      {"icon": "🎯", "name": "Technology"}</p>
+<p>    ]</p>
+<p>  }</p>
+<p>}</code></pre></p>
+<h2>API Reference</h2>
+<h3>Workflow Class</h3>
+<pre><code>workflow = OBSWorkflow(github_user="username")
+<p>workflow.quick_setup(template="java")</p>
+<p>workflow.full_workflow(event_name="my-event", template="python-workshop")</code></pre></p>
+<h3>Scene Creator Class</h3>
+<pre><code>creator = AutoSceneCreator(
+<p>    github_user="username",</p>
+<p>    offline_mode=True,</p>
+<p>    custom_overlay_path="path/to/overlays"</p>
+<p>)</p>
+<p>await creator.create_all_scenes_live()</code></pre></p>
+<h3>Overlay Populator Class</h3>
+<pre><code>populator = OverlayPopulator()
+<p>populator.populate_all_overlays(config, output_dir)</code></pre></p>
+<h2>Macropad Integration (Optional)</h2>
+<h3>Vial Configuration</h3>
+<p>The system supports a 4-layer macropad configuration:</p>
+<ul>
+<li><strong>Layer 0</strong>: OBS Control (scene switching, recording)</li>
+<li><strong>Layer 1</strong>: Tutorial Mode (zoom, annotations)</li>
+<li><strong>Layer 2</strong>: Development (IDE shortcuts)</li>
+<li><strong>Layer 3</strong>: System Control (audio, display)</li>
+</ul>
+<h3>Key Mappings</h3>
+<ul>
+<li>F1-F6: Scene switching</li>
+<li>F13-F24: Recording/streaming control</li>
+<li>Custom macros for common actions</li>
+</ul>
+<h2>Development Guidelines</h2>
+<h3>Adding New Scene Templates</h3>
+<ol>
+<li>Define layout in <code>scene_generator.py</code></li>
+<li>Create HTML overlay in <code>docs/overlays/</code></li>
+<li>Update scene creation in <code>auto-scene-creator.py</code></li>
+</ul>
+<h3>Creating Event Templates</h3>
+<ol>
+<li>Add JSON template in <code>docs/resources/templates/</code></li>
+<li>Test with <code>populate-overlays.py</code></li>
+<li>Verify with full workflow</li>
+</ul>
+<h3>Cross-Platform Considerations</h3>
+<ul>
+<li>Use <code>pathlib.Path</code> for all file operations</li>
+<li>Handle WSL networking automatically</li>
+<li>Test on Windows, Linux, and macOS</li>
+</ul>
+<h2>Troubleshooting</h2>
+<h3>OBS WebSocket Connection</h3>
+<ul>
+<li>Ensure OBS WebSocket is enabled (Tools → WebSocket Server Settings)</li>
+<li>Default port: 4455</li>
+<li>WSL users: automatically detects Windows host IP</li>
+</ul>
+<h3>Overlay Issues</h3>
+<ul>
+<li>Check HTTP server is running (port 8080)</li>
+<li>Verify overlay files exist in specified directory</li>
+<li>Test URLs in browser before OBS integration</li>
+</ul>
+<h3>Device Detection</h3>
+<ul>
+<li>Cameras/microphones are auto-detected</li>
+<li>Manual configuration available in OBS after scene creation</li>
+<li>Check system permissions for device access</li>
+</ul>
+        </div>
+    </div>
+
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top">
+        ↑
+    </button>
+
+    <script>
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            const button = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

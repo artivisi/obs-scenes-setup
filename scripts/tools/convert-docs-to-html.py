@@ -335,13 +335,13 @@ def create_html_template() -> str:
 <body>
     <nav class="nav-bar">
         <div class="nav-container">
-            <a href="../index.html" class="nav-brand">🎬 OBS Infrastructure-as-Code</a>
+            <a href="../index.html" class="nav-brand">🎬 OBS Scenes Setup</a>
             <div class="nav-links">
                 <a href="../index.html">Home</a>
-                <a href="AUTOMATED_SETUP.html">Automation</a>
-                <a href="OBS_SETUP_GUIDE.html">Manual Setup</a>
-                <a href="MACROPAD_DESIGN.html">Macropad</a>
+                <a href="README.html">Getting Started</a>
+                <a href="TECHNICAL.html">Technical Docs</a>
                 <a href="../overlays/">Overlays</a>
+                <a href="https://github.com/artivisi/obs-scenes-setup">GitHub</a>
             </div>
         </div>
     </nav>
@@ -513,49 +513,28 @@ def main():
     # Ensure directories exist
     guides_dir.mkdir(exist_ok=True)
     
-    # Define conversion mappings
+    # Define conversion mappings - now only essential docs
     conversions = [
         {
-            'input': root_dir / 'AUTOMATED_SETUP.md',
-            'output': guides_dir / 'AUTOMATED_SETUP.html',
-            'title': 'Automated OBS Setup',
-            'description': 'Skip the manual clicking! Complete automation guide for OBS scene creation.',
-            'breadcrumb': 'Automated Setup'
+            'input': root_dir / 'README.md',
+            'output': guides_dir / 'README.html',
+            'title': 'OBS Scenes Setup',
+            'description': 'Automated OBS Studio scene creation for programming tutorials and content creation.',
+            'breadcrumb': 'Getting Started'
         },
         {
-            'input': root_dir / 'OBS_SETUP_GUIDE.md',
-            'output': guides_dir / 'OBS_SETUP_GUIDE.html',
-            'title': 'Manual OBS Setup Guide',
-            'description': 'Comprehensive step-by-step manual configuration for professional OBS setup.',
-            'breadcrumb': 'Manual Setup'
+            'input': docs_dir / 'TECHNICAL.md',
+            'output': guides_dir / 'TECHNICAL.html',
+            'title': 'Technical Documentation',
+            'description': 'Architecture, API reference, and development guidelines.',
+            'breadcrumb': 'Technical Docs'
         },
         {
-            'input': root_dir / 'MACROPAD_DESIGN.md',
-            'output': guides_dir / 'MACROPAD_DESIGN.html',
-            'title': 'Macropad Configuration',
-            'description': '4-layer macropad system with Vial firmware for OBS control.',
-            'breadcrumb': 'Macropad'
-        },
-        {
-            'input': root_dir / 'PROJECT_NOTES.md',
-            'output': guides_dir / 'PROJECT_NOTES.html',
-            'title': 'Project Architecture',
-            'description': 'Technical deep-dive into the Infrastructure-as-Code approach.',
-            'breadcrumb': 'Architecture'
-        },
-        {
-            'input': root_dir / 'WORKFLOW_GUIDE.md',
-            'output': guides_dir / 'WORKFLOW_GUIDE.html',
-            'title': 'Complete Workflow Guide',
-            'description': 'Master the new streamlined workflow for event-specific OBS setups.',
-            'breadcrumb': 'Workflow Guide'
-        },
-        {
-            'input': root_dir / 'docs' / 'resources' / 'README.md',
-            'output': guides_dir / 'OVERLAY_RESOURCES.html',
-            'title': 'Overlay Resource System',
-            'description': 'Generate event-specific overlays from JSON templates.',
-            'breadcrumb': 'Overlay Resources'
+            'input': root_dir / 'CLAUDE.md',
+            'output': guides_dir / 'CLAUDE.html',
+            'title': 'Claude Code Integration',
+            'description': 'AI assistant configuration and codebase instructions.',
+            'breadcrumb': 'Claude Integration'
         }
     ]
     
