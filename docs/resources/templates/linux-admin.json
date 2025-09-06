@@ -1,0 +1,62 @@
+{
+  "event": {
+    "title": "Linux System Administration",
+    "subtitle": "Server Management & Security",
+    "date": "2024-12-09", 
+    "duration": "150 minutes",
+    "type": "Training Session",
+    "description": "Advanced Topics"
+  },
+  "presenter": {
+    "name": "Mike Chen",
+    "title": "DevOps Engineer",
+    "experience": "12+ years in System Administration",
+    "specialty": "Linux Security & Automation",
+    "company": "ArtiVisi Intermedia"
+  },
+  "session": {
+    "topics": [
+      "Linux Administration",
+      "Shell Scripting", 
+      "System Monitoring",
+      "Security Hardening",
+      "Automation Tools"
+    ],
+    "tech_stack": [
+      {
+        "icon": "🐧",
+        "name": "Linux"
+      },
+      {
+        "icon": "🔧",
+        "name": "DevOps"
+      },
+      {
+        "icon": "☸️", 
+        "name": "Kubernetes"
+      },
+      {
+        "icon": "📊",
+        "name": "Monitoring"
+      }
+    ],
+    "current_topic": "Linux Administration"
+  },
+  "messages": {
+    "welcome": "Linux Administration Training",
+    "thanks": "Training Complete!",
+    "thanks_message": "Hope you enjoyed this Linux administration session",
+    "recording_status": "REC",
+    "countdown_text": "Training begins in",
+    "what_we_covered": "Skills Mastered"
+  },
+  "countdown": {
+    "enabled": true,
+    "seconds": 15,
+    "auto_hide": true
+  },
+  "macropad": {
+    "current_layer": 3,
+    "layer_name": "System Admin Mode"
+  }
+}

@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overlay Resource System - OBS Infrastructure-as-Code</title>
+    <meta name="description" content="Generate event-specific overlays from JSON templates.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+        }
+        
+        .nav-bar {
+            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-brand {
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .doc-header {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .doc-title {
+            color: #2e3192;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .doc-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .breadcrumb {
+            font-size: 0.9rem;
+            color: #58c034;
+            margin-bottom: 1rem;
+        }
+        
+        .breadcrumb a {
+            color: #58c034;
+            text-decoration: none;
+        }
+        
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .content h1 {
+            color: #2e3192;
+            font-size: 2rem;
+            margin: 2rem 0 1rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #58c034;
+        }
+        
+        .content h2 {
+            color: #2e3192;
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem 0;
+        }
+        
+        .content h3 {
+            color: #2e3192;
+            font-size: 1.2rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+        
+        .content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        
+        .content ul, .content ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+        
+        .content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .content code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+        
+        .content pre {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .content pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+        
+        .content blockquote {
+            border-left: 4px solid #58c034;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .content th, .content td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .content th {
+            background: #2e3192;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .content tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .warning::before {
+            content: "⚠️ ";
+            font-weight: bold;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .info::before {
+            content: "💡 ";
+            font-weight: bold;
+        }
+        
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .success::before {
+            content: "✅ ";
+            font-weight: bold;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .toc h3 {
+            color: #2e3192;
+            margin-bottom: 1rem;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .toc a {
+            color: #58c034;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #58c034;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: #45a029;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .doc-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-brand">🎬 OBS Infrastructure-as-Code</a>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="AUTOMATED_SETUP.html">Automation</a>
+                <a href="OBS_SETUP_GUIDE.html">Manual Setup</a>
+                <a href="MACROPAD_DESIGN.html">Macropad</a>
+                <a href="../overlays/">Overlays</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="doc-header">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <a href="#">Overlay Resources</a>
+            </div>
+            <h1 class="doc-title">Overlay Resource System</h1>
+            <p class="doc-subtitle">Generate event-specific overlays from JSON templates.</p>
+        </div>
+
+        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#overlay-resource-system">Overlay Resource System</a></li><li style="margin-left: 1.5rem;"><a href="#-quick-start">🚀 Quick Start</a></li><li style=""><a href="#list-available-templates">List available templates</a></li><li style=""><a href="#generate-overlays-from-a-template">Generate overlays from a template</a></li><li style=""><a href="#generate-overlays-from-custom-config">Generate overlays from custom config</a></li><li style=""><a href="#generate-overlays-and-open-preview">Generate overlays and open preview</a></li><li style="margin-left: 1.5rem;"><a href="#-file-structure">📁 File Structure</a></li><li style="margin-left: 1.5rem;"><a href="#-configuration-format">⚙️ Configuration Format</a></li><li style="margin-left: 3.0rem;"><a href="#-event-information">🎬 Event Information</a></li><li style="margin-left: 3.0rem;"><a href="#-presenter-information">👤 Presenter Information</a></li><li style="margin-left: 3.0rem;"><a href="#-session-content">📚 Session Content</a></li><li style="margin-left: 3.0rem;"><a href="#-branding--social">🎨 Branding & Social</a></li><li style="margin-left: 3.0rem;"><a href="#-messages--text">💬 Messages & Text</a></li><li style="margin-left: 3.0rem;"><a href="#-call-to-action-cards--">🎯 Call-to-Action Cards  </a></li><li style="margin-left: 1.5rem;"><a href="#-creating-new-templates">📝 Creating New Templates</a></li><li style="margin-left: 1.5rem;"><a href="#-supported-overlays">🎨 Supported Overlays</a></li><li style="margin-left: 1.5rem;"><a href="#-how-it-works">🔧 How It Works</a></li><li style="margin-left: 1.5rem;"><a href="#-benefits">🎯 Benefits</a></li><li style="margin-left: 1.5rem;"><a href="#-integration-with-obs">🚀 Integration with OBS</a></li><li style=""><a href="#generate-event-specific-overlays">Generate event-specific overlays</a></li><li style=""><a href="#use-with-obs-scene-creator-use-local-files">Use with OBS scene creator (use local files)</a></li><li style="margin-left: 1.5rem;"><a href="#-how-to-customize-event-texts">🎯 How to Customize Event Texts</a></li><li style="margin-left: 3.0rem;"><a href="#method-1-quick-interactive-setup">Method 1: Quick Interactive Setup</a></li><li style=""><a href="#the-workflow-script-will-prompt-you-for-key-details">The workflow script will prompt you for key details</a></li><li style="margin-left: 3.0rem;"><a href="#method-2-direct-json-editing">Method 2: Direct JSON Editing</a></li><li style=""><a href="#1-copy-the-base-configuration">1. Copy the base configuration</a></li><li style=""><a href="#2-edit-with-your-favorite-text-editor">2. Edit with your favorite text editor</a></li><li style=""><a href="#3-generate-overlays-with-your-customizations">3. Generate overlays with your customizations</a></li><li style="margin-left: 3.0rem;"><a href="#method-3-start-with-template">Method 3: Start with Template</a></li><li style=""><a href="#1-copy-a-template-thats-closest-to-your-event">1. Copy a template that's closest to your event</a></li><li style=""><a href="#2-edit-the-json-file-with-your-specific-content">2. Edit the JSON file with your specific content</a></li><li style=""><a href="#3-generate-overlays">3. Generate overlays</a></li><li style="margin-left: 1.5rem;"><a href="#-what-to-edit-in-the-json">✏️ What to Edit in the JSON</a></li><li style="margin-left: 3.0rem;"><a href="#essential-information-to-change">Essential Information to Change</a></li><li style="margin-left: 3.0rem;"><a href="#optional-customizations">Optional Customizations</a></li><li style="margin-left: 1.5rem;"><a href="#-examples">📚 Examples</a></li><li style="margin-left: 3.0rem;"><a href="#example-1-corporate-java-training">Example 1: Corporate Java Training</a></li><li style="margin-left: 3.0rem;"><a href="#example-2-python-beginner-workshop--">Example 2: Python Beginner Workshop  </a></li><li style="margin-left: 3.0rem;"><a href="#example-3-devops-masterclass">Example 3: DevOps Masterclass</a></li><li style="margin-left: 1.5rem;"><a href="#-quick-setup-workflow">🚀 Quick Setup Workflow</a></li><li style="margin-left: 3.0rem;"><a href="#for-regular-content-creators">For Regular Content Creators</a></li><li style=""><a href="#1-create-your-standard-template">1. Create your standard template</a></li><li style=""><a href="#edit-with-your-standard-company-info-branding-etc">Edit with your standard company info, branding, etc.</a></li><li style=""><a href="#2-for-each-new-event-copy-and-customize">2. For each new event, copy and customize</a></li><li style=""><a href="#edit-just-the-event-title-topics-and-date">Edit just the event title, topics, and date</a></li><li style=""><a href="#3-generate-and-use">3. Generate and use</a></li></ul></div>
+
+        <div class="content">
+            <h1>Overlay Resource System</h1>
+<p>This system extracts all text labels and content from overlay files into easily editable resource files that can be configured before events and populated into final overlays via script.</p>
+<h2>🚀 Quick Start</h2>
+<pre><code><h1>List available templates</h1>
+<p>python3 scripts/tools/populate-overlays.py --list-templates</p>
+<h1>Generate overlays from a template</h1>
+<p>python3 scripts/tools/populate-overlays.py --template python-workshop --output my-event</p>
+<h1>Generate overlays from custom config</h1>
+<p>python3 scripts/tools/populate-overlays.py --config docs/resources/event-config.json --output my-event</p>
+<h1>Generate overlays and open preview</h1>
+<p>python3 scripts/tools/populate-overlays.py --template linux-admin --preview</code></pre></p>
+<h2>📁 File Structure</h2>
+<pre><code>docs/resources/
+<p>├── README.md                    # This file</p>
+<p>├── event-config.json           # Default event configuration</p>
+<p>├── templates/                  # Predefined event templates  </p>
+<p>│   ├── python-workshop.json    # Python workshop template</p>
+<p>│   └── linux-admin.json       # Linux administration template</p>
+<p>└── generated/                  # Output location for generated overlays</code></pre></p>
+<h2>⚙️ Configuration Format</h2>
+<p>The resource files use JSON format with these sections:</p>
+<h3>🎬 Event Information</h3>
+<pre><code>{
+<p>  "event": {</p>
+<p>    "title": "Java Development Mastery",</p>
+<p>    "subtitle": "Building Enterprise Applications with Spring Boot", </p>
+<p>    "date": "2024-12-07",</p>
+<p>    "duration": "90 minutes",</p>
+<p>    "type": "Live Session",</p>
+<p>    "description": "Interactive"</p>
+<p>  }</p>
+<p>}</code></pre></p>
+<h3>👤 Presenter Information</h3>
+<pre><code>{
+<p>  "presenter": {</p>
+<p>    "name": "Endy Muhardin",</p>
+<p>    "title": "Senior Developer", </p>
+<p>    "experience": "10+ years in Enterprise Java",</p>
+<p>    "specialty": "Spring Boot & Microservices",</p>
+<p>    "company": "ArtiVisi Intermedia"</p>
+<p>  }</p>
+<p>}</code></pre></p>
+<h3>📚 Session Content</h3>
+<pre><code>{
+<p>  "session": {</p>
+<p>    "topics": [</p>
+<p>      "Spring Boot Fundamentals",</p>
+<p>      "REST API Development",</p>
+<p>      "Database Integration"</p>
+<p>    ],</p>
+<p>    "tech_stack": [</p>
+<p>      {"icon": "☕", "name": "Java 17"},</p>
+<p>      {"icon": "🍃", "name": "Spring Boot"}</p>
+<p>    ],</p>
+<p>    "current_topic": "Java Programming"</p>
+<p>  }</p>
+<p>}</code></pre></p>
+<h3>🎨 Branding & Social</h3>
+<pre><code>{
+<p>  "branding": {</p>
+<p>    "company_name": "ArtiVisi Intermedia",</p>
+<p>    "company_tagline": "Custom Application Development", </p>
+<p>    "website": "artivisi.com",</p>
+<p>    "social_links": [</p>
+<p>      {"title": "GitHub", "url": "https://github.com/artivisi", "icon": "🐙"},</p>
+<p>      {"title": "LinkedIn", "url": "https://linkedin.com/company/artivisi", "icon": "💼"}</p>
+<p>    ]</p>
+<p>  }</p>
+<p>}</code></pre></p>
+<h3>💬 Messages & Text</h3>
+<pre><code>{
+<p>  "messages": {</p>
+<p>    "welcome": "Welcome to the Session",</p>
+<p>    "thanks": "Thank You!",</p>
+<p>    "thanks_message": "Hope you enjoyed this Java development session",</p>
+<p>    "recording_status": "REC",</p>
+<p>    "countdown_text": "Starting in"</p>
+<p>  }</p>
+<p>}</code></pre></p>
+<h3>🎯 Call-to-Action Cards  </h3>
+<pre><code>{
+<p>  "cta_cards": [</p>
+<p>    {</p>
+<p>      "icon": "👍",</p>
+<p>      "title": "Like & Subscribe", </p>
+<p>      "description": "Help us reach more developers!"</p>
+<p>    }</p>
+<p>  ]</p>
+<p>}</code></pre></p>
+<h2>📝 Creating New Templates</h2>
+<ol>
+<li><strong>Copy existing template:</strong></li>
+</ul>
+<p>   <pre><code>   cp docs/resources/templates/python-workshop.json docs/resources/templates/my-event.json</p>
+<p>   ``<code></p>
+<ol>
+<li><strong>Edit the JSON file</strong> with your event-specific content</li>
+</ul>
+<ol>
+<li><strong>Test the template:</strong></li>
+</ul>
+<p>   </code>`<code>bash</p>
+<p>   python3 scripts/tools/populate-overlays.py --template my-event --preview</p>
+<p>   </code>`<code></p>
+<h2>🎨 Supported Overlays</h2>
+<p>The system currently populates these overlay types:</p>
+<ul>
+<li><strong>🎬 intro.html</strong> - Opening sequence with title, tech stack, presenter info</li>
+<li><strong>👤 talking-head.html</strong> - Main presenter view with topic indicators  </li>
+<li><strong>🎉 outro.html</strong> - Closing sequence with session summary, CTA cards</li>
+<li><strong>📋 Other overlays</strong> - Copied as-is (code-demo, screen-only, brb, dual-cam)</li>
+</ul>
+<h2>🔧 How It Works</h2>
+<ol>
+<li><strong>Template Loading</strong> - Loads JSON configuration from file or template</li>
+<li><strong>Text Replacement</strong> - Replaces hardcoded text in HTML with config values</li>
+<li><strong>Dynamic Content</strong> - Generates HTML sections like tech stack, CTA cards, social links</li>
+<li><strong>Asset Copying</strong> - Copies CSS, JS, and image assets to output directory</li>
+<li><strong>Preview Generation</strong> - Creates index.html for easy overlay preview</li>
+</ul>
+<h2>🎯 Benefits</h2>
+<ul>
+<li><strong>✅ Event-specific Content</strong> - Easy customization for different events/topics</li>
+<li><strong>✅ Template Reusability</strong> - Predefined templates for common event types  </li>
+<li><strong>✅ Version Control</strong> - All text content tracked in JSON files</li>
+<li><strong>✅ Batch Generation</strong> - Generate all overlays with one command</li>
+<li><strong>✅ Preview Support</strong> - Built-in preview system for testing</li>
+<li><strong>✅ Asset Management</strong> - Automatic copying of CSS/JS/image files</li>
+</ul>
+<h2>🚀 Integration with OBS</h2>
+<p>The generated overlays work seamlessly with the existing OBS automation system:</p>
+</code></pre>bash
+<h1>Generate event-specific overlays</h1>
+<p>python3 scripts/tools/populate-overlays.py --template my-event --output event-overlays</p>
+<h1>Use with OBS scene creator (use local files)</h1>
+<p>python3 scripts/obs/auto-scene-creator.py --create-live --offline --overlay-path event-overlays</p>
+<pre><code>
+<h2>🎯 How to Customize Event Texts</h2>
+<h3>Method 1: Quick Interactive Setup</h3></code></pre>bash
+<h1>The workflow script will prompt you for key details</h1>
+<p>python scripts/workflow.py --event my-workshop</p>
+<pre><code>
+<strong>You'll be prompted for:</strong>
+<ul>
+<li><strong>Event Title</strong> (e.g., "Python FastAPI Workshop")</li>
+<li><strong>Event Subtitle</strong> (e.g., "Building Production APIs")  </li>
+<li><strong>Presenter Name</strong> (e.g., "Sarah Johnson")</li>
+<li><strong>Additional details</strong> (auto-filled from template)</li>
+</ul>
+<h3>Method 2: Direct JSON Editing</h3></code></pre>bash
+<h1>1. Copy the base configuration</h1>
+<p>cp docs/resources/event-config.json my-workshop.json</p>
+<h1>2. Edit with your favorite text editor</h1>
+<p>code my-workshop.json  # or nano, vim, etc.</p>
+<h1>3. Generate overlays with your customizations</h1>
+<p>python3 scripts/tools/populate-overlays.py --config my-workshop.json --output my-workshop-overlays</p>
+<pre><code>
+<h3>Method 3: Start with Template</h3></code></pre>bash
+<h1>1. Copy a template that's closest to your event</h1>
+<p>cp docs/resources/templates/python-workshop.json my-event.json</p>
+<h1>2. Edit the JSON file with your specific content</h1>
+<h1>3. Generate overlays</h1>
+<p>python3 scripts/tools/populate-overlays.py --config my-event.json --output my-event-overlays</p>
+<pre><code>
+<h2>✏️ What to Edit in the JSON</h2>
+<h3>Essential Information to Change</h3></code></pre>json
+<p>{</p>
+<p>  "event": {</p>
+<p>    "title": "📝 Change this to your event title",</p>
+<p>    "subtitle": "📝 Change this to your event subtitle",</p>
+<p>    "date": "📝 Event date (2024-12-15)",</p>
+<p>    "duration": "📝 How long (90 minutes, 2 hours, etc.)"</p>
+<p>  },</p>
+<p>  "presenter": {</p>
+<p>    "name": "📝 Your name or speaker name", </p>
+<p>    "title": "📝 Job title (Senior Developer, etc.)",</p>
+<p>    "experience": "📝 Experience description",</p>
+<p>    "company": "📝 Your company name"</p>
+<p>  },</p>
+<p>  "session": {</p>
+<p>    "topics": [</p>
+<p>      "📝 Replace with your actual topics",</p>
+<p>      "📝 Topic 2", </p>
+<p>      "📝 Topic 3"</p>
+<p>    ],</p>
+<p>    "current_topic": "📝 Main topic for overlay display"</p>
+<p>  },</p>
+<p>  "branding": {</p>
+<p>    "company_name": "📝 Your company name",</p>
+<p>    "website": "📝 yourcompany.com"</p>
+<p>  }</p>
+<p>}</p>
+<pre><code>
+<h3>Optional Customizations</h3></code></pre>json
+<p>{</p>
+<p>  "messages": {</p>
+<p>    "welcome": "📝 Custom welcome message",</p>
+<p>    "thanks": "📝 Custom thank you message",</p>
+<p>    "recording_status": "📝 LIVE, REC, or custom status"</p>
+<p>  },</p>
+<p>  "cta_cards": [</p>
+<p>    {</p>
+<p>      "title": "📝 Custom call-to-action",</p>
+<p>      "description": "📝 What you want viewers to do"</p>
+<p>    }</p>
+<p>  ]</p>
+<p>}</p>
+<pre><code>
+<h2>📚 Examples</h2>
+<h3>Example 1: Corporate Java Training</h3></code></pre>json
+<p>{</p>
+<p>  "event": {</p>
+<p>    "title": "Enterprise Java Development",</p>
+<p>    "subtitle": "Spring Boot Microservices Architecture",</p>
+<p>    "date": "2024-01-15",</p>
+<p>    "duration": "3 hours"</p>
+<p>  },</p>
+<p>  "presenter": {</p>
+<p>    "name": "Michael Chen",</p>
+<p>    "title": "Senior Java Architect", </p>
+<p>    "experience": "15+ years in Enterprise Java",</p>
+<p>    "company": "TechCorp Solutions"</p>
+<p>  },</p>
+<p>  "session": {</p>
+<p>    "topics": [</p>
+<p>      "Spring Boot Fundamentals",</p>
+<p>      "Microservices Design Patterns", </p>
+<p>      "API Gateway Implementation",</p>
+<p>      "Production Deployment Strategies"</p>
+<p>    ]</p>
+<p>  }</p>
+<p>}</p>
+<pre><code>
+<h3>Example 2: Python Beginner Workshop  </h3></code></pre>json
+<p>{</p>
+<p>  "event": {</p>
+<p>    "title": "Python for Beginners",</p>
+<p>    "subtitle": "Your First Steps in Programming",</p>
+<p>    "date": "2024-02-10", </p>
+<p>    "duration": "90 minutes"</p>
+<p>  },</p>
+<p>  "presenter": {</p>
+<p>    "name": "Sarah Rodriguez",</p>
+<p>    "title": "Python Instructor",</p>
+<p>    "experience": "5+ years teaching Python",</p>
+<p>    "company": "Code Learning Academy"</p>
+<p>  },</p>
+<p>  "messages": {</p>
+<p>    "welcome": "Welcome to Python Basics!",</p>
+<p>    "thanks": "Great job learning Python!",</p>
+<p>    "thanks_message": "You're ready to build amazing things with Python!"</p>
+<p>  }</p>
+<p>}</p>
+<pre><code>
+<h3>Example 3: DevOps Masterclass</h3></code></pre>json
+<p>{</p>
+<p>  "event": {</p>
+<p>    "title": "DevOps Automation Masterclass", </p>
+<p>    "subtitle": "CI/CD with Docker and Kubernetes",</p>
+<p>    "date": "2024-03-05",</p>
+<p>    "duration": "4 hours"</p>
+<p>  },</p>
+<p>  "presenter": {</p>
+<p>    "name": "David Kim",</p>
+<p>    "title": "DevOps Lead Engineer",</p>
+<p>    "specialty": "Container Orchestration & Cloud Architecture",</p>
+<p>    "company": "CloudTech Solutions"</p>
+<p>  },</p>
+<p>  "session": {</p>
+<p>    "topics": [</p>
+<p>      "Container Fundamentals",</p>
+<p>      "Kubernetes Deployment",</p>
+<p>      "CI/CD Pipeline Setup", </p>
+<p>      "Production Monitoring"</p>
+<p>    ],</p>
+<p>    "tech_stack": [</p>
+<p>      {"icon": "🐋", "name": "Docker"},</p>
+<p>      {"icon": "☸️", "name": "Kubernetes"},</p>
+<p>      {"icon": "🔄", "name": "Jenkins"},</p>
+<p>      {"icon": "📊", "name": "Prometheus"}</p>
+<p>    ]</p>
+<p>  }</p>
+<p>}</p>
+<pre><code>
+<h2>🚀 Quick Setup Workflow</h2>
+<h3>For Regular Content Creators</h3></code></pre>bash
+<h1>1. Create your standard template</h1>
+<p>cp docs/resources/event-config.json my-standard-template.json</p>
+<h1>Edit with your standard company info, branding, etc.</h1>
+<h1>2. For each new event, copy and customize</h1>
+<p>cp my-standard-template.json todays-workshop.json</p>
+<h1>Edit just the event title, topics, and date</h1>
+<h1>3. Generate and use</h1>
+<p>python3 scripts/tools/populate-overlays.py --config todays-workshop.json --output todays-overlays</p>
+<p>python scripts/obs/auto-scene-creator.py --create-live --overlay-path todays-overlays</p>
+</code>``
+<p>This system transforms the overlay creation process from manual HTML editing to simple JSON configuration, making it easy to prepare professional overlays for any event in minutes.</p>
+        </div>
+    </div>
+
+    <button class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top">
+        ↑
+    </button>
+
+    <script>
+        // Show/hide back to top button
+        window.addEventListener('scroll', function() {
+            const button = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+{
+  "event": {
+    "title": "Python Web Development",
+    "subtitle": "Modern APIs with FastAPI",
+    "date": "2024-12-08",
+    "duration": "120 minutes",
+    "type": "Workshop",
+    "description": "Hands-on Coding"
+  },
+  "presenter": {
+    "name": "Sarah Johnson",
+    "title": "Python Developer",
+    "experience": "8+ years in Python Development",
+    "specialty": "FastAPI & Data Science",
+    "company": "ArtiVisi Intermedia"
+  },
+  "session": {
+    "topics": [
+      "Python Fundamentals",
+      "FastAPI Development",
+      "Data Processing",
+      "Testing with pytest",
+      "Deployment Strategies"
+    ],
+    "tech_stack": [
+      {
+        "icon": "🐍",
+        "name": "Python 3.9"
+      },
+      {
+        "icon": "⚡",
+        "name": "FastAPI"
+      },
+      {
+        "icon": "🗄️",
+        "name": "MongoDB"
+      },
+      {
+        "icon": "🐋",
+        "name": "Docker"
+      }
+    ],
+    "current_topic": "Python Programming"
+  },
+  "messages": {
+    "welcome": "Welcome to Python Workshop",
+    "thanks": "Thank You!",
+    "thanks_message": "Hope you enjoyed this Python programming session",
+    "recording_status": "LIVE",
+    "countdown_text": "Workshop starts in",
+    "what_we_covered": "Skills You Learned"
+  },
+  "countdown": {
+    "enabled": true,
+    "seconds": 10,
+    "auto_hide": false
+  },
+  "macropad": {
+    "current_layer": 2,
+    "layer_name": "Workshop Mode"
+  }
+}

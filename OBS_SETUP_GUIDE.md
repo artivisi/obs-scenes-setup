@@ -109,7 +109,7 @@ Only follow this section if you cannot use the automated setup:
 
 ### Camera Setup
 
-The automated system detects cameras automatically. For manual setup:
+The automated system configures cameras for you. For manual setup:
 
 **Recommended Camera Settings:**
 - **Resolution**: 1920x1080 or 1080x1080 (square for better framing)
@@ -119,7 +119,7 @@ The automated system detects cameras automatically. For manual setup:
 **Multi-Camera Setup:**
 - **Primary Camera**: Main presenter camera
 - **Secondary Camera**: Guest or alternate angle
-- Connect in consistent order for reliable device detection
+- Connect in consistent order for reliable operation
 
 ### Audio Configuration
 
@@ -305,19 +305,16 @@ All overlays use these optimized settings:
 
 ## Device Management
 
-### Cross-Platform Device Detection
+### Cross-Platform Setup
 
-Before setting up scenes, run the device detection script:
+Before setting up scenes, ensure your dependencies are installed:
 
 ```bash
-# Scan all available devices
-python scripts/obs/device-manager.py --scan
+# Install required dependencies
+python scripts/setup/install-dependencies.py
 
-# Generate platform-specific profile
-python scripts/obs/device-manager.py --generate-profile
-
-# Test device connectivity
-python scripts/obs/device-manager.py --test-devices
+# Create automated scenes (recommended)
+python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 ```
 
 ### USB Hub Best Practices

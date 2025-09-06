@@ -4,7 +4,7 @@
 
 🚀 **2-3 minute total setup time**  
 🤖 **Zero manual configuration**  
-🛠️ **Cross-platform device detection**  
+🛠️ **Cross-platform compatibility**  
 🎬 **Professional scene templates**
 
 ## 📁 Directory Structure
@@ -14,6 +14,8 @@ scripts/
 ├── setup/          # System setup and hardware configuration
 ├── obs/            # OBS Studio automation and control
 ├── tools/          # Development and maintenance tools
+│   ├── populate-overlays.py    # Generate event-specific overlays
+│   └── convert-docs-to-html.py # Documentation generator
 └── README.md       # This file
 ```
 
@@ -47,7 +49,17 @@ python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --
 python scripts/obs/auto-scene-creator.py --generate-json --output professional-scenes.json
 ```
 
-### 3. Hardware Configuration (Optional)
+### 3. Event-Specific Overlays (Optional)
+```bash
+# Generate overlays for specific event types
+python3 scripts/tools/populate-overlays.py --template python-workshop --preview
+python3 scripts/tools/populate-overlays.py --template linux-admin --output my-event
+
+# Use custom overlays with OBS
+python scripts/obs/auto-scene-creator.py --create-live --offline --overlay-path my-event
+```
+
+### 4. Hardware Configuration (Optional)
 ```bash
 # Automated macropad setup with Vial
 python scripts/setup/setup-macropad.py
@@ -62,7 +74,7 @@ python scripts/tools/convert-docs-to-html.py
 
 | Script | Purpose | Key Features |
 |--------|---------|-------------|
-| **`install-dependencies.py`** | Install Python packages and system dependencies | ✅ Cross-platform package management<br>✅ Hardware validation<br>✅ Dependency checking |
+| **`install-dependencies.py`** | Install Python packages and system dependencies | ✅ Cross-platform package management<br>✅ Python environment validation<br>✅ OBS WebSocket dependency checking |
 | **`setup-macropad.py`** | Automated Vial macropad configuration | ✅ 4-layer OBS control system<br>✅ Auto-generates keymap<br>✅ Interactive setup wizard |
 | **`vial-setup-automation.py`** | Vial firmware automation engine | ✅ JSON keymap generation<br>✅ Layer management<br>✅ Hotkey mapping |
 
@@ -70,7 +82,7 @@ python scripts/tools/convert-docs-to-html.py
 
 | Script | Purpose | Key Features |
 |--------|---------|-------------|
-| **`auto-scene-creator.py`** | Complete OBS scene automation system | ✅ **7 professional scenes** with proper layering<br>✅ **Device auto-detection** (camera, audio)<br>✅ **Professional audio processing** (noise, compression, limiting)<br>✅ **Online/offline overlay support**<br>✅ **Content-specific templates** (Java, Linux, DevOps)<br>✅ **Cross-platform compatibility**<br>✅ **WebSocket + JSON export modes** |
+| **`auto-scene-creator.py`** | Complete OBS scene automation system | ✅ **7 professional scenes** with proper layering<br>✅ **Professional audio processing** (noise, compression, limiting)<br>✅ **Online/offline overlay support**<br>✅ **Content-specific templates** (Java, Linux, DevOps)<br>✅ **Cross-platform compatibility**<br>✅ **WebSocket + JSON export modes** |
 
 ### Lua Scripts (`scripts/obs/lua-scripts/`)
 
@@ -83,6 +95,7 @@ python scripts/tools/convert-docs-to-html.py
 
 | Script | Purpose | Key Features |
 |--------|---------|-------------|
+| **`populate-overlays.py`** | Event-specific overlay generation | ✅ **JSON-based content templates**<br>✅ **Predefined event types** (Python, Java, Linux)<br>✅ **Custom event configuration**<br>✅ **Asset copying and preview generation**<br>✅ **Easy integration with OBS scenes** |
 | **`convert-docs-to-html.py`** | Documentation generation system | ✅ **Markdown to HTML conversion**<br>✅ **GitHub Pages deployment**<br>✅ **Cross-referenced documentation**<br>✅ **Automated guide updates** |
 
 ## 🎯 Workflow Examples
@@ -107,7 +120,13 @@ curl -I https://artivisi.github.io/obs-scenes-setup/overlays/intro.html
 
 ### 🔄 Daily Content Creation
 ```bash
-# Switch to different content template as needed
+# Generate event-specific overlays
+python3 scripts/tools/populate-overlays.py --template python-workshop --output todays-workshop
+
+# Create OBS scenes with custom overlays
+python scripts/obs/auto-scene-creator.py --create-live --offline --overlay-path todays-workshop
+
+# Or switch to different content template as needed
 python scripts/obs/auto-scene-creator.py --create-live --template java --github-user artivisi
 ```
 
@@ -121,7 +140,11 @@ for template in java linux devops; do
     python scripts/obs/auto-scene-creator.py --generate-json --template $template --output test-$template.json
 done
 
-# Regenerate documentation after changes
+# Test overlay generation
+python3 scripts/tools/populate-overlays.py --list-templates
+python3 scripts/tools/populate-overlays.py --template linux-admin --preview
+
+# Regenerate documentation after changes  
 python scripts/tools/convert-docs-to-html.py
 ```
 
@@ -181,15 +204,15 @@ Complete Infrastructure-as-Code automation delivers:
 
 ### 🛠️ Technical Excellence
 - ✅ **Professional audio chain** (RNNoise suppression, 10:1 compression, peak limiting)
-- ✅ **Cross-platform device detection** (macOS AVFoundation, Windows DirectShow, Linux V4L2)
+- ✅ **Cross-platform compatibility** (macOS, Windows, Linux)
 - ✅ **Smart overlay management** (GitHub Pages production + local development)
-- ✅ **Automated source configuration** (cameras, microphones, screen capture)
+- ✅ **Event-specific content generation** (JSON templates for rapid customization)
 
 ### 🎮 Hardware Integration
 - ✅ **Vial macropad automation** (4-layer control system with auto-generated keymaps)
-- ✅ **USB device management** (consistent device detection across reconnections)
-- ✅ **Multi-camera support** (dual Cam Link 4K setup with proper addressing)
-- ✅ **Audio routing** (mix-minus for interviews, monitor without feedback)
+- ✅ **Multi-camera support** (professional dual-camera interview setups)
+- ✅ **Professional audio routing** (mix-minus for interviews, monitor without feedback)
+- ✅ **USB device compatibility** (cameras, microphones, capture cards)
 
 ### 📊 Reliability & Maintenance
 - ✅ **Comprehensive error handling** (graceful fallbacks, clear error messages)

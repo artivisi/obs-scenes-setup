@@ -6,6 +6,8 @@ on:
     paths:
       - '*.md'
       - 'docs/**'
+      - 'scripts/workflow.py'
+      - 'scripts/tools/populate-overlays.py'
       - '.github/workflows/docs-builder.yml'
       - 'scripts/tools/convert-docs-to-html.py'
   workflow_dispatch:

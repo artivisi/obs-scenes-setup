@@ -63,18 +63,31 @@ class SceneConfig:
 class AutoSceneCreator:
     """Automated OBS scene creation system"""
     
-    def __init__(self, github_user: str = "artivisi", obs_host: str = "localhost", obs_port: int = 4455, obs_password: str = "", offline_mode: bool = False):
+    def __init__(self, github_user: str = "artivisi", obs_host: str = "localhost", obs_port: int = 4455, obs_password: str = "", offline_mode: bool = False, custom_overlay_path: Optional[str] = None):
         self.github_user = github_user
         self.offline_mode = offline_mode
+        self.custom_overlay_path = Path(custom_overlay_path) if custom_overlay_path else None
+        
         # Get the project root directory (2 levels up from this script)
         self.project_root = Path(__file__).resolve().parent.parent.parent
-        # Use the correct base URL that works
-        if offline_mode:
+        
+        # Determine overlay source priority: custom > offline > online
+        if self.custom_overlay_path and self.custom_overlay_path.exists():
+            self.overlay_source = "custom"
+            self.base_url = f"file://{self.custom_overlay_path}"
+            print(f"🎨 Using custom overlays: {self.custom_overlay_path}")
+        elif offline_mode:
+            self.overlay_source = "offline"
             self.base_url = f"file://{self.project_root}"
-        elif github_user == "artivisi":
-            self.base_url = "https://artivisi.com/obs-scenes-setup"
+            print(f"🏠 Using local overlays: {self.project_root}/docs/overlays")
         else:
-            self.base_url = f"https://{github_user}.github.io/obs-scenes-setup"
+            self.overlay_source = "online"
+            if github_user == "artivisi":
+                self.base_url = "https://artivisi.com/obs-scenes-setup"
+            else:
+                self.base_url = f"https://{github_user}.github.io/obs-scenes-setup"
+            print(f"🌐 Using online overlays: {self.base_url}")
+        
         self.obs_client = None
         self.obs_host = obs_host
         self.obs_port = obs_port
@@ -87,13 +100,21 @@ class AutoSceneCreator:
         self.scene_templates = self._create_scene_templates()
         
     def _get_overlay_url(self, overlay_name: str) -> str:
-        """Get overlay URL based on offline/online mode"""
-        if self.offline_mode:
-            # Use relative path from project root
+        """Get overlay URL based on custom/offline/online priority"""
+        if self.overlay_source == "custom":
+            # Use custom overlay path
+            overlay_path = self.custom_overlay_path / f"{overlay_name}.html"
+            return f"file://{overlay_path}"
+        elif self.overlay_source == "offline":
+            # Use local project overlays
             overlay_path = self.project_root / "docs" / "overlays" / f"{overlay_name}.html"
             return f"file://{overlay_path}"
         else:
-            return f"https://{self.github_user}.github.io/obs-scenes-setup/overlays/{overlay_name}.html"
+            # Use online overlays
+            if self.github_user == "artivisi":
+                return f"https://artivisi.com/obs-scenes-setup/overlays/{overlay_name}.html"
+            else:
+                return f"https://{self.github_user}.github.io/obs-scenes-setup/overlays/{overlay_name}.html"
     
     def _create_scene_templates(self) -> List[SceneConfig]:
         """Create all scene configuration templates"""
@@ -1421,6 +1442,12 @@ Examples:
         help='Use local overlay files instead of GitHub Pages URLs'
     )
     
+    parser.add_argument(
+        '--overlay-path',
+        type=str,
+        help='Path to custom overlay directory (takes priority over --offline)'
+    )
+    
     args = parser.parse_args()
     
     if not args.create_live and not args.generate_json and not args.import_json:
@@ -1433,7 +1460,8 @@ Examples:
         obs_host=args.obs_host,
         obs_port=args.obs_port,
         obs_password=args.obs_password,
-        offline_mode=args.offline
+        offline_mode=args.offline,
+        custom_overlay_path=args.overlay_path
     )
     
     # Apply template modifications

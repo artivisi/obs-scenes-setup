@@ -281,21 +281,28 @@
             <p>Get up and running in minutes with professional OBS setup for programming tutorials, guest interviews, and live streaming.</p>
             
             <div class="quick-start-grid">
-                <div class="quick-option">
-                    <h3><span class="icon">🤖</span> Automated Setup (Recommended)</h3>
-                    <p>Skip the manual clicking! Auto-create all scenes, sources, and configurations.</p>
-                    <div class="code-block"># Install and run automation
-python scripts/setup/install-dependencies.py
-python scripts/obs/auto-scene-creator.py --create-live --github-user [username]</div>
-                    <p><strong>Time:</strong> 2-3 minutes | <strong>Error Rate:</strong> Near zero</p>
+                <div class="quick-option" style="border-left-color: #58c034;">
+                    <h3><span class="icon">⚡</span> Quick Setup (Recommended)</h3>
+                    <p>Complete workflow with event-specific overlays and professional branding.</p>
+                    <div class="code-block"># One command for complete setup
+python scripts/workflow.py --quick</div>
+                    <p><strong>Time:</strong> 1-2 minutes | <strong>Result:</strong> Custom overlays + OBS scenes</p>
                 </div>
                 
-                <div class="quick-option">
-                    <h3><span class="icon">🔧</span> Manual Setup</h3>
-                    <p>Step-by-step manual configuration with complete control over every setting.</p>
-                    <div class="code-block"># Import scene collection
-python scripts/obs/import-scenes.py --github-user [username]</div>
-                    <p><strong>Time:</strong> 30+ minutes | <strong>Control:</strong> Full customization</p>
+                <div class="quick-option" style="border-left-color: #2e3192;">
+                    <h3><span class="icon">🎯</span> Custom Event Setup</h3>
+                    <p>Full customization with your content, branding, and presenter information.</p>
+                    <div class="code-block"># Interactive event configuration
+python scripts/workflow.py --event my-workshop</div>
+                    <p><strong>Time:</strong> 3-4 minutes | <strong>Result:</strong> Fully customized professional setup</p>
+                </div>
+                
+                <div class="quick-option" style="border-left-color: #6c757d;">
+                    <h3><span class="icon">🌐</span> Traditional Setup</h3>
+                    <p>Classic approach with online overlays and standard configurations.</p>
+                    <div class="code-block"># Traditional automation
+python scripts/obs/auto-scene-creator.py --create-live --github-user [username]</div>
+                    <p><strong>Time:</strong> 2-3 minutes | <strong>Result:</strong> Standard professional scenes</p>
                 </div>
             </div>
         </div>
@@ -322,17 +329,30 @@ python scripts/obs/import-scenes.py --github-user [username]</div>
         </div>
 
         <div class="documentation-grid">
+            <a href="guides/WORKFLOW_GUIDE.html" class="doc-card" style="border: 3px solid #58c034;">
+                <span class="icon">🚀</span>
+                <h3>Complete Workflow Guide <span style="color: #58c034; font-size: 0.8em;">NEW!</span></h3>
+                <p>Master the new streamlined workflow for event-specific OBS setups. From content planning to professional recording in minutes.</p>
+                <ul class="features">
+                    <li>Event-specific customization</li>
+                    <li>Template-based setup</li>
+                    <li>Offline-first approach</li>
+                    <li>Professional branding</li>
+                </ul>
+                <span class="cta-button">Start Here →</span>
+            </a>
+
             <a href="guides/AUTOMATED_SETUP.html" class="doc-card">
                 <span class="icon">🤖</span>
                 <h3>Automated Setup Guide</h3>
-                <p>Complete automation system that eliminates manual OBS configuration. Perfect for users who want professional results without the complexity.</p>
+                <p>Multiple workflow options from quick setup to full customization. Professional results without technical complexity.</p>
                 <ul class="features">
-                    <li>One-command scene creation</li>
-                    <li>Auto-device detection</li>
+                    <li>Quick 1-2 minute setup</li>
+                    <li>Custom event workflows</li>
                     <li>Professional audio filters</li>
                     <li>Error-free configuration</li>
                 </ul>
-                <span class="cta-button">Start Automation →</span>
+                <span class="cta-button">Choose Workflow →</span>
             </a>
 
             <a href="guides/OBS_SETUP_GUIDE.html" class="doc-card">
@@ -346,6 +366,19 @@ python scripts/obs/import-scenes.py --github-user [username]</div>
                     <li>Device management</li>
                 </ul>
                 <span class="cta-button">Manual Setup →</span>
+            </a>
+
+            <a href="guides/OVERLAY_RESOURCES.html" class="doc-card">
+                <span class="icon">🎨</span>
+                <h3>Overlay Resource System</h3>
+                <p>Generate event-specific overlays from JSON templates. Transform text editing into professional, branded content for any event.</p>
+                <ul class="features">
+                    <li>JSON-based templates</li>
+                    <li>Event-specific content</li>
+                    <li>Professional branding</li>
+                    <li>Quick customization</li>
+                </ul>
+                <span class="cta-button">Customize Overlays →</span>
             </a>
 
             <a href="guides/MACROPAD_DESIGN.html" class="doc-card">

@@ -1,21 +1,42 @@
 # Automated OBS Scene Creation Guide
 
-**Skip 30+ minutes of manual clicking!** This guide shows you how to automatically create all your OBS scenes, sources, and configurations with a single command.
+**Skip 30+ minutes of manual clicking!** Multiple workflow options from quick setup to full customization.
 
-⚡ **Total setup time: 2-3 minutes**  
+⚡ **Quick setup: 1-2 minutes**  
+🎯 **Custom events: 3-4 minutes**  
 ✅ **Zero configuration errors**  
-🛠️ **Professional audio processing**  
-🌐 **Works online & offline**
+🎨 **Event-specific overlays**
 
-## 🚀 Quick Start (2-3 Minutes Total)
+## 🚀 Workflow Options
 
-### Step 1: Install Dependencies (30 seconds)
+### ⚡ Quick Setup (1-2 minutes) - **RECOMMENDED**
 ```bash
-# Install required Python libraries and validate setup
+# Complete workflow with sensible defaults
+python scripts/workflow.py --quick
+
+# With specific template
+python scripts/workflow.py --quick --template python-workshop
+```
+**What it does:** Environment setup → Template selection → Custom overlays → OBS scenes
+
+### 🎯 Event-Specific Setup (3-4 minutes) - **MOST POWERFUL**
+```bash
+# Custom event with interactive configuration
+python scripts/workflow.py --event my-workshop
+
+# Custom event with template starting point
+python scripts/workflow.py --event my-workshop --template java
+```
+**What it does:** Full workflow with custom event content and branding
+
+### 🌐 Traditional Setup (Manual Steps)
+
+#### Step 1: Install Dependencies (30 seconds)
+```bash
 python scripts/setup/install-dependencies.py
 ```
 
-### Step 2: Enable OBS WebSocket (1 minute)
+#### Step 2: Enable OBS WebSocket (1 minute)
 1. **Open OBS Studio**
 2. **Tools → WebSocket Server Settings**
 3. **✅ Enable WebSocket server**
@@ -23,22 +44,22 @@ python scripts/setup/install-dependencies.py
 5. **Password**: Leave blank or set your own
 6. **Apply/OK**
 
-### Step 3: Create All Scenes Automatically (1 minute)
+#### Step 3: Create Scenes (1 minute)
 ```bash
-# Production mode with GitHub Pages overlays (RECOMMENDED)
+# Online mode with default overlays
 python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 
-# Development mode with local overlay files
+# Offline mode with local overlays
 python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline
 
-# Generate JSON for manual import (no WebSocket needed)
-python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json
+# Custom overlays (after generating with populate-overlays.py)
+python scripts/obs/auto-scene-creator.py --create-live --overlay-path my-overlays
 ```
 
 **That's it! 🎉** 
 - 7 professional scenes created
 - Audio processing configured
-- Device sources auto-detected
+- Professional overlays ready
 - Ready to record immediately
 
 ## 🛠️ What Gets Created Automatically
@@ -69,12 +90,12 @@ python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json
 - **Automatic Detection**: Chooses best overlay source
 - **Error Recovery**: Fallback to safe defaults
 
-### 📱 Cross-Platform Device Support
-- **macOS**: AVFoundation camera detection
-- **Windows**: DirectShow device enumeration  
-- **Linux**: V4L2 video device scanning
-- **USB Audio**: Automatic microphone detection
-- **Cam Link 4K**: Specialized support for capture cards
+### 📱 Cross-Platform Compatibility
+- **macOS**: Native camera and audio support
+- **Windows**: DirectShow compatibility
+- **Linux**: V4L2 video device support
+- **Professional Audio**: USB microphone and interface support
+- **Capture Cards**: Elgato Cam Link 4K and similar devices
 
 ## 🎯 Advanced Templates
 
@@ -135,15 +156,15 @@ python scripts/obs/auto-scene-creator.py --create-live --obs-host studio-pc.loca
 - [ ] **OBS Studio 28+** installed and running
 - [ ] **GitHub Pages** enabled with your overlays deployed
 - [ ] **Python 3.7+** available
-- [ ] **Camera/microphone** connected (will auto-detect)
+- [ ] **Camera/microphone** connected and working in OBS
 
 ### Quick Validation
 ```bash
-# Test your complete setup first
-python scripts/tools/test-complete-setup.py --quick --github-user artivisi
+# Test your dependencies are installed
+python scripts/setup/install-dependencies.py
 
-# Check device detection
-python scripts/setup/install-dependencies.py --check-devices
+# Test overlay access
+curl -I https://artivisi.com/obs-scenes-setup/overlays/intro.html
 ```
 
 ## Troubleshooting
@@ -161,14 +182,14 @@ python scripts/setup/install-dependencies.py
 # OR manually: pip install obsws-python requests
 ```
 
-### "No devices detected"
-**Solution**: Check hardware connections
+### "Browser source not loading"  
+**Solution**: Check overlay URLs and network connectivity
 ```bash
-# Run device scan
-python scripts/setup/install-dependencies.py --scan-devices
+# Test overlay accessibility
+curl -I https://artivisi.com/obs-scenes-setup/overlays/intro.html
 
-# For dual camera setup validation
-python scripts/tools/test-complete-setup.py --hardware-only
+# Use offline mode if network issues
+python scripts/obs/auto-scene-creator.py --create-live --offline --github-user artivisi
 ```
 
 ### "GitHub Pages URLs not working"
@@ -182,11 +203,11 @@ curl -I https://artivisi.github.io/obs-scenes-setup/overlays/intro.html
 ```
 
 ### "Scenes created but sources missing"
-**Cause**: Device detection failed or names don't match
+**Cause**: Camera or microphone not available in OBS
 **Solution**: 
-1. Check camera/microphone are connected
-2. Update device names in OBS manually
-3. Re-run with verbose output for debugging
+1. Check camera/microphone are connected and working in OBS
+2. Update source names in OBS manually if needed
+3. Re-run scene creation with verbose output for debugging
 
 ## Manual Adjustments After Creation
 
@@ -293,6 +314,38 @@ python scripts/setup/setup-macropad.py --test
 - `macropad/automated-setup-instructions.md` - Setup guide
 
 Simply load the generated keymap in Vial GUI and you're ready to go!
+
+## 🎯 Event-Specific Overlay Customization
+
+Want to customize overlays for your specific event/workshop? Use the overlay resource system:
+
+### 🚀 Quick Event Setup
+```bash
+# List available event templates
+python3 scripts/tools/populate-overlays.py --list-templates
+
+# Generate Python workshop overlays
+python3 scripts/tools/populate-overlays.py --template python-workshop --preview
+
+# Generate Linux admin training overlays
+python3 scripts/tools/populate-overlays.py --template linux-admin --output linux-training
+
+# Create custom event configuration
+cp docs/resources/event-config.json my-event.json
+# Edit my-event.json with your event details
+python3 scripts/tools/populate-overlays.py --config my-event.json --preview
+```
+
+### 🔧 Use Custom Overlays with OBS
+```bash
+# Generate event overlays first
+python3 scripts/tools/populate-overlays.py --template my-event --output my-event-overlays
+
+# Create OBS scenes using your custom overlays
+python scripts/obs/auto-scene-creator.py --create-live --offline --overlay-path my-event-overlays
+```
+
+**📋 See [docs/resources/README.md](docs/resources/README.md) for complete overlay customization guide.**
 
 ## Advanced Customization
 

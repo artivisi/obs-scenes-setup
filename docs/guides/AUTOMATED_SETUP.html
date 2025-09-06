@@ -341,20 +341,32 @@
             <p class="doc-subtitle">Skip the manual clicking! Complete automation guide for OBS scene creation.</p>
         </div>
 
-        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#automated-obs-scene-creation-guide">Automated OBS Scene Creation Guide</a></li><li style="margin-left: 1.5rem;"><a href="#-quick-start-2-3-minutes-total">🚀 Quick Start (2-3 Minutes Total)</a></li><li style="margin-left: 3.0rem;"><a href="#step-1-install-dependencies-30-seconds">Step 1: Install Dependencies (30 seconds)</a></li><li style=""><a href="#install-required-python-libraries-and-validate-setup">Install required Python libraries and validate setup</a></li><li style="margin-left: 3.0rem;"><a href="#step-2-enable-obs-websocket-1-minute">Step 2: Enable OBS WebSocket (1 minute)</a></li><li style="margin-left: 3.0rem;"><a href="#step-3-create-all-scenes-automatically-1-minute">Step 3: Create All Scenes Automatically (1 minute)</a></li><li style=""><a href="#production-mode-with-github-pages-overlays-recommended">Production mode with GitHub Pages overlays (RECOMMENDED)</a></li><li style=""><a href="#development-mode-with-local-overlay-files">Development mode with local overlay files</a></li><li style=""><a href="#generate-json-for-manual-import-no-websocket-needed">Generate JSON for manual import (no WebSocket needed)</a></li><li style="margin-left: 1.5rem;"><a href="#-what-gets-created-automatically">🛠️ What Gets Created Automatically</a></li><li style="margin-left: 3.0rem;"><a href="#-7-professional-scenes">🎬 7 Professional Scenes</a></li><li style="margin-left: 3.0rem;"><a href="#-source-management-system">📎 Source Management System</a></li><li style="margin-left: 3.0rem;"><a href="#-professional-audio-processing">🛠️ Professional Audio Processing</a></li><li style="margin-left: 3.0rem;"><a href="#-smart-url-management">🌐 Smart URL Management</a></li><li style="margin-left: 3.0rem;"><a href="#-cross-platform-device-support">📱 Cross-Platform Device Support</a></li><li style="margin-left: 1.5rem;"><a href="#-advanced-templates">🎯 Advanced Templates</a></li><li style="margin-left: 3.0rem;"><a href="#content-specific-scene-templates">Content-Specific Scene Templates</a></li><li style=""><a href="#java-development-with-ide-optimization">Java development with IDE optimization</a></li><li style=""><a href="#linux-administration-with-terminal-focus">Linux administration with terminal focus</a></li><li style=""><a href="#devops-with-architecture-diagrams">DevOps with architecture diagrams</a></li><li style=""><a href="#interview-only-scenes-no-coding-layouts">Interview-only scenes (no coding layouts)</a></li><li style="margin-left: 3.0rem;"><a href="#template-customizations">Template Customizations</a></li><li style="margin-left: 3.0rem;"><a href="#-generate-json-for-manual-import">💾 Generate JSON for Manual Import</a></li><li style=""><a href="#production-scene-collection-github-pages">Production scene collection (GitHub Pages)</a></li><li style=""><a href="#development-scene-collection-local-files">Development scene collection (local files)</a></li><li style=""><a href="#template-specific-collections">Template-specific collections</a></li><li style="margin-left: 3.0rem;"><a href="#-remote-obs-connection">🌐 Remote OBS Connection</a></li><li style=""><a href="#connect-to-obs-on-different-computer">Connect to OBS on different computer</a></li><li style=""><a href="#secure-connection-with-password">Secure connection with password</a></li><li style=""><a href="#complete-remote-setup">Complete remote setup</a></li><li style="margin-left: 1.5rem;"><a href="#before-you-start">Before You Start</a></li><li style="margin-left: 3.0rem;"><a href="#prerequisites-checklist">Prerequisites Checklist</a></li><li style="margin-left: 3.0rem;"><a href="#quick-validation">Quick Validation</a></li><li style=""><a href="#test-your-complete-setup-first">Test your complete setup first</a></li><li style=""><a href="#check-device-detection">Check device detection</a></li><li style="margin-left: 1.5rem;"><a href="#troubleshooting">Troubleshooting</a></li><li style="margin-left: 3.0rem;"><a href="#cannot-connect-to-obs">"Cannot connect to OBS"</a></li><li style="margin-left: 3.0rem;"><a href="#obsws-python-not-found-">"obsws-python not found" </a></li><li style=""><a href="#or-manually-pip-install-obsws-python-requests">OR manually: pip install obsws-python requests</a></li><li style="margin-left: 3.0rem;"><a href="#no-devices-detected">"No devices detected"</a></li><li style=""><a href="#run-device-scan">Run device scan</a></li><li style=""><a href="#for-dual-camera-setup-validation">For dual camera setup validation</a></li><li style="margin-left: 3.0rem;"><a href="#github-pages-urls-not-working">"GitHub Pages URLs not working"</a></li><li style=""><a href="#use-local-overlays-instead">Use local overlays instead</a></li><li style=""><a href="#or-test-overlay-accessibility">Or test overlay accessibility</a></li><li style="margin-left: 3.0rem;"><a href="#scenes-created-but-sources-missing">"Scenes created but sources missing"</a></li><li style="margin-left: 1.5rem;"><a href="#manual-adjustments-after-creation">Manual Adjustments After Creation</a></li><li style="margin-left: 3.0rem;"><a href="#1-device-names">1. Device Names</a></li><li style="margin-left: 3.0rem;"><a href="#2-positioning-and-scaling--">2. Positioning and Scaling  </a></li><li style="margin-left: 3.0rem;"><a href="#3-hotkeys-assignment">3. Hotkeys Assignment</a></li><li style=""><a href="#recommended-hotkey-assignments-set-manually-in-obs">Recommended hotkey assignments (set manually in OBS):</a></li><li style="margin-left: 3.0rem;"><a href="#4-audio-levels">4. Audio Levels</a></li><li style="margin-left: 1.5rem;"><a href="#comparison-manual-vs-automated">Comparison: Manual vs Automated</a></li><li style="margin-left: 1.5rem;"><a href="#integration-with-existing-workflow">Integration with Existing Workflow</a></li><li style="margin-left: 3.0rem;"><a href="#if-you-already-have-scenes">If You Already Have Scenes</a></li><li style=""><a href="#backup-existing-scenes-first">Backup existing scenes first</a></li><li style=""><a href="#scene-collection--export--save-current-setup">Scene Collection → Export → Save current setup</a></li><li style=""><a href="#create-new-collection-with-automation">Create new collection with automation</a></li><li style=""><a href="#switch-between-collections-as-needed">Switch between collections as needed</a></li><li style="margin-left: 3.0rem;"><a href="#if-you-have-custom-sources">If You Have Custom Sources</a></li><li style="margin-left: 1.5rem;"><a href="#next-steps-after-automation">Next Steps After Automation</a></li><li style="margin-left: 1.5rem;"><a href="#automated-macropad-setup">Automated Macropad Setup</a></li><li style="margin-left: 3.0rem;"><a href="#quick-macropad-setup">Quick Macropad Setup</a></li><li style=""><a href="#interactive-setup-wizard-recommended">Interactive setup wizard (recommended)</a></li><li style=""><a href="#quick-setup-without-prompts--">Quick setup without prompts  </a></li><li style=""><a href="#test-current-setup">Test current setup</a></li><li style="margin-left: 3.0rem;"><a href="#what-it-does">What It Does</a></li><li style="margin-left: 3.0rem;"><a href="#generated-files">Generated Files</a></li><li style="margin-left: 1.5rem;"><a href="#advanced-customization">Advanced Customization</a></li><li style="margin-left: 3.0rem;"><a href="#modify-source-templates">Modify Source Templates</a></li><li style="margin-left: 3.0rem;"><a href="#create-custom-templates--">Create Custom Templates  </a></li><li style="margin-left: 3.0rem;"><a href="#batch-operations">Batch Operations</a></li><li style=""><a href="#create-multiple-variations">Create multiple variations</a></li><li style="margin-left: 1.5rem;"><a href="#why-use-automated-setup">Why Use Automated Setup?</a></li></ul></div>
+        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#automated-obs-scene-creation-guide">Automated OBS Scene Creation Guide</a></li><li style="margin-left: 1.5rem;"><a href="#-workflow-options">🚀 Workflow Options</a></li><li style="margin-left: 3.0rem;"><a href="#-quick-setup-1-2-minutes---recommended">⚡ Quick Setup (1-2 minutes) - **RECOMMENDED**</a></li><li style=""><a href="#complete-workflow-with-sensible-defaults">Complete workflow with sensible defaults</a></li><li style=""><a href="#with-specific-template">With specific template</a></li><li style="margin-left: 3.0rem;"><a href="#-event-specific-setup-3-4-minutes---most-powerful">🎯 Event-Specific Setup (3-4 minutes) - **MOST POWERFUL**</a></li><li style=""><a href="#custom-event-with-interactive-configuration">Custom event with interactive configuration</a></li><li style=""><a href="#custom-event-with-template-starting-point">Custom event with template starting point</a></li><li style="margin-left: 3.0rem;"><a href="#-traditional-setup-manual-steps">🌐 Traditional Setup (Manual Steps)</a></li><li style=""><a href="#online-mode-with-default-overlays">Online mode with default overlays</a></li><li style=""><a href="#offline-mode-with-local-overlays">Offline mode with local overlays</a></li><li style=""><a href="#custom-overlays-after-generating-with-populate-overlayspy">Custom overlays (after generating with populate-overlays.py)</a></li><li style="margin-left: 1.5rem;"><a href="#-what-gets-created-automatically">🛠️ What Gets Created Automatically</a></li><li style="margin-left: 3.0rem;"><a href="#-7-professional-scenes">🎬 7 Professional Scenes</a></li><li style="margin-left: 3.0rem;"><a href="#-source-management-system">📎 Source Management System</a></li><li style="margin-left: 3.0rem;"><a href="#-professional-audio-processing">🛠️ Professional Audio Processing</a></li><li style="margin-left: 3.0rem;"><a href="#-smart-url-management">🌐 Smart URL Management</a></li><li style="margin-left: 3.0rem;"><a href="#-cross-platform-compatibility">📱 Cross-Platform Compatibility</a></li><li style="margin-left: 1.5rem;"><a href="#-advanced-templates">🎯 Advanced Templates</a></li><li style="margin-left: 3.0rem;"><a href="#content-specific-scene-templates">Content-Specific Scene Templates</a></li><li style=""><a href="#java-development-with-ide-optimization">Java development with IDE optimization</a></li><li style=""><a href="#linux-administration-with-terminal-focus">Linux administration with terminal focus</a></li><li style=""><a href="#devops-with-architecture-diagrams">DevOps with architecture diagrams</a></li><li style=""><a href="#interview-only-scenes-no-coding-layouts">Interview-only scenes (no coding layouts)</a></li><li style="margin-left: 3.0rem;"><a href="#template-customizations">Template Customizations</a></li><li style="margin-left: 3.0rem;"><a href="#-generate-json-for-manual-import">💾 Generate JSON for Manual Import</a></li><li style=""><a href="#production-scene-collection-github-pages">Production scene collection (GitHub Pages)</a></li><li style=""><a href="#development-scene-collection-local-files">Development scene collection (local files)</a></li><li style=""><a href="#template-specific-collections">Template-specific collections</a></li><li style="margin-left: 3.0rem;"><a href="#-remote-obs-connection">🌐 Remote OBS Connection</a></li><li style=""><a href="#connect-to-obs-on-different-computer">Connect to OBS on different computer</a></li><li style=""><a href="#secure-connection-with-password">Secure connection with password</a></li><li style=""><a href="#complete-remote-setup">Complete remote setup</a></li><li style="margin-left: 1.5rem;"><a href="#before-you-start">Before You Start</a></li><li style="margin-left: 3.0rem;"><a href="#prerequisites-checklist">Prerequisites Checklist</a></li><li style="margin-left: 3.0rem;"><a href="#quick-validation">Quick Validation</a></li><li style=""><a href="#test-your-dependencies-are-installed">Test your dependencies are installed</a></li><li style=""><a href="#test-overlay-access">Test overlay access</a></li><li style="margin-left: 1.5rem;"><a href="#troubleshooting">Troubleshooting</a></li><li style="margin-left: 3.0rem;"><a href="#cannot-connect-to-obs">"Cannot connect to OBS"</a></li><li style="margin-left: 3.0rem;"><a href="#obsws-python-not-found-">"obsws-python not found" </a></li><li style=""><a href="#or-manually-pip-install-obsws-python-requests">OR manually: pip install obsws-python requests</a></li><li style="margin-left: 3.0rem;"><a href="#browser-source-not-loading--">"Browser source not loading"  </a></li><li style=""><a href="#test-overlay-accessibility">Test overlay accessibility</a></li><li style=""><a href="#use-offline-mode-if-network-issues">Use offline mode if network issues</a></li><li style="margin-left: 3.0rem;"><a href="#github-pages-urls-not-working">"GitHub Pages URLs not working"</a></li><li style=""><a href="#use-local-overlays-instead">Use local overlays instead</a></li><li style=""><a href="#or-test-overlay-accessibility">Or test overlay accessibility</a></li><li style="margin-left: 3.0rem;"><a href="#scenes-created-but-sources-missing">"Scenes created but sources missing"</a></li><li style="margin-left: 1.5rem;"><a href="#manual-adjustments-after-creation">Manual Adjustments After Creation</a></li><li style="margin-left: 3.0rem;"><a href="#1-device-names">1. Device Names</a></li><li style="margin-left: 3.0rem;"><a href="#2-positioning-and-scaling--">2. Positioning and Scaling  </a></li><li style="margin-left: 3.0rem;"><a href="#3-hotkeys-assignment">3. Hotkeys Assignment</a></li><li style=""><a href="#recommended-hotkey-assignments-set-manually-in-obs">Recommended hotkey assignments (set manually in OBS):</a></li><li style="margin-left: 3.0rem;"><a href="#4-audio-levels">4. Audio Levels</a></li><li style="margin-left: 1.5rem;"><a href="#comparison-manual-vs-automated">Comparison: Manual vs Automated</a></li><li style="margin-left: 1.5rem;"><a href="#integration-with-existing-workflow">Integration with Existing Workflow</a></li><li style="margin-left: 3.0rem;"><a href="#if-you-already-have-scenes">If You Already Have Scenes</a></li><li style=""><a href="#backup-existing-scenes-first">Backup existing scenes first</a></li><li style=""><a href="#scene-collection--export--save-current-setup">Scene Collection → Export → Save current setup</a></li><li style=""><a href="#create-new-collection-with-automation">Create new collection with automation</a></li><li style=""><a href="#switch-between-collections-as-needed">Switch between collections as needed</a></li><li style="margin-left: 3.0rem;"><a href="#if-you-have-custom-sources">If You Have Custom Sources</a></li><li style="margin-left: 1.5rem;"><a href="#next-steps-after-automation">Next Steps After Automation</a></li><li style="margin-left: 1.5rem;"><a href="#automated-macropad-setup">Automated Macropad Setup</a></li><li style="margin-left: 3.0rem;"><a href="#quick-macropad-setup">Quick Macropad Setup</a></li><li style=""><a href="#interactive-setup-wizard-recommended">Interactive setup wizard (recommended)</a></li><li style=""><a href="#quick-setup-without-prompts--">Quick setup without prompts  </a></li><li style=""><a href="#test-current-setup">Test current setup</a></li><li style="margin-left: 3.0rem;"><a href="#what-it-does">What It Does</a></li><li style="margin-left: 3.0rem;"><a href="#generated-files">Generated Files</a></li><li style="margin-left: 1.5rem;"><a href="#-event-specific-overlay-customization">🎯 Event-Specific Overlay Customization</a></li><li style="margin-left: 3.0rem;"><a href="#-quick-event-setup">🚀 Quick Event Setup</a></li><li style=""><a href="#list-available-event-templates">List available event templates</a></li><li style=""><a href="#generate-python-workshop-overlays">Generate Python workshop overlays</a></li><li style=""><a href="#generate-linux-admin-training-overlays">Generate Linux admin training overlays</a></li><li style=""><a href="#create-custom-event-configuration">Create custom event configuration</a></li><li style=""><a href="#edit-my-eventjson-with-your-event-details">Edit my-event.json with your event details</a></li><li style="margin-left: 3.0rem;"><a href="#-use-custom-overlays-with-obs">🔧 Use Custom Overlays with OBS</a></li><li style=""><a href="#generate-event-overlays-first">Generate event overlays first</a></li><li style=""><a href="#create-obs-scenes-using-your-custom-overlays">Create OBS scenes using your custom overlays</a></li><li style="margin-left: 1.5rem;"><a href="#advanced-customization">Advanced Customization</a></li><li style="margin-left: 3.0rem;"><a href="#modify-source-templates">Modify Source Templates</a></li><li style="margin-left: 3.0rem;"><a href="#create-custom-templates--">Create Custom Templates  </a></li><li style="margin-left: 3.0rem;"><a href="#batch-operations">Batch Operations</a></li><li style=""><a href="#create-multiple-variations">Create multiple variations</a></li><li style="margin-left: 1.5rem;"><a href="#why-use-automated-setup">Why Use Automated Setup?</a></li></ul></div>
 
         <div class="content">
             <h1>Automated OBS Scene Creation Guide</h1>
-<strong>Skip 30+ minutes of manual clicking!</strong> This guide shows you how to automatically create all your OBS scenes, sources, and configurations with a single command.
-<p>⚡ <strong>Total setup time: 2-3 minutes</strong>  </p>
+<strong>Skip 30+ minutes of manual clicking!</strong> Multiple workflow options from quick setup to full customization.
+<p>⚡ <strong>Quick setup: 1-2 minutes</strong>  </p>
+<p>🎯 <strong>Custom events: 3-4 minutes</strong>  </p>
 <div class="success">✅ <strong>Zero configuration errors</strong></div>
-<p>🛠️ <strong>Professional audio processing</strong>  </p>
-<p>🌐 <strong>Works online & offline</strong></p>
-<h2>🚀 Quick Start (2-3 Minutes Total)</h2>
-<h3>Step 1: Install Dependencies (30 seconds)</h3>
-<pre><code><h1>Install required Python libraries and validate setup</h1>
-<p>python scripts/setup/install-dependencies.py</code></pre></p>
-<h3>Step 2: Enable OBS WebSocket (1 minute)</h3>
+<p>🎨 <strong>Event-specific overlays</strong></p>
+<h2>🚀 Workflow Options</h2>
+<h3>⚡ Quick Setup (1-2 minutes) - <strong>RECOMMENDED</strong></h3>
+<pre><code><h1>Complete workflow with sensible defaults</h1>
+<p>python scripts/workflow.py --quick</p>
+<h1>With specific template</h1>
+<p>python scripts/workflow.py --quick --template python-workshop</code></pre></p>
+<strong>What it does:</strong> Environment setup → Template selection → Custom overlays → OBS scenes
+<h3>🎯 Event-Specific Setup (3-4 minutes) - <strong>MOST POWERFUL</strong></h3>
+<pre><code><h1>Custom event with interactive configuration</h1>
+<p>python scripts/workflow.py --event my-workshop</p>
+<h1>Custom event with template starting point</h1>
+<p>python scripts/workflow.py --event my-workshop --template java</code></pre></p>
+<strong>What it does:</strong> Full workflow with custom event content and branding
+<h3>🌐 Traditional Setup (Manual Steps)</h3>
+<p>#### Step 1: Install Dependencies (30 seconds)</p>
+<pre><code>python scripts/setup/install-dependencies.py</code></pre>
+<p>#### Step 2: Enable OBS WebSocket (1 minute)</p>
 <ol>
 <li><strong>Open OBS Studio</strong></li>
 <li><strong>Tools → WebSocket Server Settings</strong></li>
@@ -363,18 +375,18 @@
 <li><strong>Password</strong>: Leave blank or set your own</li>
 <li><strong>Apply/OK</strong></li>
 </ul>
-<h3>Step 3: Create All Scenes Automatically (1 minute)</h3>
-<pre><code><h1>Production mode with GitHub Pages overlays (RECOMMENDED)</h1>
+<p>#### Step 3: Create Scenes (1 minute)</p>
+<pre><code><h1>Online mode with default overlays</h1>
 <p>python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi</p>
-<h1>Development mode with local overlay files</h1>
+<h1>Offline mode with local overlays</h1>
 <p>python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline</p>
-<h1>Generate JSON for manual import (no WebSocket needed)</h1>
-<p>python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json</code></pre></p>
+<h1>Custom overlays (after generating with populate-overlays.py)</h1>
+<p>python scripts/obs/auto-scene-creator.py --create-live --overlay-path my-overlays</code></pre></p>
 <strong>That's it! 🎉</strong> 
 <ul>
 <li>7 professional scenes created</li>
 <li>Audio processing configured</li>
-<li>Device sources auto-detected</li>
+<li>Professional overlays ready</li>
 <li>Ready to record immediately</li>
 </ul>
 <h2>🛠️ What Gets Created Automatically</h2>
@@ -408,13 +420,13 @@
 <li><strong>Automatic Detection</strong>: Chooses best overlay source</li>
 <li><strong>Error Recovery</strong>: Fallback to safe defaults</li>
 </ul>
-<h3>📱 Cross-Platform Device Support</h3>
+<h3>📱 Cross-Platform Compatibility</h3>
 <ul>
-<li><strong>macOS</strong>: AVFoundation camera detection</li>
-<li><strong>Windows</strong>: DirectShow device enumeration  </li>
-<li><strong>Linux</strong>: V4L2 video device scanning</li>
-<li><strong>USB Audio</strong>: Automatic microphone detection</li>
-<li><strong>Cam Link 4K</strong>: Specialized support for capture cards</li>
+<li><strong>macOS</strong>: Native camera and audio support</li>
+<li><strong>Windows</strong>: DirectShow compatibility</li>
+<li><strong>Linux</strong>: V4L2 video device support</li>
+<li><strong>Professional Audio</strong>: USB microphone and interface support</li>
+<li><strong>Capture Cards</strong>: Elgato Cam Link 4K and similar devices</li>
 </ul>
 <h2>🎯 Advanced Templates</h2>
 <h3>Content-Specific Scene Templates</h3>
@@ -460,13 +472,13 @@
 <li>[ ] <strong>OBS Studio 28+</strong> installed and running</li>
 <li>[ ] <strong>GitHub Pages</strong> enabled with your overlays deployed</li>
 <li>[ ] <strong>Python 3.7+</strong> available</li>
-<li>[ ] <strong>Camera/microphone</strong> connected (will auto-detect)</li>
+<li>[ ] <strong>Camera/microphone</strong> connected and working in OBS</li>
 </ul>
 <h3>Quick Validation</h3>
-<pre><code><h1>Test your complete setup first</h1>
-<p>python scripts/tools/test-complete-setup.py --quick --github-user artivisi</p>
-<h1>Check device detection</h1>
-<p>python scripts/setup/install-dependencies.py --check-devices</code></pre></p>
+<pre><code><h1>Test your dependencies are installed</h1>
+<p>python scripts/setup/install-dependencies.py</p>
+<h1>Test overlay access</h1>
+<p>curl -I https://artivisi.com/obs-scenes-setup/overlays/intro.html</code></pre></p>
 <h2>Troubleshooting</h2>
 <h3>"Cannot connect to OBS"</h3>
 <strong>Solution</strong>: Enable WebSocket server in OBS
@@ -479,12 +491,12 @@
 <strong>Solution</strong>: Install dependencies
 <pre><code>python scripts/setup/install-dependencies.py
 <h1>OR manually: pip install obsws-python requests</h1></code></pre>
-<h3>"No devices detected"</h3>
-<strong>Solution</strong>: Check hardware connections
-<pre><code><h1>Run device scan</h1>
-<p>python scripts/setup/install-dependencies.py --scan-devices</p>
-<h1>For dual camera setup validation</h1>
-<p>python scripts/tools/test-complete-setup.py --hardware-only</code></pre></p>
+<h3>"Browser source not loading"  </h3>
+<strong>Solution</strong>: Check overlay URLs and network connectivity
+<pre><code><h1>Test overlay accessibility</h1>
+<p>curl -I https://artivisi.com/obs-scenes-setup/overlays/intro.html</p>
+<h1>Use offline mode if network issues</h1>
+<p>python scripts/obs/auto-scene-creator.py --create-live --offline --github-user artivisi</code></pre></p>
 <h3>"GitHub Pages URLs not working"</h3>
 <strong>Solution</strong>: Use offline mode for development or verify deployment
 <pre><code><h1>Use local overlays instead</h1>
@@ -492,12 +504,12 @@
 <h1>Or test overlay accessibility</h1>
 <p>curl -I https://artivisi.github.io/obs-scenes-setup/overlays/intro.html</code></pre></p>
 <h3>"Scenes created but sources missing"</h3>
-<strong>Cause</strong>: Device detection failed or names don't match
+<strong>Cause</strong>: Camera or microphone not available in OBS
 <strong>Solution</strong>: 
 <ol>
-<li>Check camera/microphone are connected</li>
-<li>Update device names in OBS manually</li>
-<li>Re-run with verbose output for debugging</li>
+<li>Check camera/microphone are connected and working in OBS</li>
+<li>Update source names in OBS manually if needed</li>
+<li>Re-run scene creation with verbose output for debugging</li>
 </ul>
 <h2>Manual Adjustments After Creation</h2>
 <p>The automated setup creates everything, but you might want to adjust:</p>
@@ -591,6 +603,27 @@
 <li></code>macropad/automated-setup-instructions.md<code> - Setup guide</li>
 </ul>
 <p>Simply load the generated keymap in Vial GUI and you're ready to go!</p>
+<h2>🎯 Event-Specific Overlay Customization</h2>
+<p>Want to customize overlays for your specific event/workshop? Use the overlay resource system:</p>
+<h3>🚀 Quick Event Setup</h3></code></pre>bash
+<h1>List available event templates</h1>
+<p>python3 scripts/tools/populate-overlays.py --list-templates</p>
+<h1>Generate Python workshop overlays</h1>
+<p>python3 scripts/tools/populate-overlays.py --template python-workshop --preview</p>
+<h1>Generate Linux admin training overlays</h1>
+<p>python3 scripts/tools/populate-overlays.py --template linux-admin --output linux-training</p>
+<h1>Create custom event configuration</h1>
+<p>cp docs/resources/event-config.json my-event.json</p>
+<h1>Edit my-event.json with your event details</h1>
+<p>python3 scripts/tools/populate-overlays.py --config my-event.json --preview</p>
+<pre><code>
+<h3>🔧 Use Custom Overlays with OBS</h3></code></pre>bash
+<h1>Generate event overlays first</h1>
+<p>python3 scripts/tools/populate-overlays.py --template my-event --output my-event-overlays</p>
+<h1>Create OBS scenes using your custom overlays</h1>
+<p>python scripts/obs/auto-scene-creator.py --create-live --offline --overlay-path my-event-overlays</p>
+<pre><code>
+<strong>📋 See <a href="docs/resources/README.md">docs/resources/README.md</a> for complete overlay customization guide.</strong>
 <h2>Advanced Customization</h2>
 <h3>Modify Source Templates</h3>
 <p>Edit </code>scripts/obs/auto-scene-creator.py<code> to customize:</p>

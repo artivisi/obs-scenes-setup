@@ -542,6 +542,20 @@ def main():
             'title': 'Project Architecture',
             'description': 'Technical deep-dive into the Infrastructure-as-Code approach.',
             'breadcrumb': 'Architecture'
+        },
+        {
+            'input': root_dir / 'WORKFLOW_GUIDE.md',
+            'output': guides_dir / 'WORKFLOW_GUIDE.html',
+            'title': 'Complete Workflow Guide',
+            'description': 'Master the new streamlined workflow for event-specific OBS setups.',
+            'breadcrumb': 'Workflow Guide'
+        },
+        {
+            'input': root_dir / 'docs' / 'resources' / 'README.md',
+            'output': guides_dir / 'OVERLAY_RESOURCES.html',
+            'title': 'Overlay Resource System',
+            'description': 'Generate event-specific overlays from JSON templates.',
+            'breadcrumb': 'Overlay Resources'
         }
     ]
     

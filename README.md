@@ -1,6 +1,6 @@
 # OBS Programming Tutorial Setup
 
-**Professional OBS automation in 2-3 minutes!** Complete Infrastructure-as-Code system for programming tutorials with automated scene creation, device detection, and professional audio processing.
+**Professional OBS automation in 2-3 minutes!** Complete Infrastructure-as-Code system for programming tutorials with automated scene creation, event-specific overlays, and professional audio processing.
 
 🚀 **2-3 minute total setup**  
 🎆 **Zero manual configuration**  
@@ -12,38 +12,60 @@
 
 Complete Infrastructure-as-Code system delivering:
 - **7 professional scene templates** with proper audio processing
-- **Automated device detection** (cameras, microphones, screen capture)
+- **Event-specific overlay generation** from JSON templates
 - **GitHub Pages + local overlay support** for online/offline development
 - **Content-specific templates** (Java, Linux, DevOps, Interview)
 - **Vial macropad automation** with 4-layer control system
 - **Cross-platform compatibility** (macOS, Windows, Linux)
 
-## 🚀 One-Command Setup
+## 🚀 Easy Workflow Options
 
-**Professional OBS setup in under 3 minutes:**
-
+### ⚡ Quick Setup (2-3 minutes)
 ```bash
-# 1. Install dependencies (30 seconds)
+# Complete workflow with sensible defaults
+python scripts/workflow.py --quick
+
+# Or use specific template 
+python scripts/workflow.py --quick --template python-workshop
+```
+
+### 🎯 Event-Specific Setup (Recommended)
+```bash
+# Complete custom workflow: environment → event config → overlays → OBS
+python scripts/workflow.py --event my-workshop
+
+# Or start with a template
+python scripts/workflow.py --event my-workshop --template java
+```
+
+**Interactive prompts will ask for:**
+- Event title & subtitle
+- Presenter name & details  
+- Company branding
+- Session topics
+
+### 🌐 Generic Setup (Online Mode)
+```bash
+# Traditional setup with online overlays
 python scripts/setup/install-dependencies.py
-
-# 2. Enable OBS WebSocket (Tools → WebSocket Server Settings)
-
-# 3. Create complete professional setup (1-2 minutes) 
 python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
 ```
 
-🎉 **Done!** 7 scenes + professional audio + device detection + overlays
+🎉 **Result:** 7 professional scenes + audio processing + custom overlays
 
-### Alternative Modes
+### Advanced Options
 ```bash
-# Development mode with local overlay files
-python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi --offline
+# Environment setup only
+python scripts/workflow.py --setup
+
+# Generate custom overlays only
+python3 scripts/tools/populate-overlays.py --template python-workshop --preview
+
+# Use custom overlays with OBS
+python scripts/obs/auto-scene-creator.py --create-live --overlay-path my-overlays --github-user artivisi
 
 # Generate JSON for manual import (no WebSocket needed)
 python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json
-
-# Content-specific templates
-python scripts/obs/auto-scene-creator.py --create-live --template java --github-user artivisi
 ```
 
 ## 📦 Project Structure
@@ -65,10 +87,15 @@ obs-scenes-setup/
 │   │   ├── outro.html         # Professional closing
 │   │   ├── dual-cam.html      # Interview/guest layout
 │   │   └── css/main.css       # Professional styling
+│   ├── resources/              # 🎯 Event-specific content templates
+│   │   ├── event-config.json   # Default event configuration
+│   │   ├── templates/          # Predefined event templates
+│   │   └── README.md          # Resource system documentation
 │   └── index.html              # 🌐 Live preview gallery
 ├── scene-collections/          # 💾 Generated OBS scene files
 ├── macropad/                   # 🎹 Vial configuration and guides
 └── scripts/                    # 🤖 Complete automation system
+    ├── workflow.py             # 🚀 Complete workflow orchestration
     ├── README.md               # 🛠️ Complete script documentation
     ├── setup/                  # System setup and hardware
     │   ├── install-dependencies.py # 📦 Install packages & validate
@@ -77,6 +104,7 @@ obs-scenes-setup/
     │   ├── auto-scene-creator.py   # 🎬 Main automation script
     │   └── lua-scripts/           # Enhanced OBS control
     └── tools/                  # Development utilities
+        ├── populate-overlays.py    # 🎯 Generate event-specific overlays
         └── convert-docs-to-html.py # 📚 Documentation generator
 ```
 
@@ -109,12 +137,13 @@ obs-scenes-setup/
 
 ### 🎨 Professional Quality
 - **7 scene templates** designed for programming content  
+- **Event-specific overlay generation** with JSON templates
 - **Professional audio chain** (noise suppression, compression, limiting)
-- **Smart device detection** and configuration
 - **Content-specific optimizations** (Java, Linux, DevOps)
 
 ### 🛠️ Developer-Friendly
 - **Infrastructure as Code** - everything version controlled
+- **Event-specific templates** - easily customize overlays via JSON
 - **Online/offline modes** for production and development
 - **Template system** for different content types
 - **Comprehensive documentation** with live examples
@@ -125,6 +154,7 @@ obs-scenes-setup/
 
 ### 📜 Quick Access Guides
 - **[🤖 Automated Setup](AUTOMATED_SETUP.md)** - Start here! Auto-create all scenes in 2-3 minutes
+- **[🎯 Overlay Resources](docs/resources/README.md)** - Event-specific overlay generation system
 - **[📋 Manual OBS Setup](OBS_SETUP_GUIDE.md)** - Step-by-step manual configuration if needed
 - **[🎹 Macropad Design](MACROPAD_DESIGN.md)** - 4-layer control system with Vial firmware
 - **[🏗️ Project Architecture](PROJECT_NOTES.md)** - Technical deep-dive and system design
@@ -138,10 +168,14 @@ obs-scenes-setup/
 
 ## 🎆 Ready to Start?
 
-1. **[📖 Read the Automated Setup Guide](AUTOMATED_SETUP.md)** ← **Start here**
-2. **Enable OBS WebSocket** (Tools → WebSocket Server Settings)  
-3. **Run one command** and get professional OBS setup in 2-3 minutes
-4. **Start creating content!** 🎥
+**New workflow (recommended):**
+1. **`python scripts/workflow.py --quick`** ← **Fastest setup**
+2. **Or customize:** `python scripts/workflow.py --event my-workshop`
+3. **Start recording!** 🎥
+
+**Traditional setup:**
+1. **[📖 Read the Automated Setup Guide](AUTOMATED_SETUP.md)**
+2. **Enable OBS WebSocket** → Run scripts → Done!
 
 ## 🛠️ Supported Hardware
 
@@ -149,7 +183,7 @@ obs-scenes-setup/
 - **USB cameras** (built-in webcams, USB webcams)
 - **Capture cards** (Elgato Cam Link 4K, generic HDMI-to-USB)
 - **Professional cameras** via HDMI output + capture card
-- **Multi-camera setups** with automatic device detection
+- **Multi-camera setups** for interviews and guest appearances
 
 ### 🎤 Audio Support  
 - **USB microphones** (dynamic, condenser, wireless receivers)
@@ -164,8 +198,8 @@ obs-scenes-setup/
 - **Mobile devices** via web interface (planned)
 
 ### 💻 Platform Compatibility
-- **macOS** (M1/Intel) with AVFoundation camera detection
-- **Windows** (10/11) with DirectShow device enumeration
+- **macOS** (M1/Intel) with native camera and audio support
+- **Windows** (10/11) with DirectShow compatibility
 - **Linux** with V4L2 video device support
 - **Consistent behavior** across all platforms
 
@@ -174,7 +208,7 @@ obs-scenes-setup/
 1. **🚀 Speed First** - 2-3 minute setup vs hours of manual work
 2. **🛠️ Infrastructure as Code** - Everything version controlled and reproducible  
 3. **🌍 Cross-Platform** - Identical behavior on macOS, Windows, Linux
-4. **🎨 Professional Quality** - Audio processing, proper layering, device detection
+4. **🎨 Professional Quality** - Audio processing, proper layering, event-specific content
 5. **🔄 Maintenance-Free** - Auto-updates, comprehensive error handling
 6. **🤝 Developer-Friendly** - Clear documentation, extensible templates
 
