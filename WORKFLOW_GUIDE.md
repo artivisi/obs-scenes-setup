@@ -369,18 +369,25 @@ python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json
 2. **Test offline mode** before relying on online overlays
 3. **Version control** your event configurations
 
-## 🌐 Online vs Offline Modes
+## 🌐 Overlay Delivery Modes
 
-### Offline Mode (Default/Recommended)
-- ✅ Works without internet
-- ✅ Full customization control
-- ✅ Fast loading times
-- ✅ No external dependencies
-- **Used by:** workflow.py, custom overlays
+### HTTP Server Mode (Default/Recommended)
+- ✅ **Automatic setup** - No manual configuration needed
+- ✅ **Cross-platform networking** - Works with WSL, macOS, Linux
+- ✅ **WSL-Windows compatibility** - Automatic IP detection
+- ✅ **Custom overlays** - Event-specific content
+- ✅ **Fast loading** - Local network delivery
+- **Used by:** workflow.py, custom overlays, offline mode
+
+**How it works:**
+- Script automatically starts HTTP server on available port (default 8080)
+- Detects WSL environment and uses correct IP for Windows OBS access
+- On macOS/Linux, uses standard network interface detection
+- OBS browser sources use `http://[detected-ip]:[port]/overlay.html` URLs
 
 ### Online Mode (Fallback)
 - ✅ Always up-to-date default overlays
-- ✅ Shared across machines
+- ✅ Shared across machines  
 - ⚠️ Requires internet connection
 - **Used by:** Traditional setup without customization
 

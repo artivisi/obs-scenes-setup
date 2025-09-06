@@ -31,6 +31,13 @@ from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, asdict
 import subprocess
 import platform
+import socket
+import threading
+import http.server
+import socketserver
+import signal
+import atexit
+import os
 
 # Check for OBS WebSocket dependency
 try:
@@ -71,22 +78,32 @@ class AutoSceneCreator:
         # Get the project root directory (2 levels up from this script)
         self.project_root = Path(__file__).resolve().parent.parent.parent
         
+        # HTTP server for local overlays
+        self.http_server = None
+        self.http_port = 8080
+        self.server_host = None
+        
         # Determine overlay source priority: custom > offline > online
         if self.custom_overlay_path and self.custom_overlay_path.exists():
             self.overlay_source = "custom"
-            self.base_url = f"file://{self.custom_overlay_path}"
+            self.overlay_directory = self.custom_overlay_path
             print(f"🎨 Using custom overlays: {self.custom_overlay_path}")
         elif offline_mode:
             self.overlay_source = "offline"
-            self.base_url = f"file://{self.project_root}"
-            print(f"🏠 Using local overlays: {self.project_root}/docs/overlays")
+            self.overlay_directory = self.project_root / "docs" / "overlays"
+            print(f"🏠 Using local overlays: {self.overlay_directory}")
         else:
             self.overlay_source = "online"
+            self.overlay_directory = None
             if github_user == "artivisi":
                 self.base_url = "https://artivisi.com/obs-scenes-setup"
             else:
                 self.base_url = f"https://{github_user}.github.io/obs-scenes-setup"
             print(f"🌐 Using online overlays: {self.base_url}")
+        
+        # Setup HTTP server for local overlays (custom or offline)
+        if self.overlay_source in ["custom", "offline"]:
+            self._setup_http_server()
         
         self.obs_client = None
         self.obs_host = obs_host
@@ -99,16 +116,114 @@ class AutoSceneCreator:
         # Scene templates
         self.scene_templates = self._create_scene_templates()
         
+    def _get_server_ip(self) -> str:
+        """Get the appropriate IP address for the HTTP server"""
+        system = platform.system().lower()
+        
+        if system == "linux":
+            # Check if we're in WSL
+            try:
+                with open("/proc/version", "r") as f:
+                    if "microsoft" in f.read().lower():
+                        # WSL - get eth0 IP address that Windows can reach
+                        result = subprocess.run(
+                            ["ip", "addr", "show", "eth0"], 
+                            capture_output=True, text=True, check=True
+                        )
+                        for line in result.stdout.split('\n'):
+                            if 'inet ' in line and '127.0.0.1' not in line:
+                                ip = line.strip().split()[1].split('/')[0]
+                                return ip
+            except:
+                pass
+        
+        # Default fallback - get first non-localhost IP
+        try:
+            # Connect to a dummy address to find our IP
+            with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+                s.connect(("8.8.8.8", 80))
+                return s.getsockname()[0]
+        except:
+            return "localhost"
+    
+    def _setup_http_server(self):
+        """Setup HTTP server for serving local overlay files"""
+        if not self.overlay_directory or not self.overlay_directory.exists():
+            print(f"❌ Overlay directory not found: {self.overlay_directory}")
+            return
+        
+        # Find available port
+        self.http_port = self._find_available_port(8080)
+        self.server_host = self._get_server_ip()
+        
+        try:
+            # Change to overlay directory for serving
+            original_cwd = Path.cwd()
+            
+            class QuietHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
+                def log_message(self, format, *args):
+                    pass  # Suppress logging
+            
+            # Start server in background thread
+            def start_server():
+                socketserver.TCPServer.allow_reuse_address = True
+                os.chdir(self.overlay_directory)
+                with socketserver.TCPServer(("0.0.0.0", self.http_port), QuietHTTPRequestHandler) as httpd:
+                    self.http_server = httpd
+                    httpd.serve_forever()
+            
+            server_thread = threading.Thread(target=start_server, daemon=True)
+            server_thread.start()
+            
+            # Wait a moment for server to start
+            time.sleep(0.5)
+            
+            # Restore original directory
+            os.chdir(original_cwd)
+            
+            self.base_url = f"http://{self.server_host}:{self.http_port}"
+            print(f"🌐 HTTP server started at {self.base_url}")
+            
+            # Register cleanup
+            atexit.register(self._cleanup_server)
+            
+        except Exception as e:
+            print(f"❌ Failed to start HTTP server: {e}")
+            self.server_host = None
+            self.base_url = None
+    
+    def _find_available_port(self, start_port: int = 8080) -> int:
+        """Find an available port starting from start_port"""
+        for port in range(start_port, start_port + 100):
+            try:
+                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                    s.bind(('', port))
+                    return port
+            except OSError:
+                continue
+        return start_port  # fallback
+    
+    def _cleanup_server(self):
+        """Clean up HTTP server on exit"""
+        if self.http_server:
+            try:
+                self.http_server.shutdown()
+            except:
+                pass
+
     def _get_overlay_url(self, overlay_name: str) -> str:
         """Get overlay URL based on custom/offline/online priority"""
-        if self.overlay_source == "custom":
-            # Use custom overlay path
-            overlay_path = self.custom_overlay_path / f"{overlay_name}.html"
-            return f"file://{overlay_path}"
-        elif self.overlay_source == "offline":
-            # Use local project overlays
-            overlay_path = self.project_root / "docs" / "overlays" / f"{overlay_name}.html"
-            return f"file://{overlay_path}"
+        if self.overlay_source in ["custom", "offline"]:
+            # Use HTTP server for local overlays
+            if self.base_url:
+                return f"{self.base_url}/{overlay_name}.html"
+            else:
+                # Fallback to file:// if HTTP server failed
+                if self.overlay_source == "custom":
+                    overlay_path = self.custom_overlay_path / f"{overlay_name}.html"
+                else:
+                    overlay_path = self.project_root / "docs" / "overlays" / f"{overlay_name}.html"
+                return f"file://{overlay_path}"
         else:
             # Use online overlays
             if self.github_user == "artivisi":

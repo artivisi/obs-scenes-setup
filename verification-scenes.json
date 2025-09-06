@@ -1,0 +1,642 @@
+{
+  "AaronProgrammerScenes": {
+    "current_scene": "\ud83d\udc64 Talking Head",
+    "current_program_scene": "\ud83d\udc64 Talking Head",
+    "current_preview_scene": "\ud83c\udfac Intro Scene",
+    "current_transition": "Fade",
+    "transition_duration": 300,
+    "sources": [
+      {
+        "name": "Primary Microphone",
+        "versioned_id": "pulse_input_capture",
+        "volume": 1.0,
+        "monitoring_type": 2,
+        "settings": {
+          "device": "Primary Microphone"
+        },
+        "filters": [
+          {
+            "name": "Noise Suppression",
+            "type": "noise_suppress_filter",
+            "enabled": true,
+            "settings": {
+              "method": "rnnoise"
+            }
+          },
+          {
+            "name": "Compressor",
+            "type": "compressor_filter",
+            "enabled": true,
+            "settings": {
+              "ratio": 10.0,
+              "threshold": -18.0
+            }
+          }
+        ]
+      },
+      {
+        "name": "Desktop Audio",
+        "versioned_id": "pulse_output_capture",
+        "volume": 0.5,
+        "settings": {}
+      }
+    ],
+    "scene_order": [
+      {
+        "name": "\ud83d\udcf9 Camera Sources"
+      },
+      {
+        "name": "\ud83c\udfa4 Audio Sources"
+      },
+      {
+        "name": "\ud83d\udda5\ufe0f Screen Sources"
+      },
+      {
+        "name": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550 SOURCE SCENES \u2550\u2550\u2550\u2550\u2550\u2550\u2550"
+      },
+      {
+        "name": "\ud83c\udfaf Outro Scene"
+      },
+      {
+        "name": "\ud83d\udcfa BRB / Technical"
+      },
+      {
+        "name": "\ud83d\udda5\ufe0f Screen Only"
+      },
+      {
+        "name": "\ud83d\udcbb Code + Camera"
+      },
+      {
+        "name": "\ud83d\udc64 Talking Head"
+      },
+      {
+        "name": "\ud83c\udfac Intro Scene"
+      }
+    ],
+    "name": "Programming Tutorials - Artivisi",
+    "id": "id1757123628",
+    "prev_ver": 503316737,
+    "scenes": [
+      {
+        "name": "\ud83d\udcf9 Camera Sources",
+        "uuid": "uuid-\ud83d\udcf9-camera-sources",
+        "id": 16,
+        "prev_ver": 503316737,
+        "source_uuid": "source-\ud83d\udcf9-camera-sources",
+        "sources": [
+          {
+            "name": "Main Camera",
+            "source_uuid": "source-main-camera",
+            "versioned_id": "v4l2_source",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 1,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {},
+            "scaleX": 1.5,
+            "scaleY": 1.5,
+            "positionX": 0,
+            "positionY": 0
+          }
+        ]
+      },
+      {
+        "name": "\ud83c\udfa4 Audio Sources",
+        "uuid": "uuid-\ud83c\udfa4-audio-sources",
+        "id": 15,
+        "prev_ver": 503316737,
+        "source_uuid": "source-\ud83c\udfa4-audio-sources",
+        "sources": [
+          {
+            "name": "Main Microphone",
+            "source_uuid": "source-main-microphone",
+            "versioned_id": "pulse_input_capture",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 1,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "device_id": "default"
+            },
+            "filters": [
+              {
+                "name": "Noise Suppression",
+                "type": "noise_suppress_filter",
+                "settings": {
+                  "method": "rnnoise"
+                },
+                "enabled": true
+              },
+              {
+                "name": "Compressor",
+                "type": "compressor_filter",
+                "settings": {
+                  "ratio": 10,
+                  "threshold": -18
+                },
+                "enabled": true
+              },
+              {
+                "name": "Limiter",
+                "type": "limiter_filter",
+                "settings": {
+                  "threshold": -6,
+                  "release_time": 60
+                },
+                "enabled": true
+              }
+            ]
+          },
+          {
+            "name": "Guest Microphone",
+            "source_uuid": "source-guest-microphone",
+            "versioned_id": "pulse_input_capture",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 2,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": false,
+            "settings": {
+              "device_id": "default"
+            },
+            "filters": [
+              {
+                "name": "Noise Suppression",
+                "type": "noise_suppress_filter",
+                "settings": {
+                  "method": "rnnoise"
+                },
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "\ud83d\udda5\ufe0f Screen Sources",
+        "uuid": "uuid-\ud83d\udda5\ufe0f-screen-sources",
+        "id": 17,
+        "prev_ver": 503316737,
+        "source_uuid": "source-\ud83d\udda5\ufe0f-screen-sources",
+        "sources": [
+          {
+            "name": "Application Capture (VS Code Default)",
+            "source_uuid": "source-application-capture-(vs-code-default)",
+            "versioned_id": "window_capture",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 1,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "window": "Visual Studio Code"
+            },
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "positionX": 0,
+            "positionY": 0
+          },
+          {
+            "name": "Window Capture",
+            "source_uuid": "source-window-capture",
+            "versioned_id": "window_capture",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 2,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": false,
+            "settings": {},
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "positionX": 0,
+            "positionY": 0
+          },
+          {
+            "name": "Display Capture",
+            "source_uuid": "source-display-capture",
+            "versioned_id": "xshm_input",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 3,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": false,
+            "settings": {
+              "method": "automatic"
+            },
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "positionX": 0,
+            "positionY": 0
+          }
+        ]
+      },
+      {
+        "name": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550 SOURCE SCENES \u2550\u2550\u2550\u2550\u2550\u2550\u2550",
+        "uuid": "uuid-\u2550\u2550\u2550\u2550\u2550\u2550\u2550-source-scenes-\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
+        "id": 29,
+        "prev_ver": 503316737,
+        "source_uuid": "source-\u2550\u2550\u2550\u2550\u2550\u2550\u2550-source-scenes-\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
+        "sources": []
+      },
+      {
+        "name": "\ud83c\udfaf Outro Scene",
+        "uuid": "uuid-\ud83c\udfaf-outro-scene",
+        "id": 13,
+        "prev_ver": 503316737,
+        "source_uuid": "source-\ud83c\udfaf-outro-scene",
+        "sources": [
+          {
+            "name": "Outro Overlay",
+            "source_uuid": "source-outro-overlay",
+            "versioned_id": "browser_source",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 1,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "url": "file://test-python-overlays/outro.html",
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "shutdown_source_when_not_visible": true,
+              "restart_when_active": true,
+              "reroute_audio": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "\ud83d\udcfa BRB / Technical",
+        "uuid": "uuid-\ud83d\udcfa-brb-/-technical",
+        "id": 17,
+        "prev_ver": 503316737,
+        "source_uuid": "source-\ud83d\udcfa-brb-/-technical",
+        "sources": [
+          {
+            "name": "BRB Overlay",
+            "source_uuid": "source-brb-overlay",
+            "versioned_id": "browser_source",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 1,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "url": "file://test-python-overlays/brb.html",
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "shutdown_source_when_not_visible": true,
+              "restart_when_active": true,
+              "reroute_audio": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "\ud83d\udda5\ufe0f Screen Only",
+        "uuid": "uuid-\ud83d\udda5\ufe0f-screen-only",
+        "id": 14,
+        "prev_ver": 503316737,
+        "source_uuid": "source-\ud83d\udda5\ufe0f-screen-only",
+        "sources": [
+          {
+            "name": "Full Screen",
+            "source_uuid": "source-full-screen",
+            "versioned_id": "xshm_input",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 1,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "method": "automatic"
+            },
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "positionX": 0,
+            "positionY": 0
+          },
+          {
+            "name": "Mini Camera (Toggleable)",
+            "source_uuid": "source-mini-camera-(toggleable)",
+            "versioned_id": "scene_reference",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 2,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": false,
+            "settings": {
+              "scene_name": "\ud83d\udcf9 Camera Sources"
+            },
+            "scaleX": 0.15,
+            "scaleY": 0.15,
+            "positionX": 1632,
+            "positionY": 918
+          },
+          {
+            "name": "Screen Only Overlay",
+            "source_uuid": "source-screen-only-overlay",
+            "versioned_id": "browser_source",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 3,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "url": "file://test-python-overlays/screen-only.html",
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "shutdown_source_when_not_visible": true,
+              "restart_when_active": true,
+              "reroute_audio": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "\ud83d\udcbb Code + Camera",
+        "uuid": "uuid-\ud83d\udcbb-code-+-camera",
+        "id": 15,
+        "prev_ver": 503316737,
+        "source_uuid": "source-\ud83d\udcbb-code-+-camera",
+        "sources": [
+          {
+            "name": "Screen Capture",
+            "source_uuid": "source-screen-capture",
+            "versioned_id": "scene_reference",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 1,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "scene_name": "\ud83d\udda5\ufe0f Screen Sources"
+            },
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "positionX": 0,
+            "positionY": 0
+          },
+          {
+            "name": "PiP Camera (Small Lower Right)",
+            "source_uuid": "source-pip-camera-(small-lower-right)",
+            "versioned_id": "scene_reference",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 2,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "scene_name": "\ud83d\udcf9 Camera Sources"
+            },
+            "scaleX": 0.33,
+            "scaleY": 0.33,
+            "positionX": 1560,
+            "positionY": 780,
+            "cropLeft": 0,
+            "cropTop": 0,
+            "cropRight": 0,
+            "cropBottom": 0,
+            "boundsType": "OBS_BOUNDS_SCALE_INNER",
+            "boundsWidth": 320,
+            "boundsHeight": 180
+          },
+          {
+            "name": "Code Demo Overlay",
+            "source_uuid": "source-code-demo-overlay",
+            "versioned_id": "browser_source",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 3,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "url": "file://test-python-overlays/code-demo.html",
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "shutdown_source_when_not_visible": true,
+              "restart_when_active": true,
+              "reroute_audio": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "\ud83d\udc64 Talking Head",
+        "uuid": "uuid-\ud83d\udc64-talking-head",
+        "id": 14,
+        "prev_ver": 503316737,
+        "source_uuid": "source-\ud83d\udc64-talking-head",
+        "sources": [
+          {
+            "name": "Main Camera",
+            "source_uuid": "source-main-camera",
+            "versioned_id": "scene_reference",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 1,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "scene_name": "\ud83d\udcf9 Camera Sources"
+            },
+            "scaleX": 1.0,
+            "scaleY": 1.0,
+            "rotation": 0.0,
+            "positionX": 0,
+            "positionY": 0
+          },
+          {
+            "name": "Talking Head Overlay",
+            "source_uuid": "source-talking-head-overlay",
+            "versioned_id": "browser_source",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 2,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "url": "file://test-python-overlays/talking-head.html",
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "shutdown_source_when_not_visible": true,
+              "restart_when_active": true,
+              "reroute_audio": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "\ud83c\udfac Intro Scene",
+        "uuid": "uuid-\ud83c\udfac-intro-scene",
+        "id": 13,
+        "prev_ver": 503316737,
+        "source_uuid": "source-\ud83c\udfac-intro-scene",
+        "sources": [
+          {
+            "name": "Dynamic Intro Overlay",
+            "source_uuid": "source-dynamic-intro-overlay",
+            "versioned_id": "browser_source",
+            "volume": 1.0,
+            "balance": 0.5,
+            "sync": 0,
+            "mixers": 255,
+            "monitoring_type": 0,
+            "prev_ver": 503316737,
+            "id": 1,
+            "muted": false,
+            "push-to-mute": false,
+            "push-to-mute-delay": 1000,
+            "push-to-talk": false,
+            "push-to-talk-delay": 1000,
+            "enabled": true,
+            "settings": {
+              "url": "file://test-python-overlays/intro.html",
+              "width": 1920,
+              "height": 1080,
+              "fps": 30,
+              "shutdown_source_when_not_visible": true,
+              "restart_when_active": true,
+              "reroute_audio": false
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

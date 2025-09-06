@@ -139,9 +139,15 @@ All overlays use these optimized settings:
 - ✅ **Restart when active** (ensures fresh loading)
 - ❌ **Reroute audio** (keep disabled)
 
-**Overlay URLs:**
-- Production: `https://artivisi.github.io/obs-scenes-setup/overlays/[scene].html`
-- Development: `file://[project-path]/docs/overlays/[scene].html`
+**Overlay URLs (Auto-detected by script):**
+- **Custom overlays**: `http://[detected-ip]:8080/[scene].html` (HTTP server automatically started)
+- **Offline mode**: `http://[detected-ip]:8080/[scene].html` (Default templates)
+- **Online mode**: `https://artivisi.github.io/obs-scenes-setup/overlays/[scene].html`
+
+**Cross-Platform IP Detection:**
+- **WSL + Windows**: Automatically detects WSL IP (e.g., `172.29.130.195:8080`) accessible from Windows OBS
+- **macOS/Linux**: Uses standard network interface detection (e.g., `192.168.1.100:8080`)
+- **HTTP Server**: Automatically started on available port (8080+) with quiet logging
 
 2. **Video Capture Device** - "Background Camera" (Optional)
    - Device: Your camera (Nikon ZFC/Cam Link 4K)

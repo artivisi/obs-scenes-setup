@@ -13,10 +13,10 @@
 Complete Infrastructure-as-Code system delivering:
 - **7 professional scene templates** with proper audio processing
 - **Event-specific overlay generation** from JSON templates
-- **GitHub Pages + local overlay support** for online/offline development
+- **Automatic HTTP server for overlays** (works seamlessly with WSL, macOS, Linux)
 - **Content-specific templates** (Java, Linux, DevOps, Interview)
 - **Vial macropad automation** with 4-layer control system
-- **Cross-platform compatibility** (macOS, Windows, Linux)
+- **Cross-platform networking** with automatic WSL/Windows compatibility
 
 ## 🚀 Easy Workflow Options
 
@@ -198,9 +198,11 @@ obs-scenes-setup/
 - **Mobile devices** via web interface (planned)
 
 ### 💻 Platform Compatibility
-- **macOS** (M1/Intel) with native camera and audio support
+- **macOS** (M1/Intel) with native camera and audio support  
 - **Windows** (10/11) with DirectShow compatibility
 - **Linux** with V4L2 video device support
+- **WSL + Windows** automatic network bridge detection
+- **Automatic HTTP server** with cross-platform IP detection
 - **Consistent behavior** across all platforms
 
 ## 🏠 Architecture Principles
