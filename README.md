@@ -87,10 +87,10 @@ python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json
 
 ## Templates Available
 
-- `java` - Java development with Spring Boot
 - `python-workshop` - Python with FastAPI
 - `linux-admin` - Linux administration
-- More templates in `docs/resources/templates/`
+- `default` - General programming template
+- More templates in `templates/`
 
 ## Documentation
 
@@ -106,9 +106,9 @@ obs-scenes-setup/
 │   ├── obs/          # OBS integration
 │   ├── tools/        # Overlay generation
 │   └── utils/        # Utility modules
-├── docs/             # Documentation and web assets
-│   ├── overlays/     # HTML overlay templates
-│   └── resources/    # Event templates
+├── overlays/         # HTML overlay templates
+├── templates/        # Event configuration templates
+├── docs/             # Documentation only (GitHub Pages)
 └── generated-overlays/ # Your custom overlays (created automatically)
 ```
 

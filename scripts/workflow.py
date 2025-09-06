@@ -34,7 +34,7 @@ class OBSWorkflow:
         self.github_user = github_user
         self.project_root = Path(__file__).parent.parent
         self.scripts_dir = self.project_root / "scripts"
-        self.resources_dir = self.project_root / "docs" / "resources"
+        self.resources_dir = self.project_root / "templates"
         
     def step1_environment_setup(self) -> bool:
         """Step 1: Set up environment and dependencies"""
@@ -79,13 +79,13 @@ class OBSWorkflow:
             # Create event configuration
             if template:
                 print(f"📋 Using template: {template}")
-                config_path = self.resources_dir / "templates" / f"{template}.json"
+                config_path = self.resources_dir / f"{template}.json"
                 if not config_path.exists():
                     print(f"❌ Template not found: {template}")
                     return None
             else:
                 print(f"📄 Creating custom event: {event_name}")
-                config_path = self.resources_dir / "event-config.json"
+                config_path = self.resources_dir / "default.json"
             
             # Load configuration
             with open(config_path, 'r', encoding='utf-8') as f:

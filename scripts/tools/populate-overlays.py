@@ -24,17 +24,16 @@ import shutil
 class OverlayPopulator:
     def __init__(self):
         self.project_root = Path(__file__).parent.parent.parent
-        self.resources_dir = self.project_root / "docs" / "resources"
-        self.templates_dir = self.resources_dir / "templates"
-        self.overlays_dir = self.project_root / "docs" / "overlays"
+        self.templates_dir = self.project_root / "templates"
+        self.overlays_dir = self.project_root / "overlays"
         
     def load_config(self, config_path: str) -> Dict[str, Any]:
         """Load configuration from JSON file"""
         if config_path.startswith('/'):
             config_file = Path(config_path)
         else:
-            # Try relative to resources directory first
-            config_file = self.resources_dir / config_path
+            # Try relative to templates directory first
+            config_file = self.templates_dir / config_path
             if not config_file.exists():
                 # Try relative to current directory
                 config_file = Path(config_path)

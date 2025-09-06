@@ -90,7 +90,7 @@ class AutoSceneCreator:
             print(f"🎨 Using custom overlays: {self.custom_overlay_path}")
         elif offline_mode:
             self.overlay_source = "offline"
-            self.overlay_directory = self.project_root / "docs" / "overlays"
+            self.overlay_directory = self.project_root / "overlays"
             print(f"🏠 Using local overlays: {self.overlay_directory}")
         else:
             self.overlay_source = "online"
@@ -248,7 +248,7 @@ class AutoSceneCreator:
                 if self.overlay_source == "custom":
                     overlay_path = self.custom_overlay_path / f"{overlay_name}.html"
                 else:
-                    overlay_path = self.project_root / "docs" / "overlays" / f"{overlay_name}.html"
+                    overlay_path = self.project_root / "overlays" / f"{overlay_name}.html"
                 return f"file://{overlay_path}"
         else:
             # Use online overlays
