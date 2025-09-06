@@ -97,15 +97,24 @@ obs-scenes-setup/
 └── scripts/                    # 🤖 Complete automation system
     ├── workflow.py             # 🚀 Complete workflow orchestration
     ├── README.md               # 🛠️ Complete script documentation
+    ├── utils/                  # 🔧 Reusable utility modules
+    │   ├── obs_utils.py        # OBS connection & operations (WSL auto-detect)
+    │   ├── scene_generator.py  # Scene templates & layout management
+    │   ├── text_customizer.py  # Text processing & event customization
+    │   └── __init__.py
     ├── setup/                  # System setup and hardware
     │   ├── install-dependencies.py # 📦 Install packages & validate
     │   └── setup-macropad.py       # 🎹 Automated Vial configuration
     ├── obs/                    # OBS automation engine
     │   ├── auto-scene-creator.py   # 🎬 Main automation script
+    │   ├── list-sources.py         # 📋 Debug OBS sources (refactored)
+    │   ├── fix-overlay-urls.py     # 🔧 Update browser source URLs (refactored)
     │   └── lua-scripts/           # Enhanced OBS control
-    └── tools/                  # Development utilities
-        ├── populate-overlays.py    # 🎯 Generate event-specific overlays
-        └── convert-docs-to-html.py # 📚 Documentation generator
+    ├── tools/                  # Development utilities
+    │   ├── populate-overlays.py    # 🎯 Generate event-specific overlays
+    │   └── convert-docs-to-html.py # 📚 Documentation generator
+    └── examples/               # 📚 Usage examples and demonstrations
+        └── demo_utilities.py   # 🧪 Utility module demonstrations
 ```
 
 ## Technology Stack
@@ -146,6 +155,8 @@ obs-scenes-setup/
 - **Event-specific templates** - easily customize overlays via JSON
 - **Online/offline modes** for production and development
 - **Template system** for different content types
+- **Modular utilities** - reusable components for custom workflows
+- **WSL auto-detection** - seamless Windows/Linux development
 - **Comprehensive documentation** with live examples
 
 ## 📚 Complete Documentation
@@ -159,6 +170,11 @@ obs-scenes-setup/
 - **[🎹 Macropad Design](MACROPAD_DESIGN.md)** - 4-layer control system with Vial firmware
 - **[🏗️ Project Architecture](PROJECT_NOTES.md)** - Technical deep-dive and system design
 - **[🛠️ Script Documentation](scripts/README.md)** - Complete automation toolkit reference
+
+### 🔧 Developer Resources  
+- **[🧪 Utilities API](docs/UTILITIES_API.md)** - Complete API reference for reusable modules
+- **[🛠️ Developer Guide](docs/DEVELOPER_GUIDE.md)** - Extending, customizing, and contributing
+- **[📚 Usage Examples](scripts/examples/)** - Demonstrations and code samples
 
 ### 🎬 Live Overlay Previews  
 - **[👤 Talking Head](https://artivisi.com/obs-scenes-setup/overlays/talking-head.html)** - Presenter-focused layout

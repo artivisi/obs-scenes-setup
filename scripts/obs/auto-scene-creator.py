@@ -106,7 +106,7 @@ class AutoSceneCreator:
             self._setup_http_server()
         
         self.obs_client = None
-        self.obs_host = obs_host
+        self.obs_host = self._get_obs_host_ip(obs_host)
         self.obs_port = obs_port
         self.obs_password = obs_password
         self.detected_devices = {}
@@ -115,6 +115,32 @@ class AutoSceneCreator:
         
         # Scene templates
         self.scene_templates = self._create_scene_templates()
+        
+    def _get_obs_host_ip(self, provided_host: str) -> str:
+        """Auto-detect OBS host IP for WSL environment"""
+        # If user explicitly provided a non-localhost IP, use it
+        if provided_host not in ["localhost", "127.0.0.1"]:
+            return provided_host
+            
+        # Check if we're in WSL
+        try:
+            with open("/proc/version", "r") as f:
+                if "microsoft" in f.read().lower():
+                    # WSL - get Windows host IP (default gateway)
+                    result = subprocess.run(
+                        ["ip", "route", "show", "default"], 
+                        capture_output=True, text=True, check=True
+                    )
+                    for line in result.stdout.split('\n'):
+                        if 'default via' in line:
+                            windows_host_ip = line.strip().split()[2]
+                            print(f"🔍 WSL detected - using Windows host IP: {windows_host_ip}")
+                            return windows_host_ip
+        except Exception as e:
+            print(f"⚠️  WSL detection failed: {e}")
+            
+        # Default fallback
+        return provided_host
         
     def _get_server_ip(self) -> str:
         """Get the appropriate IP address for the HTTP server"""

@@ -11,11 +11,22 @@
 
 ```
 scripts/
+├── utils/          # 🔧 Reusable utility modules (NEW!)
+│   ├── obs_utils.py        # OBS connection & operations (WSL auto-detect)
+│   ├── scene_generator.py  # Scene templates & layout management  
+│   ├── text_customizer.py  # Text processing & event customization
+│   └── __init__.py
 ├── setup/          # System setup and hardware configuration
 ├── obs/            # OBS Studio automation and control
+│   ├── auto-scene-creator.py   # Main automation script
+│   ├── list-sources.py         # Debug OBS sources (REFACTORED)
+│   ├── fix-overlay-urls.py     # Update browser source URLs (REFACTORED)
+│   └── lua-scripts/           # Enhanced OBS control
 ├── tools/          # Development and maintenance tools
 │   ├── populate-overlays.py    # Generate event-specific overlays
 │   └── convert-docs-to-html.py # Documentation generator
+├── examples/       # 📚 Usage examples and demonstrations (NEW!)
+│   └── demo_utilities.py   # Utility module demonstrations
 └── README.md       # This file
 ```
 
@@ -70,6 +81,16 @@ python scripts/tools/convert-docs-to-html.py
 
 ## 📋 Script Reference
 
+### 🔧 Utility Modules (`scripts/utils/`) - NEW!
+
+| Module | Purpose | Key Classes |
+|--------|---------|-------------|
+| **`obs_utils.py`** | OBS WebSocket operations with WSL auto-detection | ✅ **OBSConnection** - Auto-detect WSL, context manager<br>✅ **OBSSceneManager** - List, iterate, cleanup scenes<br>✅ **OBSSourceManager** - Update browser sources, settings |
+| **`scene_generator.py`** | Scene templates & layout management | ✅ **CommonScenes** - Factory for standard scene types<br>✅ **SceneLayoutManager** - Positioning, scaling, transforms<br>✅ **SceneCollectionBuilder** - Complete collection assembly |
+| **`text_customizer.py`** | Text processing & event customization | ✅ **EventContentGenerator** - Event configs by type/language<br>✅ **TextTemplate** - Placeholder processing<br>✅ **OverlayTextProcessor** - HTML generation |
+
+**🎯 Benefits:** 75% less duplicate code, automatic WSL detection, modular design, consistent APIs
+
 ### Setup Scripts (`scripts/setup/`)
 
 | Script | Purpose | Key Features |
@@ -82,7 +103,9 @@ python scripts/tools/convert-docs-to-html.py
 
 | Script | Purpose | Key Features |
 |--------|---------|-------------|
-| **`auto-scene-creator.py`** | Complete OBS scene automation system | ✅ **7 professional scenes** with proper layering<br>✅ **Professional audio processing** (noise, compression, limiting)<br>✅ **Online/offline overlay support**<br>✅ **Content-specific templates** (Java, Linux, DevOps)<br>✅ **Cross-platform compatibility**<br>✅ **WebSocket + JSON export modes** |
+| **`auto-scene-creator.py`** | Complete OBS scene automation system | ✅ **7 professional scenes** with proper layering<br>✅ **Professional audio processing** (noise, compression, limiting)<br>✅ **Online/offline overlay support**<br>✅ **Content-specific templates** (Java, Linux, DevOps)<br>✅ **Cross-platform compatibility**<br>✅ **WebSocket + JSON export modes**<br>✅ **WSL auto-detection** |
+| **`list-sources.py`** | Debug OBS scenes and sources | ✅ **Auto WSL detection**<br>✅ **Clean utility-based code**<br>✅ **Browser source URL display**<br>✅ **Context manager connections** |
+| **`fix-overlay-urls.py`** | Update browser source URLs | ✅ **HTTP and file:// URL support**<br>✅ **Automatic overlay type detection**<br>✅ **Bulk URL updates**<br>✅ **WSL networking support** |
 
 ### Lua Scripts (`scripts/obs/lua-scripts/`)
 
