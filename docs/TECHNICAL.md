@@ -2,30 +2,31 @@
 
 ## Architecture Overview
 
-This OBS automation system uses an Infrastructure-as-Code approach with a 4-stage workflow pipeline:
+This OBS automation system uses an Infrastructure-as-Code approach with a streamlined 3-step workflow:
 
-1. **Environment Setup** - Dependency installation and system validation
-2. **Event Configuration** - JSON-based event customization
-3. **Overlay Generation** - HTML/CSS/JS overlay creation from templates
-4. **OBS Integration** - Automated scene creation via WebSocket
+1. **Scene Generation** - Create HTML overlays from YAML resources using Mustache templates
+2. **Local Serving** - Host generated content via cross-platform HTTP server  
+3. **OBS Injection** - Automated scene creation with nested architecture via WebSocket
 
 ## Core Components
 
-### Workflow Orchestration (`scripts/workflow.py`)
-- Master controller managing the complete pipeline
-- Supports quick setup (2-3 minutes) and full customization
-- Template support for different content types
+### Scene Generation (`scripts/generate-scenes.py`)
+- Processes YAML event resources through Mustache templates
+- Generates complete HTML overlay sets with CSS/JS
+- Creates unique timestamped output directories
+- Supports theme system for consistent styling
 
-### OBS Integration (`scripts/obs/auto-scene-creator.py`)
-- Creates 7 professional scenes automatically
-- Cross-platform device detection
-- Automatic HTTP server for local overlay serving
-- Professional audio filter chain configuration
+### Scene Serving (`scripts/serve-scenes.py`) 
+- Cross-platform HTTP server (0.0.0.0:8080)
+- Automatic WSL/Windows networking detection
+- Serves generated HTML overlays to OBS
+- Real-time overlay updates during development
 
-### Overlay System (`scripts/tools/populate-overlays.py`)
-- Dynamic HTML/CSS/JS overlays
-- Event-specific content generation
-- GitHub Pages hosting with offline fallback
+### OBS Injection (`scripts/inject-obs.py`)
+- Creates nested scene architecture eliminating source duplication
+- Implements 5 core scene types with professional layouts
+- Cross-platform WebSocket connectivity with WSL auto-detection
+- Unique collection naming with timestamp suffixes
 
 ## Utility Modules
 
@@ -33,15 +34,6 @@ This OBS automation system uses an Infrastructure-as-Code approach with a 4-stag
 - OBS WebSocket connection management
 - Automatic WSL/Windows bridge detection
 - Scene and source management classes
-
-### `scripts/utils/scene_generator.py`
-- Scene layout templates and positioning
-- Transform calculations for sources
-- Scene collection building utilities
-
-### `scripts/utils/text_customizer.py`
-- Text processing and content personalization
-- Event-specific text replacement
 
 ## Network Architecture
 
@@ -58,101 +50,98 @@ The system automatically detects WSL environments and configures networking:
 
 ## Scene Templates
 
-| Scene | Hotkey | Description |
-|-------|--------|-------------|
-| 🎬 Intro | F1 | Professional intro with countdown |
-| 👤 Talking Head | F2 | Full camera for presentations |
-| 💻 Code + Camera | F3 | Split screen with PiP camera |
-| 🖥️ Screen Only | F4 | Full screen capture |
-| 📺 BRB/Technical | F5 | Break screen |
-| 🎯 Outro | F6 | Professional closing |
+| Scene | Description |
+|-------|--------------|
+| 👤 Talking Head | Full camera for presentations with speaker info |
+| 💻 Code + Camera | Split screen with PiP camera frame |
+| 🖥️ Screen Only | Full screen capture with minimal overlay |
+| 📺 BRB / Technical | Break screen with event branding |
+| 🎯 Outro | Professional closing with contact info |
 
-## Audio Processing Chain
+## Nested Scene Architecture
 
-Each microphone source automatically receives:
-1. **Noise Suppression** (RNNoise method)
-2. **Compressor** (10:1 ratio, -18dB threshold)
-3. **Limiter** (-6dB threshold, 60ms release)
+**Source Scenes** (created once):
+- 📹 Camera: Webcam/capture device input
+- 🖥️ Screen: Window/display capture source
 
-## Event Configuration Schema
+**Session Scenes** (reference sources):
+- All scenes use nested scene architecture
+- Camera and screen sources are referenced, not duplicated
+- Change source once → updates all scenes automatically
 
-```json
-{
-  "event": {
-    "title": "Event Title",
-    "subtitle": "Event Subtitle",
-    "duration": "90 minutes",
-    "type": "Workshop"
-  },
-  "presenter": {
-    "name": "Name",
-    "title": "Title",
-    "company": "Company"
-  },
-  "session": {
-    "topics": ["Topic 1", "Topic 2"],
-    "tech_stack": [
-      {"icon": "🎯", "name": "Technology"}
-    ]
-  }
-}
+## Event Configuration Schema (YAML)
+
+```yaml
+event:
+  title: "Python Web Development Workshop"
+  subtitle: "Building Modern Applications"
+  duration: "2 hours"
+  type: "Workshop"
+
+instructor:
+  name: "Sarah Johnson"
+  title: "Senior Python Developer"
+  company: "ArtiVisi Intermedia"
+
+session:
+  topics:
+    - "FastAPI Development"
+    - "Database Integration"
+    - "API Testing"
+  tech_stack:
+    - icon: "🐍"
+      name: "Python"
+    - icon: "⚡"
+      name: "FastAPI"
 ```
 
 ## API Reference
 
-### Workflow Class
+### Scene Generator Class
 ```python
-workflow = OBSWorkflow(github_user="username")
-workflow.quick_setup(template="java")
-workflow.full_workflow(event_name="my-event", template="python-workshop")
+generator = SceneGenerator(resource_file="resources/event.yaml")
+generator.load_resources()
+output_dir = generator.generate_scenes()
 ```
 
-### Scene Creator Class
+### OBS Injection Class  
 ```python
-creator = AutoSceneCreator(
-    github_user="username",
-    offline_mode=True,
-    custom_overlay_path="path/to/overlays"
+injector = OBSInjector(
+    collection_name="my-workshop",
+    webserver_url="http://localhost:8080",
+    obs_host="localhost"
 )
-await creator.create_all_scenes_live()
+injector.inject_scenes()
 ```
 
-### Overlay Populator Class
-```python
-populator = OverlayPopulator()
-populator.populate_all_overlays(config, output_dir)
-```
+## Cross-Platform Support
 
-## Macropad Integration (Optional)
+### WSL Environment
+- Automatic Windows host IP detection (172.29.128.1)
+- ETH0 interface detection for HTTP server binding
+- Cross-platform path handling
 
-### Vial Configuration
-The system supports a 4-layer macropad configuration:
-- **Layer 0**: OBS Control (scene switching, recording)
-- **Layer 1**: Tutorial Mode (zoom, annotations)
-- **Layer 2**: Development (IDE shortcuts)
-- **Layer 3**: System Control (audio, display)
-
-### Key Mappings
-- F1-F6: Scene switching
-- F13-F24: Recording/streaming control
-- Custom macros for common actions
+### Network Configuration
+- HTTP server binds to 0.0.0.0:8080 for cross-platform access
+- OBS WebSocket connects to appropriate host IP
+- Smart fallback to localhost when not in WSL
 
 ## Development Guidelines
 
 ### Adding New Scene Templates
-1. Define layout in `scene_generator.py`
-2. Create HTML overlay in `docs/overlays/`
-3. Update scene creation in `auto-scene-creator.py`
+1. Create Mustache template in `themes/default/scene-name.mustache.html`
+2. Test generation with `scripts/generate-scenes.py` 
+3. Verify layout and positioning in OBS
 
 ### Creating Event Templates
-1. Add JSON template in `docs/resources/templates/`
-2. Test with `populate-overlays.py`
-3. Verify with full workflow
+1. Add YAML resource in `resources/`
+2. Test with scene generation workflow
+3. Verify end-to-end functionality
 
 ### Cross-Platform Considerations
 - Use `pathlib.Path` for all file operations
-- Handle WSL networking automatically
-- Test on Windows, Linux, and macOS
+- Handle WSL networking automatically 
+- Generated files go to `target/` directory (gitignored)
 
 ## Troubleshooting
 
@@ -167,6 +156,6 @@ The system supports a 4-layer macropad configuration:
 - Test URLs in browser before OBS integration
 
 ### Device Detection
-- Cameras/microphones are auto-detected
+- USB cameras prioritized over integrated webcams
+- Window Capture preferred over Display Capture
 - Manual configuration available in OBS after scene creation
-- Check system permissions for device access

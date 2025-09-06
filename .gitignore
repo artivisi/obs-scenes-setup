@@ -20,7 +20,12 @@ Thumbs.db
 # Local test files
 *.local.*
 
-# Generated scene collections
+# Build/target directory (like Maven)
+target/
+
+# Generated output directories (local development)  
+nested-demo/
+*-demo/
 *-configured.json
 *-configured.txt
 

@@ -1,0 +1,96 @@
+name: Generate Example Scenes
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'themes/**'
+      - 'resources/**'
+      - 'scripts/generate-scenes.py'
+      - '.github/workflows/generate-example-scenes.yml'
+  workflow_dispatch:
+
+jobs:
+  generate-scenes:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install pyyaml pystache
+    
+    - name: Generate example scenes
+      run: |
+        echo "🎬 Generating example scenes from default theme..."
+        python scripts/generate-scenes.py resources/event.yaml --output docs/example-scenes
+        echo "✅ Example scenes generated"
+    
+    - name: Create index for example scenes
+      run: |
+        cat > docs/example-scenes/index.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>OBS Example Scenes</title>
+            <meta charset="UTF-8">
+            <style>
+                body { font-family: system-ui, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+                h1 { color: #333; }
+                .scene-list { list-style: none; padding: 0; }
+                .scene-list li { margin: 10px 0; }
+                .scene-list a { 
+                    display: inline-block; 
+                    padding: 10px 20px; 
+                    background: linear-gradient(135deg, #2e3192, #58c034);
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 8px;
+                    transition: transform 0.2s;
+                }
+                .scene-list a:hover { transform: scale(1.05); }
+                .info { background: #f0f0f0; padding: 15px; border-radius: 8px; margin: 20px 0; }
+            </style>
+        </head>
+        <body>
+            <h1>🎬 OBS Example Scenes</h1>
+            <div class="info">
+                <p>These are example scenes generated from the default theme. Use them with OBS Studio:</p>
+                <ol>
+                    <li>Copy the scene URL (e.g., https://yourusername.github.io/obs-scenes-setup/example-scenes/talking-head.html)</li>
+                    <li>In OBS, add a Browser Source</li>
+                    <li>Set the URL to the scene URL</li>
+                    <li>Set dimensions to 1920x1080</li>
+                </ol>
+            </div>
+            <h2>Available Scenes:</h2>
+            <ul class="scene-list">
+                <li><a href="brb.html">📺 BRB / Technical</a></li>
+                <li><a href="talking-head.html">👤 Talking Head</a></li>
+                <li><a href="code-demo.html">💻 Code Demo</a></li>
+                <li><a href="screen-only.html">🖥️ Screen Only</a></li>
+                <li><a href="outro.html">🎯 Outro</a></li>
+            </ul>
+            <div class="info">
+                <p><strong>For custom scenes:</strong> Fork this repository and modify the templates in <code>themes/default/</code></p>
+            </div>
+        </body>
+        </html>
+        EOF
+    
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add docs/example-scenes/
+        git diff --cached --quiet || git commit -m "Auto-generate example scenes from default theme"
+        git push || echo "No changes to push"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

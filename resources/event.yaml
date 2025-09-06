@@ -1,0 +1,99 @@
+# Event Configuration
+# Easy-to-edit text resources for OBS scenes
+# Edit this file to customize your event content
+
+event:
+  title: "Python Web Development Workshop"
+  subtitle: "Building Modern APIs with FastAPI"
+  date: "2024-09-06"
+  duration: "2 hours"
+  type: "Interactive Workshop"
+  description: "Hands-on coding session"
+
+instructor:
+  name: "Sarah Johnson"
+  title: "Senior Python Developer"
+  company: "ArtiVisi Intermedia"
+  website: "artivisi.com"
+  experience: "8+ years in Python development"
+  specialty: "FastAPI & Microservices"
+
+branding:
+  company_name: "ArtiVisi Intermedia"
+  company_tagline: "Custom Application Development"
+  website: "artivisi.com"
+  primary_color: "#2e3192"
+  accent_color: "#58c034"
+  logo_url: "assets/images/artivisi-logo-white.svg"
+
+content:
+  welcome_message: "Welcome to the Workshop"
+  thank_you_message: "Thank You for Attending!"
+  session_topics:
+    - "Python Fundamentals & Best Practices"
+    - "FastAPI Framework Deep Dive"
+    - "Database Integration with SQLAlchemy"
+    - "API Testing & Documentation"
+    - "Deployment & Production Tips"
+  
+  tech_stack:
+    - name: "Python 3.11"
+      icon: "🐍"
+    - name: "FastAPI"
+      icon: "⚡"
+    - name: "PostgreSQL"
+      icon: "🗄️"
+    - name: "Docker"
+      icon: "🐋"
+    - name: "GitHub Actions"
+      icon: "🔄"
+
+session:
+  recording_status: "LIVE"
+  countdown_enabled: true
+  countdown_seconds: 10
+  layer_info: "Layer 2: Workshop Mode"
+  current_topic: "API Development"
+
+messages:
+  intro:
+    main: "Get Ready for an Amazing Session!"
+    subtitle: "We'll start in just a moment"
+  outro:
+    main: "What We Accomplished Today"
+    cta: "Continue Learning"
+  brb:
+    main: "We'll Be Right Back"
+    subtitle: "Technical Break - Please Stand By"
+
+social_links:
+  - platform: "GitHub"
+    url: "https://github.com/artivisi"
+    icon: "🔗"
+  - platform: "LinkedIn"
+    url: "https://linkedin.com/company/artivisi"
+    icon: "💼"
+  - platform: "Website"
+    url: "https://artivisi.com"
+    icon: "🌐"
+
+# Scene-specific overrides
+scenes:
+  intro:
+    countdown: true
+    show_tech_stack: true
+  talking_head:
+    show_instructor_info: true
+    show_company_branding: true
+  code_demo:
+    show_current_topic: true
+    show_layer_info: true
+  screen_only:
+    minimal_overlay: true
+  outro:
+    show_session_topics: true
+    show_social_links: true
+    show_cta: true
+  brb:
+    show_timer: true
+    animated_background: true

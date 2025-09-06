@@ -1,0 +1,20 @@
+{
+  "collection_name": "python-web-development-workshop-8aefad18",
+  "generated_at": "2025-09-06T22:11:28.286785",
+  "event_title": "Python Web Development Workshop",
+  "instructor": "Sarah Johnson",
+  "scenes": [
+    "brb.html",
+    "talking-head.html",
+    "code-demo.html",
+    "screen-only.html",
+    "outro.html"
+  ],
+  "total_scenes": 5,
+  "resource_file": "resources/event.yaml",
+  "webserver_info": {
+    "recommended_port": 8080,
+    "serve_directory": "docs/example-scenes",
+    "python_command": "python3 -m http.server 8080 --directory docs/example-scenes"
+  }
+}

@@ -4,44 +4,37 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an OBS Studio automation system for creating professional programming tutorial setups. The system provides Infrastructure-as-Code approach to OBS scene creation with automated overlay generation, cross-platform compatibility, and hardware integration.
+This is an OBS Studio automation system for creating professional programming tutorial setups. The system provides Infrastructure-as-Code approach to OBS scene creation with automated nested scene architecture, HTML overlay generation, and cross-platform compatibility.
+
+## Current Architecture (2025)
+
+The system uses a **modern 3-step workflow**:
+1. **Scene Generation**: YAML resources → Mustache HTML templates → Scene collection JSON
+2. **Webserver**: Local HTTP server for overlay hosting with cross-platform networking
+3. **OBS Injection**: WebSocket-based scene creation with nested architecture
 
 ## Key Commands
 
-### Main Workflow Commands
+### Modern Workflow (Current Implementation)
 ```bash
-# Quick setup with defaults (2-3 minutes)
-python scripts/workflow.py --quick
+# Generate scenes from YAML resources
+python scripts/generate-scenes.py --resource resources/event.yaml --output my-workshop/
 
-# Custom event setup with interactive configuration
-python scripts/workflow.py --event my-workshop
+# Serve generated scenes locally
+python scripts/serve-scenes.py my-workshop/
 
-# Use predefined template
-python scripts/workflow.py --event my-workshop --template java
-
-# Environment setup only
-python scripts/workflow.py --setup
+# Inject scenes into OBS (creates unique timestamped collection)
+python scripts/inject-obs.py --collection my-workshop --webserver http://localhost:8080 --obs-host localhost
 ```
 
-### Direct OBS Scene Creation
+### Cross-Platform Usage
 ```bash
-# Create live OBS scenes with online overlays
-python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi
+# WSL/Windows setup (webserver binds to 0.0.0.0, OBS on Windows host)
+python scripts/serve-scenes.py my-workshop/
+python scripts/inject-obs.py --collection my-workshop --webserver http://172.29.130.195:8080 --obs-host 172.29.128.1
 
-# Create with custom/local overlays
-python scripts/obs/auto-scene-creator.py --create-live --offline --overlay-path custom-overlays
-
-# Generate JSON scene collection (no WebSocket needed)
-python scripts/obs/auto-scene-creator.py --generate-json --output scenes.json
-```
-
-### Overlay Generation
-```bash
-# Generate event-specific overlays
-python scripts/tools/populate-overlays.py --template python-workshop --preview
-
-# Custom overlay generation
-python scripts/tools/populate-overlays.py --config event-config.json --output my-overlays/
+# macOS/Linux setup (standard localhost)
+python scripts/inject-obs.py --collection my-workshop --webserver http://localhost:8080
 ```
 
 ### Development and Testing
@@ -49,99 +42,141 @@ python scripts/tools/populate-overlays.py --config event-config.json --output my
 # Install dependencies
 python scripts/setup/install-dependencies.py
 
-# List OBS sources (debugging)
-python scripts/obs/list-sources.py
-
-# Fix overlay URLs in existing scenes
-python scripts/obs/fix-overlay-urls.py
+# Quick test with existing demo
+python scripts/serve-scenes.py nested-demo/
+python scripts/inject-obs.py --collection demo --webserver http://localhost:8080 --obs-host localhost
 ```
 
 ## Architecture
 
 ### Core Components
 
-**Workflow System** (`scripts/workflow.py`):
-- Master orchestration script that manages the complete workflow
-- Handles environment setup → event configuration → overlay generation → OBS integration
-- Supports quick setup, custom events, and template-based workflows
+**Scene Generator** (`scripts/generate-scenes.py`):
+- Loads YAML event resources for easy text editing
+- Uses Mustache templating for dynamic HTML overlay generation
+- Creates kebab-case collection names with random suffixes for uniqueness
+- Outputs complete scene collection with metadata JSON
 
-**OBS Integration** (`scripts/obs/auto-scene-creator.py`):
-- Creates 7 professional scene templates: talking-head, code-demo, screen-only, intro, outro, brb, dual-cam
-- Automatic audio filter chain: noise suppression, compression, limiting
-- Cross-platform device detection and WebSocket connectivity
-- Supports both live scene creation and JSON export modes
+**Webserver** (`scripts/serve-scenes.py`):
+- Environment-aware HTTP server with WSL/macOS/Linux detection
+- Automatic 0.0.0.0 binding for cross-platform overlay access
+- Process management with PID tracking and graceful shutdown
+- Serves HTML overlays and scene metadata to OBS
 
-**Overlay System** (`docs/overlays/`, `scripts/tools/populate-overlays.py`):
-- HTML/CSS/JS based overlays replacing traditional PNG graphics
-- Event-specific content generation from JSON templates
-- GitHub Pages hosting with offline development support
-- Template system for different content types (Java, Python, Linux, etc.)
+**OBS Injector** (`scripts/inject-obs.py`):
+- **Nested Scene Architecture**: Eliminates source duplication via dedicated source scenes
+- **Unique Collections**: Timestamp-based names prevent conflicts
+- **Cross-Platform**: WSL host IP detection for Windows/Linux hybrid setups
+- **Window Capture Priority**: Prefers application capture over display capture
 
-**Utility Modules** (`scripts/utils/`):
-- `obs_utils.py`: OBS WebSocket connection management with WSL auto-detection
-- `scene_generator.py`: Scene template definitions and layout management  
-- `text_customizer.py`: Text processing and event content customization
+### Nested Scene Architecture
+
+**Source Scenes** (configured once):
+- 📹 **Camera**: DirectShow camera input with audio filters
+- 🖥️ **Screen**: Window Capture (preferred) or Display Capture fallback
+- 🎤 **Audio**: Global audio configuration
+
+**Session Scenes** (reference source scenes):
+- 📺 **BRB / Technical**: Overlay only
+- 👤 **Talking Head**: Full-screen camera + speaker info overlay
+- 💻 **Code Demo**: Screen + PiP camera (25% scale, bottom-right) + overlay
+- 🖥️ **Screen Only**: Full-screen capture + overlay
+- 🎯 **Outro Scene**: Overlay only
+
+### Overlay System
+
+**Modern HTML/CSS Overlays**:
+- Mustache templating with YAML data injection
+- Responsive design with doubled font sizes for readability
+- Consistent branding: ArtiVisi + API Development + status indicators
+- Perfect PiP alignment with green camera frame borders
+
+**Resource Structure**:
+```
+resources/event.yaml          # Easy-to-edit event details
+themes/default/*.mustache.html # HTML templates
+{output}/*.html               # Generated overlays
+{output}/scene-collection.json # OBS metadata
+```
 
 ### Network Architecture
-- Automatic WSL/Windows bridge detection for cross-platform development
-- Local HTTP server for overlay hosting during development
-- GitHub Pages integration for production overlay hosting
-- Smart IP detection for consistent cross-platform behavior
 
-### Hardware Integration
-- USB camera and audio device auto-detection
-- Support for capture cards and professional cameras
-- Macropad integration via Vial firmware (optional)
-- Cross-platform audio processing chain
+**Cross-Platform Detection**:
+- WSL detection via `/proc/version` 
+- Windows host IP discovery via `ip route show`
+- Automatic webserver binding (0.0.0.0 vs localhost)
+- Smart OBS WebSocket connection handling
 
 ## Development Guidelines
 
-### File Structure Conventions
-- All scripts are in `scripts/` with clear subdirectory organization
-- Overlay templates in `docs/overlays/` with GitHub Pages deployment
-- Event configurations and templates in `docs/resources/`
-- Generated content uses timestamps for uniqueness
+### File Structure
+```
+scripts/
+├── generate-scenes.py    # YAML → HTML generation
+├── serve-scenes.py      # Cross-platform webserver
+├── inject-obs.py        # OBS WebSocket injection
+├── setup/               # Dependency installation
+└── utils/               # Shared utilities
 
-### Python Dependencies
-The system automatically installs these key dependencies:
-- `obsws-python`: OBS WebSocket communication
-- `pathlib`: Cross-platform path handling
-- Standard library modules (no external framework dependencies)
+resources/event.yaml     # Event text resources (YAML)
+themes/default/          # Mustache templates
+nested-demo/            # Example generated output
+```
 
-### Cross-Platform Considerations
-- WSL environment auto-detection for Windows/Linux hybrid setups
-- Platform-specific device enumeration for cameras and audio
-- Network interface detection for local overlay serving
-- Path handling works consistently across macOS, Windows, Linux
+### Scene Development Workflow
 
-### Error Handling Patterns
-- Graceful fallback to JSON mode if OBS WebSocket unavailable  
-- Default overlay fallback if custom generation fails
-- Comprehensive device detection with fallback options
-- Clear error messages with suggested resolution steps
+1. **Edit Content**: Modify `resources/event.yaml` for event details
+2. **Generate**: Run `generate-scenes.py` to create HTML overlays
+3. **Test Locally**: Use `serve-scenes.py` + browser to preview
+4. **Deploy**: Run `inject-obs.py` to create OBS scene collection
+
+### Adding New Scene Types
+
+1. Create new Mustache template in `themes/default/`
+2. Add scene metadata to generation logic
+3. Update injector scene creation in `inject-obs.py`
+4. Test complete workflow with real OBS setup
+
+### Cross-Platform Testing
+
+- **WSL**: Test webserver 0.0.0.0 binding and Windows host detection
+- **macOS**: Verify localhost networking and device detection
+- **Linux**: Test standard networking and audio pipeline
 
 ## Common Tasks
 
-### Adding New Scene Templates
-1. Define scene layout in `scripts/utils/scene_generator.py`
-2. Create corresponding HTML overlay in `docs/overlays/`
-3. Update scene creation logic in `scripts/obs/auto-scene-creator.py`
+### Creating New Events
+1. Copy and modify `resources/event.yaml`
+2. Update branding, topics, and instructor details
+3. Generate and test with new content
 
-### Creating New Event Templates
-1. Add JSON template in `docs/resources/templates/`
-2. Test overlay generation with `populate-overlays.py`
-3. Verify end-to-end workflow with `workflow.py`
+### Debugging Scene Issues
+- Check OBS WebSocket connection (Tools → WebSocket Server Settings)
+- Verify overlay URLs are accessible in browser
+- Use browser dev tools to check overlay rendering
+- Test PiP camera alignment with generated frames
 
-### Debugging OBS Issues
-- Use `scripts/obs/list-sources.py` to examine current OBS setup
-- Check WebSocket connectivity with connection test utilities
-- Verify overlay URLs are accessible via browser
-- Use `--generate-json` mode for offline debugging
+### Performance Optimization
+- HTML overlays load faster than PNG graphics
+- Nested scenes eliminate source duplication
+- Window Capture reduces system load vs Display Capture
+- Local webserver provides low-latency overlay updates
 
 ## Important Notes
 
-- OBS WebSocket must be enabled (Tools → WebSocket Server Settings)
-- The system creates 7 standard scenes with professional audio processing
-- Overlays are hosted via GitHub Pages at `https://artivisi.com/obs-scenes-setup/`
-- All automation preserves existing OBS scenes and settings
-- Custom overlays are generated with timestamp-based directories to avoid conflicts
+**OBS Setup Requirements**:
+- WebSocket server enabled (default port 4455)
+- Scene collections auto-managed with timestamps
+- Audio processing chain automatically configured
+- Source scenes require one-time device configuration
+
+**Production Workflow**:
+- Generate scenes from YAML resources
+- Test locally with webserver
+- Deploy to OBS with unique collection names
+- Clean up old collections manually as needed
+
+**Cross-Platform Considerations**:
+- WSL users: OBS runs on Windows host, requires IP detection
+- All users: Webserver binds to appropriate interface automatically
+- Network firewall: Ensure localhost/LAN HTTP access for overlays

@@ -270,6 +270,7 @@
 <body>
     <div class="container">
         <div class="header">
+            <img src="assets/images/artivisi-logo-white.svg" alt="ArtiVisi" style="height: 80px; margin-bottom: 2rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
             <h1>🎬 OBS Infrastructure-as-Code</h1>
             <div class="subtitle">
                 Professional programming tutorial setup with event-specific customization, automated scene creation, and cross-platform compatibility
@@ -282,27 +283,36 @@
             
             <div class="quick-start-grid">
                 <div class="quick-option" style="border-left-color: #58c034;">
-                    <h3><span class="icon">⚡</span> Quick Setup (Recommended)</h3>
-                    <p>Complete workflow with event-specific overlays and professional branding.</p>
-                    <div class="code-block"># One command for complete setup
-python scripts/workflow.py --quick</div>
-                    <p><strong>Time:</strong> 1-2 minutes | <strong>Result:</strong> Custom overlays + OBS scenes</p>
+                    <h3><span class="icon">🚀</span> New 3-Step Workflow</h3>
+                    <p>Streamlined process: Generate → Serve → Inject</p>
+                    <div class="code-block"># 1. Generate scenes from YAML resources
+python scripts/generate-scenes.py resources/event.yaml
+
+# 2. Start local webserver
+python scripts/serve-scenes.py target/*/
+
+# 3. Inject into OBS
+python scripts/inject-obs.py --collection name --webserver http://ip:8080</div>
+                    <p><strong>Time:</strong> 2-3 minutes | <strong>Result:</strong> Professional nested scenes</p>
                 </div>
                 
                 <div class="quick-option" style="border-left-color: #2e3192;">
-                    <h3><span class="icon">🎯</span> Custom Event Setup</h3>
-                    <p>Full customization with your content, branding, and presenter information.</p>
-                    <div class="code-block"># Interactive event configuration
-python scripts/workflow.py --event my-workshop</div>
-                    <p><strong>Time:</strong> 3-4 minutes | <strong>Result:</strong> Fully customized professional setup</p>
+                    <h3><span class="icon">🎨</span> Try Example Scenes</h3>
+                    <p>Preview our professionally designed overlays before setup.</p>
+                    <div class="code-block"># View live examples
+https://artivisi.github.io/obs-scenes-setup/example-scenes/
+
+# Use directly in OBS as Browser Source</div>
+                    <p><strong>Time:</strong> Instant | <strong>Result:</strong> Ready-to-use overlays</p>
                 </div>
                 
                 <div class="quick-option" style="border-left-color: #6c757d;">
-                    <h3><span class="icon">🌐</span> Traditional Setup</h3>
-                    <p>Classic approach with online overlays and standard configurations.</p>
-                    <div class="code-block"># Traditional automation
-python scripts/obs/auto-scene-creator.py --create-live --github-user [username]</div>
-                    <p><strong>Time:</strong> 2-3 minutes | <strong>Result:</strong> Standard professional scenes</p>
+                    <h3><span class="icon">⚙️</span> Custom Templates</h3>
+                    <p>Create your own themes with Mustache templating.</p>
+                    <div class="code-block"># Edit templates in themes/default/
+# Modify resources/event.yaml
+# Generate with your branding</div>
+                    <p><strong>Time:</strong> Varies | <strong>Result:</strong> Fully customized themes</p>
                 </div>
             </div>
         </div>
@@ -310,20 +320,20 @@ python scripts/obs/auto-scene-creator.py --create-live --github-user [username]<
         <div class="stats">
             <div class="stats-grid">
                 <div class="stat-item">
-                    <span class="stat-number">2-3</span>
-                    <div class="stat-label">Minutes Setup Time</div>
+                    <span class="stat-number">3</span>
+                    <div class="stat-label">Simple Steps</div>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">7</span>
+                    <span class="stat-number">5</span>
                     <div class="stat-label">Professional Scenes</div>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">3</span>
-                    <div class="stat-label">Platforms Supported</div>
+                    <span class="stat-number">0</span>
+                    <div class="stat-label">Source Duplication</div>
                 </div>
                 <div class="stat-item">
                     <span class="stat-number">100%</span>
-                    <div class="stat-label">Infrastructure-as-Code</div>
+                    <div class="stat-label">Nested Architecture</div>
                 </div>
             </div>
         </div>
@@ -441,56 +451,51 @@ python scripts/obs/auto-scene-creator.py --create-live --github-user [username]<
             <p style="text-align: center; margin-bottom: 2rem;">Preview all overlay designs in your browser before setting up OBS</p>
             
             <div class="overlay-grid">
-                <a href="../overlays/talking-head.html?test=true" class="overlay-link" target="_blank">
+                <a href="example-scenes/talking-head.html" class="overlay-link" target="_blank">
                     <span class="overlay-icon">👤</span>
                     <strong>Talking Head</strong>
-                    <div>Presenter-focused layout</div>
+                    <div>Speaker info bottom-right</div>
                 </a>
                 
-                <a href="../overlays/code-demo.html?test=true" class="overlay-link" target="_blank">
+                <a href="example-scenes/code-demo.html" class="overlay-link" target="_blank">
                     <span class="overlay-icon">💻</span>
                     <strong>Code Demo</strong>
-                    <div>Split screen + webcam</div>
+                    <div>PiP camera + speaker label</div>
                 </a>
                 
-                <a href="../overlays/screen-only.html?test=true" class="overlay-link" target="_blank">
+                <a href="example-scenes/screen-only.html" class="overlay-link" target="_blank">
                     <span class="overlay-icon">🖥️</span>
                     <strong>Screen Only</strong>
-                    <div>Full screen capture</div>
+                    <div>Minimal overlay elements</div>
                 </a>
                 
-                <a href="../overlays/intro.html?test=true" class="overlay-link" target="_blank">
-                    <span class="overlay-icon">🎬</span>
-                    <strong>Intro Scene</strong>
-                    <div>Professional intro</div>
-                </a>
-                
-                <a href="../overlays/outro.html?test=true" class="overlay-link" target="_blank">
-                    <span class="overlay-icon">🎯</span>
-                    <strong>Outro Scene</strong>
-                    <div>Call-to-action ending</div>
-                </a>
-                
-                <a href="../overlays/brb.html?test=true" class="overlay-link" target="_blank">
+                <a href="example-scenes/brb.html" class="overlay-link" target="_blank">
                     <span class="overlay-icon">📺</span>
                     <strong>BRB / Technical</strong>
-                    <div>Break intermission</div>
+                    <div>Break screen with branding</div>
                 </a>
                 
-                <a href="../overlays/dual-cam.html?test=true" class="overlay-link" target="_blank">
-                    <span class="overlay-icon">👥</span>
-                    <strong>Dual Camera</strong>
-                    <div>Guest interviews</div>
+                <a href="example-scenes/outro.html" class="overlay-link" target="_blank">
+                    <span class="overlay-icon">🎯</span>
+                    <strong>Outro Scene</strong>
+                    <div>Contact info & CTA</div>
+                </a>
+                
+                <a href="example-scenes/" class="overlay-link" target="_blank" style="background: linear-gradient(135deg, #2e3192, #58c034); color: white;">
+                    <span class="overlay-icon" style="color: white;">🎨</span>
+                    <strong style="color: white;">View All Examples</strong>
+                    <div style="color: rgba(255,255,255,0.9);">With usage instructions</div>
                 </a>
             </div>
         </div>
 
         <div class="footer">
+            <img src="assets/images/artivisi-icon.svg" alt="ArtiVisi" style="height: 40px; margin-bottom: 1rem; opacity: 0.8;">
             <p>🚀 <strong>OBS Infrastructure-as-Code</strong> - Professional programming tutorial setup</p>
-            <p>Built with ❤️ for content creators | Powered by GitHub Pages</p>
+            <p>Built with ❤️ by <a href="https://artivisi.com" style="color: rgba(255,255,255,0.9); text-decoration: underline;">ArtiVisi Intermedia</a> | Powered by GitHub Pages</p>
             <p style="margin-top: 1rem; opacity: 0.7;">
                 <a href="https://github.com/artivisi/obs-scenes-setup" style="color: rgba(255,255,255,0.8);">📁 View Source on GitHub</a> |
-                <a href="mailto:support@example.com" style="color: rgba(255,255,255,0.8);">📧 Support</a>
+                <a href="https://artivisi.com/contact" style="color: rgba(255,255,255,0.8);">📧 Contact</a>
             </p>
         </div>
     </div>
