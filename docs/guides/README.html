@@ -341,94 +341,92 @@
             <p class="doc-subtitle">Automated OBS Studio scene creation for programming tutorials and content creation.</p>
         </div>
 
-        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#obs-scenes-setup">OBS Scenes Setup</a></li><li style="margin-left: 1.5rem;"><a href="#quick-start">Quick Start</a></li><li style="margin-left: 3.0rem;"><a href="#option-1-fastest-setup-2-3-minutes">Option 1: Fastest Setup (2-3 minutes)</a></li><li style=""><a href="#install-dependencies-and-create-scenes-with-defaults">Install dependencies and create scenes with defaults</a></li><li style=""><a href="#or-use-a-specific-template">Or use a specific template</a></li><li style="margin-left: 3.0rem;"><a href="#option-2-custom-event-setup">Option 2: Custom Event Setup</a></li><li style=""><a href="#interactive-setup-with-your-event-details">Interactive setup with your event details</a></li><li style=""><a href="#or-start-with-a-template">Or start with a template</a></li><li style="margin-left: 3.0rem;"><a href="#option-3-direct-obs-creation">Option 3: Direct OBS Creation</a></li><li style=""><a href="#just-create-obs-scenes-if-you-already-have-overlays">Just create OBS scenes (if you already have overlays)</a></li><li style="margin-left: 1.5rem;"><a href="#what-you-get">What You Get</a></li><li style="margin-left: 1.5rem;"><a href="#prerequisites">Prerequisites</a></li><li style="margin-left: 1.5rem;"><a href="#installation">Installation</a></li><li style=""><a href="#clone-the-repository">Clone the repository</a></li><li style=""><a href="#run-the-quick-setup">Run the quick setup</a></li><li style="margin-left: 1.5rem;"><a href="#enable-obs-websocket">Enable OBS WebSocket</a></li><li style="margin-left: 1.5rem;"><a href="#advanced-usage">Advanced Usage</a></li><li style="margin-left: 3.0rem;"><a href="#generate-custom-overlays">Generate Custom Overlays</a></li><li style="margin-left: 3.0rem;"><a href="#use-custom-overlays">Use Custom Overlays</a></li><li style="margin-left: 3.0rem;"><a href="#export-scene-collection">Export Scene Collection</a></li><li style="margin-left: 1.5rem;"><a href="#templates-available">Templates Available</a></li><li style="margin-left: 1.5rem;"><a href="#documentation">Documentation</a></li><li style="margin-left: 1.5rem;"><a href="#project-structure">Project Structure</a></li><li style="margin-left: 1.5rem;"><a href="#support">Support</a></li><li style="margin-left: 1.5rem;"><a href="#license">License</a></li></ul></div>
+        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#obs-scenes-setup">OBS Scenes Setup</a></li><li style="margin-left: 1.5rem;"><a href="#quick-start">Quick Start</a></li><li style=""><a href="#1-generate-scenes-from-yaml-resources">1. Generate scenes from YAML resources</a></li><li style=""><a href="#2-start-local-webserver">2. Start local webserver</a></li><li style=""><a href="#3-inject-into-obs">3. Inject into OBS</a></li><li style="margin-left: 1.5rem;"><a href="#features">Features</a></li><li style="margin-left: 1.5rem;"><a href="#scene-types">Scene Types</a></li><li style="margin-left: 1.5rem;"><a href="#requirements">Requirements</a></li><li style="margin-left: 1.5rem;"><a href="#live-examples">Live Examples</a></li><li style="margin-left: 1.5rem;"><a href="#architecture">Architecture</a></li><li style="margin-left: 3.0rem;"><a href="#nested-scene-concept">Nested Scene Concept</a></li><li style="margin-left: 3.0rem;"><a href="#content-pipeline">Content Pipeline</a></li><li style="margin-left: 1.5rem;"><a href="#cross-platform-usage">Cross-Platform Usage</a></li><li style=""><a href="#wsl-serves-on-0000-connects-to-windows-host-obs">WSL serves on 0.0.0.0, connects to Windows host OBS</a></li><li style=""><a href="#standard-localhost-networking">Standard localhost networking</a></li><li style="margin-left: 1.5rem;"><a href="#development">Development</a></li><li style="margin-left: 1.5rem;"><a href="#contributing">Contributing</a></li><li style="margin-left: 1.5rem;"><a href="#license">License</a></li></ul></div>
 
         <div class="content">
             <h1>OBS Scenes Setup</h1>
-<p>Automated OBS Studio scene creation for programming tutorials and content creation. Set up professional streaming scenes in 2-3 minutes.</p>
+<p>Professional OBS scene automation for programming tutorials and workshops using Infrastructure-as-Code principles.</p>
 <h2>Quick Start</h2>
-<h3>Option 1: Fastest Setup (2-3 minutes)</h3>
-<pre><code><h1>Install dependencies and create scenes with defaults</h1>
-<p>python scripts/workflow.py --quick</p>
-<h1>Or use a specific template</h1>
-<p>python scripts/workflow.py --quick --template python-workshop</code></pre></p>
-<h3>Option 2: Custom Event Setup</h3>
-<pre><code><h1>Interactive setup with your event details</h1>
-<p>python scripts/workflow.py --event my-workshop</p>
-<h1>Or start with a template</h1>
-<p>python scripts/workflow.py --event my-workshop --template java</code></pre></p>
-<h3>Option 3: Direct OBS Creation</h3>
-<pre><code><h1>Just create OBS scenes (if you already have overlays)</h1>
-<p>python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi</code></pre></p>
-<h2>What You Get</h2>
-<div class="success">✅ <strong>7 Professional Scenes</strong></div>
+<pre><code><h1>1. Generate scenes from YAML resources</h1>
+<p>python scripts/generate-scenes.py --resource resources/event.yaml --output my-workshop/</p>
+<h1>2. Start local webserver</h1>
+<p>python scripts/serve-scenes.py my-workshop/</p>
+<h1>3. Inject into OBS</h1>
+<p>python scripts/inject-obs.py --collection my-workshop --webserver http://localhost:8080 --obs-host localhost</code></pre></p>
+<h2>Features</h2>
 <ul>
-<li>🎬 Intro Scene (F1) - Professional intro with countdown</li>
-<li>👤 Talking Head (F2) - Full camera view</li>
-<li>💻 Code + Camera (F3) - Split screen with PiP</li>
-<li>🖥️ Screen Only (F4) - Full screen capture</li>
-<li>📺 BRB/Technical (F5) - Break screen</li>
-<li>🎯 Outro Scene (F6) - Professional closing</li>
+<li><strong>🎬 Nested Scene Architecture</strong>: Eliminates source duplication</li>
+<li><strong>📱 HTML Overlays</strong>: Dynamic, responsive overlays with Mustache templating</li>
+<li><strong>🔄 Cross-Platform</strong>: WSL, macOS, Linux support with automatic networking</li>
+<li><strong>⚡ Instant Deployment</strong>: Timestamp-based unique scene collections</li>
+<li><strong>🎨 Professional Layout</strong>: Consistent branding and typography</li>
+<li><strong>🖼️ Perfect Alignment</strong>: PiP camera frames with pixel-perfect positioning</li>
 </ul>
-<div class="success">✅ <strong>Professional Audio</strong> - Automatic noise suppression, compression, and limiting</div>
-<div class="success">✅ <strong>Dynamic Overlays</strong> - HTML/CSS overlays with your branding</div>
-<div class="success">✅ <strong>Cross-Platform</strong> - Works on Windows, Linux, macOS, and WSL</div>
-<h2>Prerequisites</h2>
+<h2>Scene Types</h2>
 <ul>
-<li>Python 3.8+</li>
-<li>OBS Studio 28+ with WebSocket enabled</li>
-<li>Git (for cloning the repository)</li>
+<li><strong>📺 BRB / Technical</strong>: Break/transition overlay</li>
+<li><strong>👤 Talking Head</strong>: Full-screen presenter with speaker info</li>
+<li><strong>💻 Code Demo</strong>: Screen share + PiP camera with aligned frame</li>
+<li><strong>🖥️ Screen Only</strong>: Full-screen capture with minimal overlay</li>
+<li><strong>🎯 Outro Scene</strong>: Session conclusion overlay</li>
 </ul>
-<h2>Installation</h2>
-<pre><code><h1>Clone the repository</h1>
-<p>git clone https://github.com/artivisi/obs-scenes-setup.git</p>
-<p>cd obs-scenes-setup</p>
-<h1>Run the quick setup</h1>
-<p>python scripts/workflow.py --quick</code></pre></p>
-<h2>Enable OBS WebSocket</h2>
+<h2>Requirements</h2>
+<ul>
+<li>OBS Studio with WebSocket enabled (Tools → WebSocket Server Settings)</li>
+<li>Python 3.8+ with <code>obsws-python</code>, <code>pystache</code>, <code>pyyaml</code></li>
+<li>Run <code>python scripts/setup/install-dependencies.py</code> to install</li>
+</ul>
+<h2>Live Examples</h2>
+<p>🌐 <strong>View example scenes</strong>: <a href="https://artivisi.github.io/obs-scenes-setup/example-scenes/">https://artivisi.github.io/obs-scenes-setup/example-scenes/</a></p>
+<p>These are generated from the default theme and can be directly imported into OBS as Browser Sources.</p>
+<h2>Architecture</h2>
+<h3>Nested Scene Concept</h3>
+<strong>Source Scenes</strong> (configure once):
+<ul>
+<li>📹 Camera: Your webcam/capture device</li>
+<li>🖥️ Screen: Window/display capture</li>
+<li>🎤 Audio: Microphone settings</li>
+</ul>
+<strong>Session Scenes</strong> (inherit from sources):
+<ul>
+<li>All scenes reference source scenes via OBS nested architecture</li>
+<li>Change camera once → updates all scenes automatically</li>
+<li>No source duplication = cleaner OBS setup</li>
+</ul>
+<h3>Content Pipeline</h3>
+<pre><code>resources/event.yaml → themes/default/<em>.mustache.html → {output}/</em>.html → OBS WebSocket
+<p>       ↑                        ↑                            ↑               ↑</p>
+<p>   Easy editing            Template engine              Generated HTML    Live scenes</code></pre></p>
+<h2>Cross-Platform Usage</h2>
+<strong>WSL + Windows OBS:</strong>
+<pre><code><h1>WSL serves on 0.0.0.0, connects to Windows host OBS</h1>
+<p>python scripts/serve-scenes.py my-workshop/</p>
+<p>python scripts/inject-obs.py --collection demo --webserver http://172.29.130.195:8080 --obs-host 172.29.128.1</code></pre></p>
+<strong>macOS/Linux:</strong>
+<pre><code><h1>Standard localhost networking</h1>
+<p>python scripts/inject-obs.py --collection demo --webserver http://localhost:8080</code></pre></p>
+<h2>Development</h2>
+<p>See <a href="CLAUDE.md">CLAUDE.md</a> for detailed architecture and development guidelines.</p>
+<strong>Key Scripts:</strong>
+<ul>
+<li><code>generate-scenes.py</code> - YAML → HTML generation</li>
+<li><code>serve-scenes.py</code> - Cross-platform webserver</li>
+<li><code>inject-obs.py</code> - OBS WebSocket integration</li>
+</ul>
+<strong>File Structure:</strong>
+<pre><code>resources/event.yaml      # Event details (easy editing)
+<p>themes/default/          # Mustache HTML templates  </p>
+<p>scripts/                # Python automation tools</p>
+<p>nested-demo/            # Example output</code></pre></p>
+<h2>Contributing</h2>
 <ol>
-<li>Open OBS Studio</li>
-<li>Go to Tools → WebSocket Server Settings</li>
-<li>Check "Enable WebSocket server"</li>
-<li>Use default port 4455 (no password needed for local use)</li>
-</ul>
-<h2>Advanced Usage</h2>
-<h3>Generate Custom Overlays</h3>
-<pre><code>python scripts/tools/populate-overlays.py --template python-workshop --preview</code></pre>
-<h3>Use Custom Overlays</h3>
-<pre><code>python scripts/obs/auto-scene-creator.py --create-live --overlay-path my-overlays</code></pre>
-<h3>Export Scene Collection</h3>
-<pre><code>python scripts/obs/auto-scene-creator.py --generate-json --output my-scenes.json</code></pre>
-<h2>Templates Available</h2>
-<ul>
-<li><code>java</code> - Java development with Spring Boot</li>
-<li><code>python-workshop</code> - Python with FastAPI</li>
-<li><code>linux-admin</code> - Linux administration</li>
-<li>More templates in <code>docs/resources/templates/</code></li>
-</ul>
-<h2>Documentation</h2>
-<ul>
-<li><a href="docs/TECHNICAL.md">Technical Documentation</a> - Architecture and API details</li>
-<li><a href="CLAUDE.md">Claude Code Integration</a> - AI assistant configuration</li>
-</ul>
-<h2>Project Structure</h2>
-<pre><code>obs-scenes-setup/
-<p>├── scripts/           # Automation scripts</p>
-<p>│   ├── workflow.py    # Main workflow orchestrator</p>
-<p>│   ├── obs/          # OBS integration</p>
-<p>│   ├── tools/        # Overlay generation</p>
-<p>│   └── utils/        # Utility modules</p>
-<p>├── docs/             # Documentation and web assets</p>
-<p>│   ├── overlays/     # HTML overlay templates</p>
-<p>│   └── resources/    # Event templates</p>
-<p>└── generated-overlays/ # Your custom overlays (created automatically)</code></pre></p>
-<h2>Support</h2>
-<ul>
-<li>Issues: <a href="https://github.com/artivisi/obs-scenes-setup/issues">GitHub Issues</a></li>
-<li>Documentation: <a href="docs/TECHNICAL.md">Technical Details</a></li>
+<li>Test changes with <code>nested-demo/</code> example</li>
+<li>Verify cross-platform compatibility (WSL, macOS, Linux)</li>
+<li>Update documentation for any API changes</li>
+<li>Test complete workflow: generate → serve → inject</li>
 </ul>
 <h2>License</h2>
-<p>MIT License - Feel free to customize and use for your content creation!</p>
+<p>MIT License - Professional streaming setup automation for educational content.</p>
         </div>
     </div>
 
