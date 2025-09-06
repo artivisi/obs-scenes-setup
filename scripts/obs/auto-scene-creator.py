@@ -539,10 +539,10 @@ class AutoSceneCreator:
             hotkey="F4",
             sources=[
                 SceneSource(
-                    name="Full Screen",
-                    type="display_capture",
+                    name="Screen Sources",
+                    type="scene_reference",
                     settings={
-                        "method": "automatic"
+                        "scene_name": "🖥️ Screen Sources"
                     },
                     transform={
                         "scaleX": 1.0,
@@ -551,20 +551,6 @@ class AutoSceneCreator:
                         "positionY": 0
                     },
                     visible=True
-                ),
-                SceneSource(
-                    name="Mini Camera (Toggleable)",
-                    type="scene_reference",
-                    settings={
-                        "scene_name": "📹 Camera Sources"
-                    },
-                    transform={
-                        "scaleX": 0.15,  # 15% of full camera (1920*0.15=288px wide)
-                        "scaleY": 0.15,  # 15% of full camera (1080*0.15=162px tall) 
-                        "positionX": 1632,    # Bottom right: 1920-288=1632
-                        "positionY": 918      # Bottom right: 1080-162=918
-                    },
-                    visible=False  # Disabled by default - user can enable if wanted
                 ),
                 SceneSource(
                     name="Screen Only Overlay",

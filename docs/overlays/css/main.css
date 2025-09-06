@@ -28,7 +28,7 @@
 
 body {
     font-family: var(--font-main);
-    font-size: 18px; /* Optimized for 1080p presenter display */
+    font-size: 22px; /* Optimized for 1080p presenter display */
     line-height: 1.6;
     color: var(--text-light);
     background: transparent;

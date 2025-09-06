@@ -6,158 +6,71 @@
     <title>Code Demo Overlay</title>
     <link rel="stylesheet" href="css/main.css">
     <style>
-        /* Code Demo Specific Styles */
+        /* Simplified Code Demo Styles */
         .code-demo-container {
             background: transparent;
         }
         
+        /* Webcam frame - 16:9 aspect ratio, adjusted position */
         .code-webcam {
             position: absolute;
-            top: 60px;
-            right: 60px;
-            width: 400px;
-            height: 300px;
+            /* Move left and up from previous position */
+            right: 40px;    /* Left-right aligned */
+            bottom: 120px;  /* Split the difference - between 130px and 110px */
+            width: 320px;   /* 16:9 aspect ratio */
+            height: 180px;  /* 16:9 aspect ratio */
+            border: 5px solid var(--accent-color);  /* Thicker border */
+            border-radius: 12px;  /* Rounded corners */
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
             z-index: 10;
         }
         
-        .code-area-frame {
+        /* ArtiVisi logo - top right position */
+        .artivisi-logo {
             position: absolute;
-            top: 60px;
-            left: 60px;
-            right: 480px; /* Leave space for webcam + margin */
-            bottom: 200px;
-            border: 2px solid var(--accent-color);
-            border-radius: var(--border-radius);
-            background: rgba(0, 0, 0, 0.05);
-        }
-        
-        .terminal-frame {
-            position: absolute;
-            bottom: 60px;
-            left: 60px;
-            right: 480px;
-            height: 120px;
-            border: 2px solid #16a34a;
-            border-radius: var(--border-radius);
-            background: rgba(0, 0, 0, 0.8);
-        }
-        
-        .code-info-panel {
-            position: absolute;
-            bottom: 200px;
-            right: 60px;
-            width: 400px;
-            background: var(--overlay-bg);
-            backdrop-filter: blur(15px);
-            border: 2px solid var(--accent-color);
-            border-radius: var(--border-radius);
-            padding: 20px;
-        }
-        
-        .code-info-panel h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--accent-color);
-        }
-        
-        .code-info-panel ul {
-            list-style: none;
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-        
-        .code-info-panel li {
-            margin-bottom: 6px;
-            padding-left: 16px;
-            position: relative;
-        }
-        
-        .code-info-panel li::before {
-            content: "→";
-            position: absolute;
-            left: 0;
-            color: var(--accent-color);
-        }
-        
-        .file-indicator {
-            position: absolute;
-            top: 40px;
-            left: 80px;
-            background: var(--overlay-bg);
+            top: 30px;
+            right: 30px;  /* Positioned from right edge */
+            background: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(10px);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            border: 1px solid var(--accent-color);
-            font-family: var(--font-mono);
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 2px solid var(--accent-color);
+            opacity: 0.9;
+            z-index: 10;
+            width: 200px;      /* Enlarged more from 160px */
+            height: 60px;      /* Enlarged more from 50px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .zoom-indicator {
-            position: absolute;
-            top: 40px;
-            right: 480px;
-            background: var(--overlay-bg);
-            backdrop-filter: blur(10px);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            border: 1px solid var(--accent-color);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .artivisi-logo img {
+            width: 170px;     /* Enlarged more from 130px */
+            height: auto;
+            max-height: 48px; /* Enlarged more from 38px */
         }
         
-        .zoom-indicator.active {
-            opacity: 1;
-        }
-        
-        /* Language-specific themes */
-        .java-theme .file-indicator {
-            border-color: #f89820;
-            background: rgba(248, 152, 32, 0.1);
-        }
-        
-        .linux-theme .terminal-frame {
-            border-color: #fcc419;
-            background: rgba(0, 0, 0, 0.9);
-        }
-        
-        .devops-theme .code-area-frame {
-            border-color: #20c997;
-        }
-        
-        /* Test mode */
+        /* Test mode styling - completely transparent */
         .test-mode .code-webcam {
-            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            font-weight: bold;
+            background: transparent;
+            border: 3px solid var(--accent-color);
         }
         
-        .test-mode .code-area-frame {
-            background: rgba(34, 197, 94, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
+        /* Debug text removed - clean camera frame */
         
-        .test-mode .terminal-frame {
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #16a34a;
-            font-size: 1.2rem;
-            font-weight: bold;
-            font-family: var(--font-mono);
+        /* Debug grid overlay to help with positioning */
+        .test-mode::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(90deg, transparent, transparent 99px, rgba(0, 255, 0, 0.1) 100px),
+                repeating-linear-gradient(0deg, transparent, transparent 99px, rgba(0, 255, 0, 0.1) 100px);
+            pointer-events: none;
+            z-index: 1;
         }
         
         /* Animation */
@@ -165,206 +78,66 @@
             animation: slideInRight 0.8s ease;
         }
         
-        .animate-in .code-area-frame {
-            animation: slideInLeft 0.8s ease;
+        .animate-in .artivisi-logo {
+            animation: fadeIn 0.8s ease 0.5s both;
         }
         
-        .animate-in .terminal-frame {
-            animation: slideUpFade 0.8s ease 0.3s both;
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
         
-        .animate-in .code-info-panel {
-            animation: slideInRight 0.8s ease 0.6s both;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body class="code-demo-container">
     <div class="overlay-container animate-in">
-        <!-- Code area frame (IDE/Editor will show behind this) -->
-        <div class="code-area-frame" id="codeArea">
-            <div class="test-mode">
-                💻 IDE / Code Editor Area
-            </div>
+        <!-- ArtiVisi logo -->
+        <div class="artivisi-logo">
+            <img src="assets/images/artivisi-logo.svg" alt="ArtiVisi Intermedia">
         </div>
         
-        <!-- Terminal frame (Terminal will show behind this) -->
-        <div class="terminal-frame" id="terminalArea">
-            <div class="test-mode">
-                $ Terminal / Console Output
-            </div>
+        <!-- Webcam in bottom-right corner - transparent frame only -->
+        <div class="code-webcam" id="codeWebcam">
+            <!-- Camera feed shows through transparently -->
         </div>
         
-        <!-- Webcam in picture-in-picture style -->
-        <div class="code-webcam webcam-frame medium" id="codeWebcam">
-            <div class="test-mode">
-                📹 Camera
-            </div>
-        </div>
-        
-        <!-- File/Project indicator -->
-        <div class="file-indicator" id="fileIndicator">
-            📄 Application.java
-        </div>
-        
-        <!-- Zoom level indicator -->
-        <div class="zoom-indicator" id="zoomIndicator">
-            🔍 150%
-        </div>
-        
-        <!-- Code context panel -->
-        <div class="code-info-panel" id="infoPanel">
-            <h3>📋 Current Focus</h3>
-            <ul>
-                <li>Spring Boot Application</li>
-                <li>REST API Development</li>
-                <li>Database Integration</li>
-                <li>Testing & Validation</li>
-            </ul>
-        </div>
-        
-        <!-- Recording status -->
-        <div class="recording-status" id="recordingStatus">
-            REC
-        </div>
-        
-        <!-- Topic indicator -->
-        <div class="topic-indicator" id="topicIndicator">
-            <span class="topic-icon">☕</span>
-            <span class="topic-text">Java Spring Boot</span>
-        </div>
-        
-        <!-- Macropad layer indicator -->
-        <div class="macropad-indicator layer-1 active" id="macropadIndicator">
-            Layer 1: Tutorial Mode
-        </div>
-        
-        <!-- ArtiVisi Branding -->
-        <div class="artivisi-branding">
-            <img src="assets/images/artivisi-logo-white.svg" alt="ArtiVisi Intermedia">
-            <div>
-                <div class="company-name">ArtiVisi Intermedia</div>
-                <div class="company-tagline">artivisi.com</div>
-            </div>
-        </div>
+        <!-- Full branding removed - using simple logo instead -->
     </div>
 
     <script>
         // URL parameters for customization
         const urlParams = new URLSearchParams(window.location.search);
         const testMode = urlParams.get('test') === 'true';
-        const showRecording = urlParams.get('recording') === 'true';
-        const language = urlParams.get('lang') || 'java';
-        const filename = urlParams.get('file') || 'Application.java';
-        const topic = urlParams.get('topic') || 'Java Spring Boot';
-        
-        // Language-specific configurations
-        const languageConfig = {
-            java: {
-                icon: '☕',
-                extension: '.java',
-                theme: 'java-theme',
-                terminal: '$ mvn spring-boot:run'
-            },
-            python: {
-                icon: '🐍',
-                extension: '.py',
-                theme: 'python-theme',
-                terminal: '$ python app.py'
-            },
-            javascript: {
-                icon: '⚡',
-                extension: '.js',
-                theme: 'js-theme',
-                terminal: '$ npm start'
-            },
-            linux: {
-                icon: '🐧',
-                extension: '.sh',
-                theme: 'linux-theme',
-                terminal: '$ ./script.sh'
-            }
-        };
+        const showFile = urlParams.get('showfile') === 'true';
+        const filename = urlParams.get('filename') || 'Main.java';
         
         // Initialize overlay
         document.addEventListener('DOMContentLoaded', function() {
-            const config = languageConfig[language] || languageConfig.java;
-            
-            // Apply theme
-            document.body.classList.add(config.theme);
+            const fileIndicator = document.getElementById('fileIndicator');
             
             // Handle test mode
             if (testMode) {
                 document.body.classList.add('test-mode');
             }
             
-            // Update elements
-            updateFileName(filename);
-            updateTopic(topic, config.icon);
-            
-            // Handle recording status
-            if (showRecording) {
-                document.getElementById('recordingStatus').classList.add('active');
-            }
-            
-            // Show indicators with delay
-            setTimeout(() => {
-                document.getElementById('topicIndicator').classList.add('active');
-            }, 1200);
+            // Clean overlay - no debug output needed
         });
         
-        function updateFileName(filename) {
-            const fileIndicator = document.getElementById('fileIndicator');
-            fileIndicator.innerHTML = `📄 ${filename}`;
-        }
-        
-        function updateZoom(zoomLevel) {
-            const zoomIndicator = document.getElementById('zoomIndicator');
-            zoomIndicator.innerHTML = `🔍 ${zoomLevel}%`;
-            zoomIndicator.classList.add('active');
-            
-            // Auto-hide after 3 seconds
-            setTimeout(() => {
-                zoomIndicator.classList.remove('active');
-            }, 3000);
-        }
-        
-        function updateCodeContext(items) {
-            const infoPanel = document.getElementById('infoPanel');
-            const ul = infoPanel.querySelector('ul');
-            ul.innerHTML = items.map(item => `<li>${item}</li>`).join('');
-        }
-        
-        function updateTopic(newTopic, icon = '☕') {
-            const topicText = document.querySelector('.topic-text');
-            const topicIcon = document.querySelector('.topic-icon');
-            if (topicText) topicText.textContent = newTopic;
-            if (topicIcon) topicIcon.textContent = icon;
-        }
-        
-        function updateRecordingStatus(isRecording) {
-            const recordingStatus = document.getElementById('recordingStatus');
-            if (isRecording) {
-                recordingStatus.classList.add('active');
-            } else {
-                recordingStatus.classList.remove('active');
-            }
-        }
-        
-        function updateMacropadLayer(layerNumber, layerName) {
-            const indicator = document.getElementById('macropadIndicator');
-            indicator.className = `macropad-indicator layer-${layerNumber} active`;
-            indicator.textContent = `Layer ${layerNumber}: ${layerName}`;
-        }
-        
-        // Expose functions for OBS scripting
-        window.obsOverlay = {
-            updateFileName,
-            updateZoom,
-            updateCodeContext,
-            updateTopic,
-            updateRecordingStatus,
-            updateMacropadLayer
-        };
+        // No complex functions needed - simple and clean
     </script>
 </body>
 </html>

@@ -11,44 +11,35 @@
             background: transparent;
         }
         
+        /* Removed - webcam should be full screen, not a frame */
         .main-webcam {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 800px;
-            height: 600px;
-            border: 4px solid var(--accent-color);
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            display: none; /* Hide the frame - camera should be full screen */
         }
         
         .intro-title {
             position: absolute;
-            bottom: 120px;
+            bottom: 40px;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
             background: var(--overlay-bg);
             backdrop-filter: blur(15px);
-            padding: 24px 40px;
+            padding: 25px 45px;
             border-radius: var(--border-radius);
             border: 2px solid var(--accent-color);
-            max-width: 600px;
+            max-width: 800px;
         }
         
         .intro-title h1 {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 12px;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         
         .intro-title p {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             opacity: 0.9;
             font-weight: 400;
         }
@@ -98,12 +89,7 @@
 </head>
 <body class="talking-head-container">
     <div class="overlay-container animate-in">
-        <!-- Main webcam placeholder -->
-        <div class="main-webcam webcam-frame" id="mainWebcam">
-            <div class="test-mode">
-                📹 Main Camera Feed
-            </div>
-        </div>
+        <!-- Camera is full screen - no frame needed -->
         
         <!-- Optional intro title (can be toggled) -->
         <div class="intro-title" id="introTitle">

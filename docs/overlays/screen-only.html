@@ -11,26 +11,8 @@
             background: transparent;
         }
         
-        /* Minimal overlays for full screen focus */
-        .mini-webcam {
-            position: absolute;
-            bottom: 60px;
-            right: 60px;
-            width: 240px;
-            height: 180px;
-            opacity: 0.8;
-            z-index: 10;
-            transition: opacity 0.3s ease;
-        }
-        
-        .mini-webcam:hover {
-            opacity: 1;
-        }
-        
-        .mini-webcam.hidden {
-            opacity: 0;
-            transform: scale(0.8);
-        }
+        /* Screen Only - no camera elements */
+        /* Camera completely removed for full screen content */
         
         /* Minimal recording indicator */
         .recording-dot {
@@ -75,14 +57,14 @@
             left: 30px;
             background: var(--overlay-bg);
             backdrop-filter: blur(10px);
-            padding: 8px 16px;
+            padding: 12px 24px;
             border-radius: 20px;
-            font-size: 0.875rem;
+            font-size: 1.15rem;
             font-weight: 600;
-            border: 1px solid var(--accent-color);
+            border: 2px solid var(--accent-color);
             opacity: 0;
             transition: opacity 0.3s ease;
-            max-width: 200px;
+            max-width: 300px;
         }
         
         .minimal-topic.active {
@@ -164,28 +146,23 @@
             50% { transform: scale(1.3); }
         }
         
-        /* Test mode */
-        .test-mode .mini-webcam {
-            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1rem;
-            font-weight: bold;
+        /* Test mode - no camera elements */
+        .test-mode {
+            /* Screen capture area is completely transparent */
         }
         
         .test-mode::before {
-            content: "Full Screen Content Area - Screen Capture Goes Here";
+            content: "SCREEN ONLY MODE - Full Screen Content Area";
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2rem;
-            color: rgba(255, 255, 255, 0.3);
+            font-size: 2.5rem;
+            color: rgba(88, 192, 52, 0.4);
             text-align: center;
             pointer-events: none;
             z-index: -1;
+            font-weight: bold;
         }
         
         /* Macropad layer indicator - minimal */
@@ -195,9 +172,9 @@
             right: 60px;
             background: var(--overlay-bg);
             backdrop-filter: blur(10px);
-            padding: 6px 12px;
+            padding: 10px 18px;
             border-radius: 15px;
-            font-size: 0.75rem;
+            font-size: 1rem;
             font-weight: 600;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -207,20 +184,40 @@
             opacity: 0.7;
         }
         
-        .minimal-macropad.layer-0 { border: 1px solid #dc2626; }
-        .minimal-macropad.layer-1 { border: 1px solid #16a34a; }
-        .minimal-macropad.layer-2 { border: 1px solid #2563eb; }
-        .minimal-macropad.layer-3 { border: 1px solid #ca8a04; }
+        .minimal-macropad.layer-0 { border: 2px solid #dc2626; }
+        .minimal-macropad.layer-1 { border: 2px solid #16a34a; }
+        .minimal-macropad.layer-2 { border: 2px solid #2563eb; }
+        .minimal-macropad.layer-3 { border: 2px solid #ca8a04; }
+        
+        /* ArtiVisi logo - visible on any background */
+        .artivisi-logo {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 2px solid var(--accent-color);
+            opacity: 0.9;
+            z-index: 20;
+            width: 140px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .artivisi-logo img {
+            width: 115px;
+            height: auto;
+            max-height: 35px;
+        }
     </style>
 </head>
 <body class="screen-only-container">
     <div class="overlay-container">
-        <!-- Minimal webcam - can be hidden completely -->
-        <div class="mini-webcam webcam-frame small" id="miniWebcam">
-            <div class="test-mode">
-                📹 Mini Cam
-            </div>
-        </div>
+        <!-- No webcam - Screen Only mode -->
         
         <!-- Recording dot - minimal indication -->
         <div class="recording-dot" id="recordingDot"></div>
@@ -251,9 +248,9 @@
             L1
         </div>
         
-        <!-- ArtiVisi Branding - minimal for screen-only mode -->
+        <!-- ArtiVisi Branding - visible on any background -->
         <div class="artivisi-logo">
-            <img src="assets/images/artivisi-logo-white.svg" alt="ArtiVisi Intermedia">
+            <img src="assets/images/artivisi-logo.svg" alt="ArtiVisi Intermedia">
         </div>
     </div>
 
@@ -262,7 +259,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const testMode = urlParams.get('test') === 'true';
         const showRecording = urlParams.get('recording') === 'true';
-        const hideCam = urlParams.get('hidecam') === 'true';
+        // Camera permanently hidden in Screen Only mode
         const topic = urlParams.get('topic') || 'Java Deep Dive';
         const showProgress = urlParams.get('progress') === 'true';
         
@@ -272,9 +269,7 @@
                 document.body.classList.add('test-mode');
             }
             
-            if (hideCam) {
-                document.getElementById('miniWebcam').classList.add('hidden');
-            }
+            // No camera management needed in Screen Only mode
             
             if (showRecording) {
                 document.getElementById('recordingDot').classList.add('active');
@@ -295,8 +290,8 @@
         });
         
         function toggleWebcam() {
-            const miniWebcam = document.getElementById('miniWebcam');
-            miniWebcam.classList.toggle('hidden');
+            // No webcam in Screen Only mode
+            console.log('Screen Only mode - no camera to toggle');
         }
         
         function updateProgress(percentage) {
@@ -372,7 +367,7 @@
         
         // Expose functions for OBS scripting
         window.obsOverlay = {
-            toggleWebcam,
+            // Camera functions removed - Screen Only mode
             updateProgress,
             showZoomLevel,
             showFocusFrame,
