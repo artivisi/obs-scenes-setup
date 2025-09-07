@@ -1,17 +1,18 @@
 {
-  "collection_name": "python-web-development-workshop-93ee436f",
-  "generated_at": "2025-09-07T04:47:03.690364",
-  "event_title": "Python Web Development Workshop",
-  "instructor": "Sarah Johnson",
+  "collection_name": "web-application-security-workshop-4a0204dd",
+  "generated_at": "2025-09-07T10:32:44.920790",
+  "event_title": "Web Application Security Workshop",
+  "instructor": "Endy Muhardin",
   "scenes": [
     "screen-only.html",
     "presentation.html",
     "talking-head.html",
+    "intro.html",
     "outro.html",
     "brb.html",
     "code-demo.html"
   ],
-  "total_scenes": 6,
+  "total_scenes": 7,
   "resource_file": "resources/event.yaml",
   "webserver_info": {
     "recommended_port": 8080,

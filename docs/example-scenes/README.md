@@ -1,13 +1,14 @@
-# python-web-development-workshop-93ee436f
+# web-application-security-workshop-4a0204dd
 
-Generated scenes for: **Python Web Development Workshop**  
-Instructor: Sarah Johnson  
-Generated: 2025-09-07T04:47:03.690364
+Generated scenes for: **Web Application Security Workshop**  
+Instructor: Endy Muhardin  
+Generated: 2025-09-07T10:32:44.920790
 
-## Scenes (6 total)
+## Scenes (7 total)
 - screen-only.html
 - presentation.html
 - talking-head.html
+- intro.html
 - outro.html
 - brb.html
 - code-demo.html
@@ -21,7 +22,7 @@ Generated: 2025-09-07T04:47:03.690364
    ```
 
 2. **Import into OBS:**
-   Use the OBS injection script with collection name: `python-web-development-workshop-93ee436f`
+   Use the OBS injection script with collection name: `web-application-security-workshop-4a0204dd`
 
 ## Files
 - `scene-collection.json` - Metadata and configuration
