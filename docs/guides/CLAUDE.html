@@ -397,6 +397,7 @@
 <li><strong>Unique Collections</strong>: Timestamp-based names prevent conflicts</li>
 <li><strong>Cross-Platform</strong>: WSL host IP detection for Windows/Linux hybrid setups</li>
 <li><strong>Window Capture Priority</strong>: Prefers application capture over display capture</li>
+<li><strong>Smart Scene Ordering</strong>: Automatically orders scenes for logical workflow (LIFO-aware)</li>
 </ul>
 <h3>Nested Scene Architecture</h3>
 <strong>Source Scenes</strong> (configured once):
@@ -405,13 +406,15 @@
 <li>🖥️ <strong>Screen</strong>: Window Capture (preferred) or Display Capture fallback</li>
 <li>🎤 <strong>Audio</strong>: Global audio configuration</li>
 </ul>
-<strong>Session Scenes</strong> (reference source scenes):
+<strong>Session Scenes</strong> (reference source scenes, ordered for workflow):
 <ul>
-<li>📺 <strong>BRB / Technical</strong>: Overlay only</li>
+<li>🎬 <strong>Intro Scene</strong>: Professional intro with event info + countdown timer</li>
 <li>👤 <strong>Talking Head</strong>: Full-screen camera + speaker info overlay</li>
+<li>📊 <strong>50:50 Presentation</strong>: Full screen + camera overlay (top-center, 25% cropped)</li>
 <li>💻 <strong>Code Demo</strong>: Screen + PiP camera (25% scale, bottom-right) + overlay</li>
 <li>🖥️ <strong>Screen Only</strong>: Full-screen capture + overlay</li>
-<li>🎯 <strong>Outro Scene</strong>: Overlay only</li>
+<li>📺 <strong>BRB / Technical</strong>: Overlay only</li>
+<li>🎯 <strong>Outro Scene</strong>: Overlay only with topics covered + social links</li>
 </ul>
 <h3>Overlay System</h3>
 <strong>Modern HTML/CSS Overlays</strong>:
