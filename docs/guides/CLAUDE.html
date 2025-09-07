@@ -341,140 +341,171 @@
             <p class="doc-subtitle">AI assistant configuration and codebase instructions.</p>
         </div>
 
-        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#claudemd">CLAUDE.md</a></li><li style="margin-left: 1.5rem;"><a href="#project-overview">Project Overview</a></li><li style="margin-left: 1.5rem;"><a href="#key-commands">Key Commands</a></li><li style="margin-left: 3.0rem;"><a href="#main-workflow-commands">Main Workflow Commands</a></li><li style=""><a href="#quick-setup-with-defaults-2-3-minutes">Quick setup with defaults (2-3 minutes)</a></li><li style=""><a href="#custom-event-setup-with-interactive-configuration">Custom event setup with interactive configuration</a></li><li style=""><a href="#use-predefined-template">Use predefined template</a></li><li style=""><a href="#environment-setup-only">Environment setup only</a></li><li style="margin-left: 3.0rem;"><a href="#direct-obs-scene-creation">Direct OBS Scene Creation</a></li><li style=""><a href="#create-live-obs-scenes-with-online-overlays">Create live OBS scenes with online overlays</a></li><li style=""><a href="#create-with-customlocal-overlays">Create with custom/local overlays</a></li><li style=""><a href="#generate-json-scene-collection-no-websocket-needed">Generate JSON scene collection (no WebSocket needed)</a></li><li style="margin-left: 3.0rem;"><a href="#overlay-generation">Overlay Generation</a></li><li style=""><a href="#generate-event-specific-overlays">Generate event-specific overlays</a></li><li style=""><a href="#custom-overlay-generation">Custom overlay generation</a></li><li style="margin-left: 3.0rem;"><a href="#development-and-testing">Development and Testing</a></li><li style=""><a href="#install-dependencies">Install dependencies</a></li><li style=""><a href="#list-obs-sources-debugging">List OBS sources (debugging)</a></li><li style=""><a href="#fix-overlay-urls-in-existing-scenes">Fix overlay URLs in existing scenes</a></li><li style="margin-left: 1.5rem;"><a href="#architecture">Architecture</a></li><li style="margin-left: 3.0rem;"><a href="#core-components">Core Components</a></li><li style="margin-left: 3.0rem;"><a href="#network-architecture">Network Architecture</a></li><li style="margin-left: 3.0rem;"><a href="#hardware-integration">Hardware Integration</a></li><li style="margin-left: 1.5rem;"><a href="#development-guidelines">Development Guidelines</a></li><li style="margin-left: 3.0rem;"><a href="#file-structure-conventions">File Structure Conventions</a></li><li style="margin-left: 3.0rem;"><a href="#python-dependencies">Python Dependencies</a></li><li style="margin-left: 3.0rem;"><a href="#cross-platform-considerations">Cross-Platform Considerations</a></li><li style="margin-left: 3.0rem;"><a href="#error-handling-patterns">Error Handling Patterns</a></li><li style="margin-left: 1.5rem;"><a href="#common-tasks">Common Tasks</a></li><li style="margin-left: 3.0rem;"><a href="#adding-new-scene-templates">Adding New Scene Templates</a></li><li style="margin-left: 3.0rem;"><a href="#creating-new-event-templates">Creating New Event Templates</a></li><li style="margin-left: 3.0rem;"><a href="#debugging-obs-issues">Debugging OBS Issues</a></li><li style="margin-left: 1.5rem;"><a href="#important-notes">Important Notes</a></li></ul></div>
+        <div class="toc"><h3>📋 Table of Contents</h3><ul><li style=""><a href="#claudemd">CLAUDE.md</a></li><li style="margin-left: 1.5rem;"><a href="#project-overview">Project Overview</a></li><li style="margin-left: 1.5rem;"><a href="#current-architecture-2025">Current Architecture (2025)</a></li><li style="margin-left: 1.5rem;"><a href="#key-commands">Key Commands</a></li><li style="margin-left: 3.0rem;"><a href="#modern-workflow-current-implementation">Modern Workflow (Current Implementation)</a></li><li style=""><a href="#generate-scenes-from-yaml-resources">Generate scenes from YAML resources</a></li><li style=""><a href="#serve-generated-scenes-locally">Serve generated scenes locally</a></li><li style=""><a href="#inject-scenes-into-obs-creates-unique-timestamped-collection">Inject scenes into OBS (creates unique timestamped collection)</a></li><li style="margin-left: 3.0rem;"><a href="#cross-platform-usage">Cross-Platform Usage</a></li><li style=""><a href="#wslwindows-setup-webserver-binds-to-0000-obs-on-windows-host">WSL/Windows setup (webserver binds to 0.0.0.0, OBS on Windows host)</a></li><li style=""><a href="#macoslinux-setup-standard-localhost">macOS/Linux setup (standard localhost)</a></li><li style="margin-left: 3.0rem;"><a href="#development-and-testing">Development and Testing</a></li><li style=""><a href="#install-dependencies">Install dependencies</a></li><li style=""><a href="#quick-test-with-existing-demo">Quick test with existing demo</a></li><li style="margin-left: 1.5rem;"><a href="#architecture">Architecture</a></li><li style="margin-left: 3.0rem;"><a href="#core-components">Core Components</a></li><li style="margin-left: 3.0rem;"><a href="#nested-scene-architecture">Nested Scene Architecture</a></li><li style="margin-left: 3.0rem;"><a href="#overlay-system">Overlay System</a></li><li style="margin-left: 3.0rem;"><a href="#network-architecture">Network Architecture</a></li><li style="margin-left: 1.5rem;"><a href="#development-guidelines">Development Guidelines</a></li><li style="margin-left: 3.0rem;"><a href="#file-structure">File Structure</a></li><li style="margin-left: 3.0rem;"><a href="#scene-development-workflow">Scene Development Workflow</a></li><li style="margin-left: 3.0rem;"><a href="#adding-new-scene-types">Adding New Scene Types</a></li><li style="margin-left: 3.0rem;"><a href="#cross-platform-testing">Cross-Platform Testing</a></li><li style="margin-left: 1.5rem;"><a href="#common-tasks">Common Tasks</a></li><li style="margin-left: 3.0rem;"><a href="#creating-new-events">Creating New Events</a></li><li style="margin-left: 3.0rem;"><a href="#debugging-scene-issues">Debugging Scene Issues</a></li><li style="margin-left: 3.0rem;"><a href="#performance-optimization">Performance Optimization</a></li><li style="margin-left: 1.5rem;"><a href="#important-notes">Important Notes</a></li></ul></div>
 
         <div class="content">
             <h1>CLAUDE.md</h1>
 <p>This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.</p>
 <h2>Project Overview</h2>
-<p>This is an OBS Studio automation system for creating professional programming tutorial setups. The system provides Infrastructure-as-Code approach to OBS scene creation with automated overlay generation, cross-platform compatibility, and hardware integration.</p>
+<p>This is an OBS Studio automation system for creating professional programming tutorial setups. The system provides Infrastructure-as-Code approach to OBS scene creation with automated nested scene architecture, HTML overlay generation, and cross-platform compatibility.</p>
+<h2>Current Architecture (2025)</h2>
+<p>The system uses a <strong>modern 3-step workflow</strong>:</p>
+<ol>
+<li><strong>Scene Generation</strong>: YAML resources → Mustache HTML templates → Scene collection JSON</li>
+<li><strong>Webserver</strong>: Local HTTP server for overlay hosting with cross-platform networking</li>
+<li><strong>OBS Injection</strong>: WebSocket-based scene creation with nested architecture</li>
+</ul>
 <h2>Key Commands</h2>
-<h3>Main Workflow Commands</h3>
-<pre><code><h1>Quick setup with defaults (2-3 minutes)</h1>
-<p>python scripts/workflow.py --quick</p>
-<h1>Custom event setup with interactive configuration</h1>
-<p>python scripts/workflow.py --event my-workshop</p>
-<h1>Use predefined template</h1>
-<p>python scripts/workflow.py --event my-workshop --template java</p>
-<h1>Environment setup only</h1>
-<p>python scripts/workflow.py --setup</code></pre></p>
-<h3>Direct OBS Scene Creation</h3>
-<pre><code><h1>Create live OBS scenes with online overlays</h1>
-<p>python scripts/obs/auto-scene-creator.py --create-live --github-user artivisi</p>
-<h1>Create with custom/local overlays</h1>
-<p>python scripts/obs/auto-scene-creator.py --create-live --offline --overlay-path custom-overlays</p>
-<h1>Generate JSON scene collection (no WebSocket needed)</h1>
-<p>python scripts/obs/auto-scene-creator.py --generate-json --output scenes.json</code></pre></p>
-<h3>Overlay Generation</h3>
-<pre><code><h1>Generate event-specific overlays</h1>
-<p>python scripts/tools/populate-overlays.py --template python-workshop --preview</p>
-<h1>Custom overlay generation</h1>
-<p>python scripts/tools/populate-overlays.py --config event-config.json --output my-overlays/</code></pre></p>
+<h3>Modern Workflow (Current Implementation)</h3>
+<pre><code><h1>Generate scenes from YAML resources</h1>
+<p>python scripts/generate-scenes.py --resource resources/event.yaml --output my-workshop/</p>
+<h1>Serve generated scenes locally</h1>
+<p>python scripts/serve-scenes.py my-workshop/</p>
+<h1>Inject scenes into OBS (creates unique timestamped collection)</h1>
+<p>python scripts/inject-obs.py --collection my-workshop --webserver http://localhost:8080 --obs-host localhost</code></pre></p>
+<h3>Cross-Platform Usage</h3>
+<pre><code><h1>WSL/Windows setup (webserver binds to 0.0.0.0, OBS on Windows host)</h1>
+<p>python scripts/serve-scenes.py my-workshop/</p>
+<p>python scripts/inject-obs.py --collection my-workshop --webserver http://172.29.130.195:8080 --obs-host 172.29.128.1</p>
+<h1>macOS/Linux setup (standard localhost)</h1>
+<p>python scripts/inject-obs.py --collection my-workshop --webserver http://localhost:8080</code></pre></p>
 <h3>Development and Testing</h3>
 <pre><code><h1>Install dependencies</h1>
 <p>python scripts/setup/install-dependencies.py</p>
-<h1>List OBS sources (debugging)</h1>
-<p>python scripts/obs/list-sources.py</p>
-<h1>Fix overlay URLs in existing scenes</h1>
-<p>python scripts/obs/fix-overlay-urls.py</code></pre></p>
+<h1>Quick test with existing demo</h1>
+<p>python scripts/serve-scenes.py nested-demo/</p>
+<p>python scripts/inject-obs.py --collection demo --webserver http://localhost:8080 --obs-host localhost</code></pre></p>
 <h2>Architecture</h2>
 <h3>Core Components</h3>
-<strong>Workflow System</strong> (<code>scripts/workflow.py</code>):
+<strong>Scene Generator</strong> (<code>scripts/generate-scenes.py</code>):
 <ul>
-<li>Master orchestration script that manages the complete workflow</li>
-<li>Handles environment setup → event configuration → overlay generation → OBS integration</li>
-<li>Supports quick setup, custom events, and template-based workflows</li>
+<li>Loads YAML event resources for easy text editing</li>
+<li>Uses Mustache templating for dynamic HTML overlay generation</li>
+<li>Creates kebab-case collection names with random suffixes for uniqueness</li>
+<li>Outputs complete scene collection with metadata JSON</li>
 </ul>
-<strong>OBS Integration</strong> (<code>scripts/obs/auto-scene-creator.py</code>):
+<strong>Webserver</strong> (<code>scripts/serve-scenes.py</code>):
 <ul>
-<li>Creates 7 professional scene templates: talking-head, code-demo, screen-only, intro, outro, brb, dual-cam</li>
-<li>Automatic audio filter chain: noise suppression, compression, limiting</li>
-<li>Cross-platform device detection and WebSocket connectivity</li>
-<li>Supports both live scene creation and JSON export modes</li>
+<li>Environment-aware HTTP server with WSL/macOS/Linux detection</li>
+<li>Automatic 0.0.0.0 binding for cross-platform overlay access</li>
+<li>Process management with PID tracking and graceful shutdown</li>
+<li>Serves HTML overlays and scene metadata to OBS</li>
 </ul>
-<strong>Overlay System</strong> (<code>docs/overlays/</code>, <code>scripts/tools/populate-overlays.py</code>):
+<strong>OBS Injector</strong> (<code>scripts/inject-obs.py</code>):
 <ul>
-<li>HTML/CSS/JS based overlays replacing traditional PNG graphics</li>
-<li>Event-specific content generation from JSON templates</li>
-<li>GitHub Pages hosting with offline development support</li>
-<li>Template system for different content types (Java, Python, Linux, etc.)</li>
+<li><strong>Nested Scene Architecture</strong>: Eliminates source duplication via dedicated source scenes</li>
+<li><strong>Unique Collections</strong>: Timestamp-based names prevent conflicts</li>
+<li><strong>Cross-Platform</strong>: WSL host IP detection for Windows/Linux hybrid setups</li>
+<li><strong>Window Capture Priority</strong>: Prefers application capture over display capture</li>
 </ul>
-<strong>Utility Modules</strong> (<code>scripts/utils/</code>):
+<h3>Nested Scene Architecture</h3>
+<strong>Source Scenes</strong> (configured once):
 <ul>
-<li><code>obs_utils.py</code>: OBS WebSocket connection management with WSL auto-detection</li>
-<li><code>scene_generator.py</code>: Scene template definitions and layout management  </li>
-<li><code>text_customizer.py</code>: Text processing and event content customization</li>
+<li>📹 <strong>Camera</strong>: DirectShow camera input with audio filters</li>
+<li>🖥️ <strong>Screen</strong>: Window Capture (preferred) or Display Capture fallback</li>
+<li>🎤 <strong>Audio</strong>: Global audio configuration</li>
 </ul>
+<strong>Session Scenes</strong> (reference source scenes):
+<ul>
+<li>📺 <strong>BRB / Technical</strong>: Overlay only</li>
+<li>👤 <strong>Talking Head</strong>: Full-screen camera + speaker info overlay</li>
+<li>💻 <strong>Code Demo</strong>: Screen + PiP camera (25% scale, bottom-right) + overlay</li>
+<li>🖥️ <strong>Screen Only</strong>: Full-screen capture + overlay</li>
+<li>🎯 <strong>Outro Scene</strong>: Overlay only</li>
+</ul>
+<h3>Overlay System</h3>
+<strong>Modern HTML/CSS Overlays</strong>:
+<ul>
+<li>Mustache templating with YAML data injection</li>
+<li>Responsive design with doubled font sizes for readability</li>
+<li>Consistent branding: ArtiVisi + API Development + status indicators</li>
+<li>Perfect PiP alignment with green camera frame borders</li>
+</ul>
+<strong>Resource Structure</strong>:
+<pre><code>resources/event.yaml          # Easy-to-edit event details
+<p>themes/default/<em>.mustache.html # HTML templates</p>
+<p>{output}/</em>.html               # Generated overlays</p>
+<p>{output}/scene-collection.json # OBS metadata</code></pre></p>
 <h3>Network Architecture</h3>
+<strong>Cross-Platform Detection</strong>:
 <ul>
-<li>Automatic WSL/Windows bridge detection for cross-platform development</li>
-<li>Local HTTP server for overlay hosting during development</li>
-<li>GitHub Pages integration for production overlay hosting</li>
-<li>Smart IP detection for consistent cross-platform behavior</li>
-</ul>
-<h3>Hardware Integration</h3>
-<ul>
-<li>USB camera and audio device auto-detection</li>
-<li>Support for capture cards and professional cameras</li>
-<li>Macropad integration via Vial firmware (optional)</li>
-<li>Cross-platform audio processing chain</li>
+<li>WSL detection via <code>/proc/version</code> </li>
+<li>Windows host IP discovery via <code>ip route show</code></li>
+<li>Automatic webserver binding (0.0.0.0 vs localhost)</li>
+<li>Smart OBS WebSocket connection handling</li>
 </ul>
 <h2>Development Guidelines</h2>
-<h3>File Structure Conventions</h3>
-<ul>
-<li>All scripts are in <code>scripts/</code> with clear subdirectory organization</li>
-<li>Overlay templates in <code>docs/overlays/</code> with GitHub Pages deployment</li>
-<li>Event configurations and templates in <code>docs/resources/</code></li>
-<li>Generated content uses timestamps for uniqueness</li>
+<h3>File Structure</h3>
+<pre><code>scripts/
+<p>├── generate-scenes.py    # YAML → HTML generation</p>
+<p>├── serve-scenes.py      # Cross-platform webserver</p>
+<p>├── inject-obs.py        # OBS WebSocket injection</p>
+<p>├── setup/               # Dependency installation</p>
+<p>└── utils/               # Shared utilities</p>
+<p>resources/event.yaml     # Event text resources (YAML)</p>
+<p>themes/default/          # Mustache templates</p>
+<p>nested-demo/            # Example generated output</code></pre></p>
+<h3>Scene Development Workflow</h3>
+<ol>
+<li><strong>Edit Content</strong>: Modify <code>resources/event.yaml</code> for event details</li>
+<li><strong>Generate</strong>: Run <code>generate-scenes.py</code> to create HTML overlays</li>
+<li><strong>Test Locally</strong>: Use <code>serve-scenes.py</code> + browser to preview</li>
+<li><strong>Deploy</strong>: Run <code>inject-obs.py</code> to create OBS scene collection</li>
 </ul>
-<h3>Python Dependencies</h3>
-<p>The system automatically installs these key dependencies:</p>
-<ul>
-<li><code>obsws-python</code>: OBS WebSocket communication</li>
-<li><code>pathlib</code>: Cross-platform path handling</li>
-<li>Standard library modules (no external framework dependencies)</li>
+<h3>Adding New Scene Types</h3>
+<ol>
+<li>Create new Mustache template in <code>themes/default/</code></li>
+<li>Add scene metadata to generation logic</li>
+<li>Update injector scene creation in <code>inject-obs.py</code></li>
+<li>Test complete workflow with real OBS setup</li>
 </ul>
-<h3>Cross-Platform Considerations</h3>
+<h3>Cross-Platform Testing</h3>
 <ul>
-<li>WSL environment auto-detection for Windows/Linux hybrid setups</li>
-<li>Platform-specific device enumeration for cameras and audio</li>
-<li>Network interface detection for local overlay serving</li>
-<li>Path handling works consistently across macOS, Windows, Linux</li>
-</ul>
-<h3>Error Handling Patterns</h3>
-<ul>
-<li>Graceful fallback to JSON mode if OBS WebSocket unavailable  </li>
-<li>Default overlay fallback if custom generation fails</li>
-<li>Comprehensive device detection with fallback options</li>
-<li>Clear error messages with suggested resolution steps</li>
+<li><strong>WSL</strong>: Test webserver 0.0.0.0 binding and Windows host detection</li>
+<li><strong>macOS</strong>: Verify localhost networking and device detection</li>
+<li><strong>Linux</strong>: Test standard networking and audio pipeline</li>
 </ul>
 <h2>Common Tasks</h2>
-<h3>Adding New Scene Templates</h3>
+<h3>Creating New Events</h3>
 <ol>
-<li>Define scene layout in <code>scripts/utils/scene_generator.py</code></li>
-<li>Create corresponding HTML overlay in <code>docs/overlays/</code></li>
-<li>Update scene creation logic in <code>scripts/obs/auto-scene-creator.py</code></li>
+<li>Copy and modify <code>resources/event.yaml</code></li>
+<li>Update branding, topics, and instructor details</li>
+<li>Generate and test with new content</li>
 </ul>
-<h3>Creating New Event Templates</h3>
-<ol>
-<li>Add JSON template in <code>docs/resources/templates/</code></li>
-<li>Test overlay generation with <code>populate-overlays.py</code></li>
-<li>Verify end-to-end workflow with <code>workflow.py</code></li>
-</ul>
-<h3>Debugging OBS Issues</h3>
+<h3>Debugging Scene Issues</h3>
 <ul>
-<li>Use <code>scripts/obs/list-sources.py</code> to examine current OBS setup</li>
-<li>Check WebSocket connectivity with connection test utilities</li>
-<li>Verify overlay URLs are accessible via browser</li>
-<li>Use <code>--generate-json</code> mode for offline debugging</li>
+<li>Check OBS WebSocket connection (Tools → WebSocket Server Settings)</li>
+<li>Verify overlay URLs are accessible in browser</li>
+<li>Use browser dev tools to check overlay rendering</li>
+<li>Test PiP camera alignment with generated frames</li>
+</ul>
+<h3>Performance Optimization</h3>
+<ul>
+<li>HTML overlays load faster than PNG graphics</li>
+<li>Nested scenes eliminate source duplication</li>
+<li>Window Capture reduces system load vs Display Capture</li>
+<li>Local webserver provides low-latency overlay updates</li>
 </ul>
 <h2>Important Notes</h2>
+<strong>OBS Setup Requirements</strong>:
 <ul>
-<li>OBS WebSocket must be enabled (Tools → WebSocket Server Settings)</li>
-<li>The system creates 7 standard scenes with professional audio processing</li>
-<li>Overlays are hosted via GitHub Pages at <code>https://artivisi.com/obs-scenes-setup/</code></li>
-<li>All automation preserves existing OBS scenes and settings</li>
-<li>Custom overlays are generated with timestamp-based directories to avoid conflicts</li>
+<li>WebSocket server enabled (default port 4455)</li>
+<li>Scene collections auto-managed with timestamps</li>
+<li>Audio processing chain automatically configured</li>
+<li>Source scenes require one-time device configuration</li>
+</ul>
+<strong>Production Workflow</strong>:
+<ul>
+<li>Generate scenes from YAML resources</li>
+<li>Test locally with webserver</li>
+<li>Deploy to OBS with unique collection names</li>
+<li>Clean up old collections manually as needed</li>
+</ul>
+<strong>Cross-Platform Considerations</strong>:
+<ul>
+<li>WSL users: OBS runs on Windows host, requires IP detection</li>
+<li>All users: Webserver binds to appropriate interface automatically</li>
+<li>Network firewall: Ensure localhost/LAN HTTP access for overlays</li>
 </ul>
         </div>
     </div>
