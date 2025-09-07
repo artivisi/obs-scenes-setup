@@ -29,6 +29,121 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
+      - name: Setup Python for scene generation
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pystache pyyaml requests obsws-python
+          
+      - name: Generate downloads directory
+        run: |
+          # Generate scene collection files
+          python scripts/generate-scenes.py resources/event.yaml --output dist/scene-collection/
+          
+          # Generate OBS scene collection JSON
+          python scripts/tools/generate-obs-collection.py
+          
+          # Create downloadable zip
+          cd dist/scene-collection
+          zip -r "../obs-workshop-scene-collection.zip" .
+          cd ../..
+          
+          # Create downloads directory in docs
+          mkdir -p docs/downloads
+          cp dist/*.zip docs/downloads/
+          
+          # Create installation guide
+          cat > docs/downloads/INSTALLATION-GUIDE.txt << 'EOF'
+          OBS SCENE COLLECTION INSTALLATION GUIDE
+          =======================================
+          
+          QUICK SETUP (3 STEPS):
+          
+          1. EXTRACT FILES:
+             - Extract the downloaded ZIP file to a folder
+             - Note the folder location (e.g., Downloads/obs-workshop-scenes/)
+          
+          2. IMPORT TO OBS:
+             - Open OBS Studio
+             - Go to: Scene Collection → Import
+             - Select the scene-collection.json file from extracted folder
+             - Click "Import"
+          
+          3. CONFIGURE BROWSER SOURCES:
+             - Each scene has placeholder Browser Sources
+             - Right-click each Browser Source → Properties
+             - Set URL to: file:///path/to/extracted/folder/[scene-name].html
+             - Example: file:///Users/john/Downloads/obs-workshop-scenes/intro.html
+          
+          SCENES INCLUDED:
+          - 🎬 Intro: Professional opening screen
+          - 👤 Talking Head: Full presenter view
+          - 📊 Presentation: 50:50 slides + camera
+          - 💻 Code Demo: Screen share + PiP camera
+          - 🖥️ Screen Only: Full screen capture
+          - 📺 BRB: Break/technical screen
+          - 🎯 Outro: Session conclusion
+          
+          REQUIREMENTS:
+          - OBS Studio 28.0 or newer
+          - Scene Collection import feature
+          
+          TROUBLESHOOTING:
+          - If overlays don't appear: Check file:// URLs are correct
+          - If import fails: Ensure OBS is version 28+
+          - For help: https://github.com/artivisi/obs-scenes-setup/issues
+          
+          Created by ArtiVisi Intermedia • https://artivisi.com
+          EOF
+          
+          # Create download index page
+          cat > docs/downloads/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>OBS Scene Collection Download</title>
+              <style>
+                  body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+                  .download-btn { background: #007cba; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 0; }
+                  .download-btn:hover { background: #005a82; }
+                  .guide { background: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0; }
+              </style>
+          </head>
+          <body>
+              <h1>📺 OBS Workshop Scene Collection</h1>
+              <p>Professional scene collection for workshops, tutorials, and educational content.</p>
+              
+              <h2>🚀 Quick Download</h2>
+              <a href="obs-workshop-scene-collection.zip" class="download-btn">📥 Download Scene Collection</a>
+              <a href="INSTALLATION-GUIDE.txt" class="download-btn">📋 Installation Guide</a>
+              
+              <div class="guide">
+                  <h3>✨ What's Included:</h3>
+                  <ul>
+                      <li>7 Professional scenes ready for OBS</li>
+                      <li>Animated overlays with modern design</li>
+                      <li>Instructor information and branding</li>
+                      <li>Step-by-step installation guide</li>
+                  </ul>
+              </div>
+              
+              <h3>🎯 Perfect For:</h3>
+              <ul>
+                  <li>Programming tutorials and workshops</li>
+                  <li>Educational live streams</li>
+                  <li>Technical presentations</li>
+                  <li>Code review sessions</li>
+              </ul>
+              
+              <p><small>Created by <a href="https://artivisi.com">ArtiVisi Intermedia</a> • Open Source • <a href="https://github.com/artivisi/obs-scenes-setup">GitHub</a></small></p>
+          </body>
+          </html>
+          EOF
+        
       - name: Setup Pages
         uses: actions/configure-pages@v4
         

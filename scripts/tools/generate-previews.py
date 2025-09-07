@@ -19,8 +19,12 @@ def get_template_files(theme_dir):
     template_dir = Path(theme_dir)
     return list(template_dir.glob('*.mustache.html'))
 
-def add_preview_styles(html_content):
+def add_preview_styles(html_content, template_name):
     """Add opaque background styles for preview visibility"""
+    
+    # Scenes that should have patterned backgrounds (for screen visibility)
+    screen_scenes = ['presentation', 'code-demo', 'screen-only']
+    
     preview_css = """
         /* PREVIEW STYLES - Added for documentation visibility */
         .preview-label {
@@ -49,15 +53,19 @@ def add_preview_styles(html_content):
             background-size: 40px 40px !important;
             background-position: 0 0, 20px 20px !important;
         }
-        
-        /* Ensure body backgrounds are opaque for visibility */
+    """
+    
+    # Only add patterned body background for screen-based scenes
+    if template_name in screen_scenes:
+        preview_css += """
+        /* Ensure body backgrounds are opaque for visibility - screen scenes only */
         body {
             background: linear-gradient(45deg, #f0f0f0 25%, #e8e8e8 25%, #e8e8e8 75%, #f0f0f0 75%, #f0f0f0),
                         linear-gradient(45deg, #f0f0f0 25%, #e8e8e8 25%, #e8e8e8 75%, #f0f0f0 75%, #f0f0f0) !important;
             background-size: 40px 40px !important;
             background-position: 0 0, 20px 20px !important;
         }
-    """
+        """
     
     # Insert preview CSS before closing </style> tag
     if '</style>' in html_content:
@@ -84,7 +92,7 @@ def generate_preview(template_path, config, output_dir):
     html_content = renderer.render(template_content, config)
     
     # Add preview-specific styling and elements
-    preview_content = add_preview_styles(html_content)
+    preview_content = add_preview_styles(html_content, template_name)
     
     # Update title to indicate it's a preview
     scene_titles = {
