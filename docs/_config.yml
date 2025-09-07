@@ -4,6 +4,14 @@ description: Professional Streaming Overlays for Educational Content
 show_downloads: true
 google_analytics: 
 
+# Build settings - ensure overlays are copied as-is
+plugins:
+  - jekyll-feed
+
+# Keep overlay files as-is without Jekyll processing
+keep_files:
+  - overlays
+
 # Custom variables
 github:
   repository_url: https://github.com/artivisi/obs-scenes-setup
