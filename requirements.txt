@@ -1,0 +1,17 @@
+# OBS Scenes Setup - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Core dependencies for scene generation
+pystache>=0.6.8      # Mustache templating for HTML generation
+PyYAML>=6.0.2        # YAML parsing for event resources
+
+# OBS WebSocket integration
+obsws-python>=1.8.0  # OBS WebSocket client for scene injection and configuration
+
+# HTTP requests for webserver validation
+requests>=2.31.0     # HTTP library for server communication
+
+# Optional: For development and testing
+# pytest>=7.0.0      # Testing framework
+# black>=23.0.0      # Code formatting
+# flake8>=6.0.0      # Code linting

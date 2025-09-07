@@ -94,10 +94,23 @@ https://artivisi.com/obs-scenes-setup/overlays/outro.html
 
 For those who want to customize the overlays with their own branding.
 
+#### Setup Python Environment
+
+**Required:** Python 3.8+ and pip
+
 ```bash
 # Clone and customize
 git clone https://github.com/artivisi/obs-scenes-setup.git
 cd obs-scenes-setup
+
+# Create virtual environment (recommended)
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies (choose one method)
+pip install -r requirements.txt
+# OR install individually:
+# pip install pystache pyyaml obsws-python requests
 
 # Edit your event details
 nano resources/event.yaml
@@ -110,7 +123,22 @@ python scripts/serve-scenes.py my-event/
 
 # Auto-inject to OBS (optional)
 python scripts/inject-obs.py --collection my-event --webserver http://localhost:8080
+
+# When done, deactivate virtual environment
+deactivate
 ```
+
+**💡 Pro Tips:**
+- Always use a virtual environment to avoid conflicts with other Python projects
+- The `venv` approach keeps all dependencies isolated and manageable
+- On some systems, use `python3` instead of `python` to ensure Python 3.x
+- If pip install fails, try: `python -m pip install -r requirements.txt`
+
+**🔧 Troubleshooting:**
+- **"python not found"**: Install Python 3.8+ from [python.org](https://python.org)
+- **"pip not found"**: Use `python -m pip` instead of `pip`
+- **Permission denied**: Use virtual environment (above) instead of `sudo pip`
+- **Module not found**: Ensure virtual environment is activated (`source venv/bin/activate`)
 
 ---
 
@@ -123,12 +151,20 @@ Optimize OBS settings for your Mac or streaming setup:
 For MacBook Pro M1/M2/M3 users, automatically configure OBS for maximum recording quality:
 
 ```bash
+# Setup (first time only)
+python3 -m venv venv
+source venv/bin/activate
+pip install obsws-python
+
 # Configure for maximum quality (4K60 @ 50Mbps)
 python scripts/configure-obs-recording.py --preset maximum
 
 # Other presets available:
-# - high: 1440p60 @ 25Mbps
+# - high: 1440p60 @ 25Mbps  
 # - standard: 1080p30 @ 12Mbps
+
+# When done
+deactivate
 ```
 
 **Features:**
@@ -142,6 +178,11 @@ python scripts/configure-obs-recording.py --preset maximum
 Configure OBS for optimal streaming quality on YouTube, Facebook, or custom servers:
 
 ```bash
+# Setup (first time only)
+python3 -m venv venv
+source venv/bin/activate
+pip install obsws-python
+
 # YouTube Live streaming
 python scripts/configure-obs-streaming.py --platform youtube --quality high
 
@@ -150,6 +191,9 @@ python scripts/configure-obs-streaming.py --platform facebook --quality standard
 
 # Custom RTMP server
 python scripts/configure-obs-streaming.py --platform custom --server rtmp://your-server/live --key your-key
+
+# When done
+deactivate
 ```
 
 **Supported Platforms:**

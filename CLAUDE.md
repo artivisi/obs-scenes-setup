@@ -39,12 +39,42 @@ python scripts/inject-obs.py --collection my-workshop --webserver http://localho
 
 ### Development and Testing
 ```bash
-# Install dependencies
-python scripts/setup/install-dependencies.py
+# Setup virtual environment (recommended)
+python3 -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# Install dependencies (recommended method)
+pip install -r requirements.txt
 
 # Quick test with existing demo
 python scripts/serve-scenes.py nested-demo/
 python scripts/inject-obs.py --collection demo --webserver http://localhost:8080 --obs-host localhost
+
+# When done developing
+deactivate
+```
+
+### Virtual Environment Best Practices
+```bash
+# Always use virtual environments to avoid dependency conflicts
+python3 -m venv venv
+
+# Activate before running any scripts
+source venv/bin/activate  # macOS/Linux
+# OR
+venv\Scripts\activate     # Windows
+
+# Install only required dependencies
+pip install obsws-python pystache pyyaml requests
+
+# Check what's installed
+pip list
+
+# Save dependencies (for reproducibility)
+pip freeze > requirements.txt
+
+# Deactivate when done
+deactivate
 ```
 
 ### Recording Configuration (MacBook Pro M1/M2/M3)
