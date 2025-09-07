@@ -146,7 +146,41 @@ python scripts/inject-obs.py \
 
 For using pre-hosted scene collections without local setup:
 
-### 1. Setup OBS Browser Sources
+### 1. Download & Import (Recommended) 
+
+**Requirements:**
+- OBS Studio 28+ with Scene Collection import support
+
+#### 3-Step Setup:
+
+1. **Download Scene Collection:**
+   ```
+   📥 https://artivisi.com/obs-scenes-setup/downloads/
+   ```
+   Download: `obs-workshop-scene-collection.zip`
+
+2. **Extract & Import:**
+   - Extract ZIP file to a folder (e.g., `Downloads/obs-workshop-scenes/`)
+   - Open OBS Studio
+   - Go to: **Scene Collection → Import**
+   - Select: `obs-scene-collection.json` from extracted folder
+
+3. **Update Browser Source URLs:**
+   - Each scene contains placeholder Browser Sources
+   - Right-click each Browser Source → Properties
+   - Update URL to: `file:///path/to/extracted/folder/[scene-name].html`
+   - Example: `file:///Users/john/Downloads/obs-workshop-scenes/intro.html`
+
+This gives you a complete scene collection with:
+- ✅ 7 Professional scenes with proper layouts
+- ✅ Pre-configured hotkeys (F1-F7 for scene switching)
+- ✅ Correct source positioning and scaling
+- ✅ Modern animated overlays with ArtiVisi branding
+- ✅ No technical setup or programming required
+
+### 2. Manual Browser Source Setup (Alternative)
+
+If you prefer manual setup or want to customize individual scenes:
 
 1. **Create Scene Collection:**
    - File → Scene Collection → New
@@ -157,34 +191,71 @@ For using pre-hosted scene collections without local setup:
    For each scene type, create a new scene and add a Browser Source:
    - Right-click Sources → Add → Browser
    - Name: "Overlay"
-   - URL: Use the online overlay URL
+   - URL: Use one of the ArtiVisi overlay URLs below
    - Width: 1920, Height: 1080
    - FPS: 30
 
-3. **Online Overlay URLs (GitHub Pages Example):**
+3. **ArtiVisi Public Overlay URLs:**
    ```
-   https://yourusername.github.io/obs-scenes-setup/overlays/intro.html
-   https://yourusername.github.io/obs-scenes-setup/overlays/talking-head.html
-   https://yourusername.github.io/obs-scenes-setup/overlays/presentation.html
-   https://yourusername.github.io/obs-scenes-setup/overlays/code-demo.html
-   https://yourusername.github.io/obs-scenes-setup/overlays/screen-only.html
-   https://yourusername.github.io/obs-scenes-setup/overlays/brb.html
-   https://yourusername.github.io/obs-scenes-setup/overlays/outro.html
+   https://artivisi.com/obs-scenes-setup/overlays/intro.html
+   https://artivisi.com/obs-scenes-setup/overlays/talking-head.html
+   https://artivisi.com/obs-scenes-setup/overlays/presentation.html
+   https://artivisi.com/obs-scenes-setup/overlays/code-demo.html
+   https://artivisi.com/obs-scenes-setup/overlays/screen-only.html
+   https://artivisi.com/obs-scenes-setup/overlays/brb.html
+   https://artivisi.com/obs-scenes-setup/overlays/outro.html
    ```
 
 4. **Add Video Sources Manually:**
    - For camera scenes: Add Video Capture Device
    - For screen scenes: Add Display Capture or Window Capture
-   - Position according to scene requirements
+   - Position according to scene requirements (see [Scene Specifications](docs/quick-reference.md#scene-specifications))
 
-### 2. Using ArtiVisi's Public Overlays
+### 3. Advanced WebSocket Injection (Developers)
 
-Pre-configured overlays are available at:
+For developers who want automated injection with customization:
+
+**Requirements:**
+- Python 3.8+ with `obsws-python` package
+- OBS Studio with WebSocket enabled
+
+```bash
+# Install dependencies
+pip install obsws-python requests
+
+# Clone repository  
+git clone https://github.com/artivisi/obs-scenes-setup.git
+cd obs-scenes-setup
+
+# Auto-inject with ArtiVisi overlays
+python scripts/inject-obs.py \
+  --collection "Workshop-Scenes" \
+  --webserver https://artivisi.com/obs-scenes-setup/overlays
 ```
-https://artivisi.com/obs-scenes-setup/
-```
 
-Simply use these URLs in your Browser Sources for instant professional overlays.
+This method automatically creates scenes with:
+- ✅ Audio processing chain (noise suppression, compression, limiting)
+- ✅ Automatic camera/screen source detection
+- ✅ Perfect source positioning and scaling
+- ✅ Professional audio filters
+
+### 4. Using Your Own GitHub Pages Overlays
+
+If you've forked and customized the overlays:
+
+1. **Enable GitHub Pages:**
+   - Go to your forked repository settings
+   - Pages → Source → GitHub Actions
+   - Your overlays will be available at: `https://yourusername.github.io/obs-scenes-setup/overlays/`
+
+2. **Use Your Custom Collection:**
+   - **Download method**: Generate your own ZIP using the GitHub Action
+   - **WebSocket method**: 
+     ```bash
+     python scripts/inject-obs.py \
+       --collection "My-Custom-Workshop" \
+       --webserver https://yourusername.github.io/obs-scenes-setup/overlays
+     ```
 
 ## Extend
 

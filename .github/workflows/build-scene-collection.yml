@@ -1,0 +1,199 @@
+name: Build OBS Scene Collection
+
+on:
+  push:
+    branches: [ master, main ]
+    paths:
+      - 'resources/event.yaml'
+      - 'themes/**/*.mustache.html'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      collection_name:
+        description: 'Custom collection name (optional)'
+        required: false
+        default: ''
+
+jobs:
+  build-scene-collection:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pystache pyyaml requests obsws-python
+    
+    - name: Generate scene collection files
+      run: |
+        # Generate overlays and scene collection metadata
+        python scripts/generate-scenes.py resources/event.yaml --output dist/overlays/
+        
+        # Create scene collection directory
+        mkdir -p dist/scene-collection
+        
+        # Copy generated files
+        cp -r dist/overlays/* dist/scene-collection/
+        
+        # Generate OBS scene collection JSON file
+        python scripts/tools/generate-obs-collection.py
+        
+        echo "Generated files:"
+        find dist/ -type f -name "*.html" -o -name "*.json" | sort
+    
+    - name: Create downloadable zip
+      run: |
+        cd dist/scene-collection
+        
+        # Get collection name from metadata or use default
+        COLLECTION_NAME=$(python -c "
+        import json, sys
+        try:
+            with open('scene-collection.json', 'r') as f:
+                data = json.load(f)
+            print(data.get('collection_name', 'obs-workshop-scenes'))
+        except:
+            print('obs-workshop-scenes')
+        ")
+        
+        # Create zip file
+        zip -r "../${COLLECTION_NAME}.zip" .
+        
+        echo "Created: ${COLLECTION_NAME}.zip"
+        ls -la ../*.zip
+    
+    - name: Generate installation guide
+      run: |
+        cat > dist/INSTALLATION-GUIDE.txt << 'EOF'
+        OBS SCENE COLLECTION INSTALLATION GUIDE
+        =======================================
+        
+        QUICK SETUP (3 STEPS):
+        
+        1. EXTRACT FILES:
+           - Extract the downloaded ZIP file to a folder
+           - Note the folder location (e.g., Downloads/obs-workshop-scenes/)
+        
+        2. IMPORT TO OBS:
+           - Open OBS Studio
+           - Go to: Scene Collection → Import
+           - Select the scene-collection.json file from extracted folder
+           - Click "Import"
+        
+        3. CONFIGURE BROWSER SOURCES:
+           - Each scene has placeholder Browser Sources
+           - Right-click each Browser Source → Properties
+           - Set URL to: file:///path/to/extracted/folder/[scene-name].html
+           - Example: file:///Users/john/Downloads/obs-workshop-scenes/intro.html
+        
+        SCENES INCLUDED:
+        - 🎬 Intro: Professional opening screen
+        - 👤 Talking Head: Full presenter view
+        - 📊 Presentation: 50:50 slides + camera
+        - 💻 Code Demo: Screen share + PiP camera
+        - 🖥️ Screen Only: Full screen capture
+        - 📺 BRB: Break/technical screen
+        - 🎯 Outro: Session conclusion
+        
+        REQUIREMENTS:
+        - OBS Studio 28.0 or newer
+        - Scene Collection import feature
+        
+        TROUBLESHOOTING:
+        - If overlays don't appear: Check file:// URLs are correct
+        - If import fails: Ensure OBS is version 28+
+        - For help: https://github.com/artivisi/obs-scenes-setup/issues
+        
+        Created by ArtiVisi Intermedia • https://artivisi.com
+        EOF
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: obs-scene-collection
+        path: |
+          dist/*.zip
+          dist/INSTALLATION-GUIDE.txt
+        retention-days: 30
+    
+    - name: Create release asset (on release)
+      if: github.event_name == 'release'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: dist/*.zip
+        asset_name: obs-workshop-scene-collection.zip
+        asset_content_type: application/zip
+    
+    - name: Deploy to GitHub Pages (update download links)
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+      run: |
+        # Create download page
+        mkdir -p public/downloads
+        
+        # Copy zip file to public
+        cp dist/*.zip public/downloads/
+        cp dist/INSTALLATION-GUIDE.txt public/downloads/
+        
+        # Generate download page
+        cat > public/downloads/index.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>OBS Scene Collection Download</title>
+            <style>
+                body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+                .download-btn { background: #007cba; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 0; }
+                .download-btn:hover { background: #005a82; }
+                .guide { background: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0; }
+            </style>
+        </head>
+        <body>
+            <h1>📺 OBS Workshop Scene Collection</h1>
+            <p>Professional scene collection for workshops, tutorials, and educational content.</p>
+            
+            <h2>🚀 Quick Download</h2>
+            <a href="obs-workshop-scenes.zip" class="download-btn">📥 Download Scene Collection</a>
+            <a href="INSTALLATION-GUIDE.txt" class="download-btn">📋 Installation Guide</a>
+            
+            <div class="guide">
+                <h3>✨ What's Included:</h3>
+                <ul>
+                    <li>7 Professional scenes ready for OBS</li>
+                    <li>Animated overlays with modern design</li>
+                    <li>Instructor information and branding</li>
+                    <li>Step-by-step installation guide</li>
+                </ul>
+            </div>
+            
+            <h3>🎯 Perfect For:</h3>
+            <ul>
+                <li>Programming tutorials and workshops</li>
+                <li>Educational live streams</li>
+                <li>Technical presentations</li>
+                <li>Code review sessions</li>
+            </ul>
+            
+            <p><small>Created by <a href="https://artivisi.com">ArtiVisi Intermedia</a> • Open Source • <a href="https://github.com/artivisi/obs-scenes-setup">GitHub</a></small></p>
+        </body>
+        </html>
+        EOF
+    
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
+        destination_dir: downloads

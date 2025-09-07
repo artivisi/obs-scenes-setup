@@ -3,24 +3,24 @@
 # Edit this file to customize your event content
 
 event:
-  title: "Python Web Development Workshop"
-  subtitle: "Building Modern APIs with FastAPI"
+  title: "Web Application Security Workshop"
+  subtitle: "Securing Modern Web Apps with OWASP Top 10 Vulnerabilities"
   date: "2024-09-06"
   duration: "2 hours"
   type: "Interactive Workshop"
   description: "Hands-on coding session"
 
 instructor:
-  name: "Sarah Johnson"
-  title: "Senior Python Developer"
+  name: "Endy Muhardin"
+  title: "Senior Application Developer"
   company: "ArtiVisi Intermedia"
   website: "artivisi.com"
-  experience: "8+ years in Python development"
-  specialty: "FastAPI & Microservices"
+  experience: "8+ years in web application development"
+  specialty: "Java, Linux, Web Security"
 
 branding:
   company_name: "ArtiVisi Intermedia"
-  company_tagline: "Custom Application Development"
+  company_tagline: "Deliver Solutions, Create Values"
   website: "artivisi.com"
   primary_color: "#2e3192"
   accent_color: "#58c034"
@@ -30,17 +30,17 @@ content:
   welcome_message: "Welcome to the Workshop"
   thank_you_message: "Thank You for Attending!"
   session_topics:
-    - "Python Fundamentals & Best Practices"
-    - "FastAPI Framework Deep Dive"
-    - "Database Integration with SQLAlchemy"
+    - "Intro to OWASP Top 10"
+    - "Vulnerabilities in Web Applications"
+    - "Mitigation Strategies"
     - "API Testing & Documentation"
-    - "Deployment & Production Tips"
+    - "DevSecOps Practices"
   
   tech_stack:
-    - name: "Python 3.11"
-      icon: "🐍"
-    - name: "FastAPI"
-      icon: "⚡"
+    - name: "Spring Boot"
+      icon: "🌱"
+    - name: "TestContainer"
+      icon: "🧪"
     - name: "PostgreSQL"
       icon: "🗄️"
     - name: "Docker"
@@ -76,6 +76,9 @@ social_links:
   - platform: "Website"
     url: "https://artivisi.com"
     icon: "🌐"
+  - platform: "Youtube"
+    url: "https://youtube.com/artivisi"
+    icon: "▶️"
 
 # Scene-specific overrides
 scenes:

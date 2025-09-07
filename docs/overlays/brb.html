@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Application Security Workshop - BRB</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
+            color: white;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .brb-container {
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .brb-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .brb-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .timer {
+            font-size: 2rem;
+            background: rgba(255,255,255,0.2);
+            padding: 20px 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            margin: 2rem 0;
+        }
+        
+        .event-info {
+            position: absolute;
+            bottom: 60px;
+            left: 60px;
+            text-align: left;
+        }
+        
+        .event-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .instructor {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .branding {
+            position: absolute;
+            bottom: 60px;
+            right: 60px;
+            text-align: right;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animated-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    
+    <div class="brb-container">
+        <h1 class="brb-title">We&#x27;ll Be Right Back</h1>
+        <p class="brb-subtitle">Technical Break - Please Stand By</p>
+        
+        <div class="timer" id="timer">
+            ⏰ Resuming shortly
+        </div>
+    </div>
+    
+    <!-- Event Information -->
+    <div class="event-info">
+        <div class="event-title">Web Application Security Workshop</div>
+        <div class="instructor">with Endy Muhardin</div>
+    </div>
+    
+    <!-- Company Branding -->
+    <div class="branding">
+        <div style="font-size: 1.2rem; font-weight: 600;">ArtiVisi Intermedia</div>
+        <div style="font-size: 1rem; opacity: 0.8;">artivisi.com</div>
+    </div>
+    
+    <script>
+        // Optional timer functionality
+        let startTime = Date.now();
+        
+        function updateTimer() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            
+            const timerEl = document.getElementById('timer');
+            if (timerEl) {
+                timerEl.innerHTML = `⏰ Break: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+        
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "collection_name": "Web Application Security Workshop-Scenes",
+  "scenes_count": 7,
+  "generated_at": "2025-09-07T12:57:24.753144",
+  "installation_steps": [
+    "Extract ZIP file to a folder",
+    "Open OBS Studio",
+    "Go to Scene Collection \u2192 Import",
+    "Select obs-scene-collection.json",
+    "Update Browser Source URLs to point to extracted HTML files"
+  ],
+  "required_files": [
+    "obs-scene-collection.json",
+    "intro.html",
+    "talking-head.html",
+    "presentation.html",
+    "code-demo.html",
+    "screen-only.html",
+    "brb.html",
+    "outro.html"
+  ]
+}

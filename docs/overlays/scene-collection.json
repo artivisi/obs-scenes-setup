@@ -1,0 +1,22 @@
+{
+  "collection_name": "web-application-security-workshop-d6653408",
+  "generated_at": "2025-09-07T12:39:05.201394",
+  "event_title": "Web Application Security Workshop",
+  "instructor": "Endy Muhardin",
+  "scenes": [
+    "brb.html",
+    "talking-head.html",
+    "presentation.html",
+    "code-demo.html",
+    "screen-only.html",
+    "intro.html",
+    "outro.html"
+  ],
+  "total_scenes": 7,
+  "resource_file": "resources/event.yaml",
+  "webserver_info": {
+    "recommended_port": 8080,
+    "serve_directory": "docs/overlays",
+    "python_command": "python3 -m http.server 8080 --directory docs/overlays"
+  }
+}

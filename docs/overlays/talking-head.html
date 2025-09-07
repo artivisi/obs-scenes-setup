@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Application Security Workshop - Talking Head</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: transparent;
+            color: white;
+            overflow: hidden;
+        }
+        
+        .instructor-banner {
+            position: absolute;
+            bottom: 38px;
+            right: 40px;
+            background: linear-gradient(135deg, #2e3192ee, #58c034ee);
+            padding: 20px 30px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        
+        .instructor-name {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .instructor-title {
+            font-size: 1.7rem;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+        
+        
+        .topic-banner {
+            position: absolute;
+            bottom: 38px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #2e3192dd, #58c034dd);
+            padding: 12px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            font-size: 2rem;
+            font-weight: 500;
+        }
+        
+        .layer-info {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 1.8rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 80px;
+            right: 30px;
+            background: #ff4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .branding {
+            position: absolute;
+            bottom: 38px;
+            left: 30px;
+            opacity: 0.8;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Instructor Information Banner -->
+    <div class="instructor-banner">
+        <div class="instructor-name">Endy Muhardin</div>
+        <div class="instructor-title">Senior Application Developer</div>
+    </div>
+    
+    <!-- Current Topic -->
+    <div class="topic-banner">
+        <div>💻 API Development</div>
+    </div>
+    
+    <!-- Layer Information -->
+    <div class="layer-info">Layer 3: Presenter Mode</div>
+    
+    <!-- Recording Status -->
+    <div class="status-indicator">● LIVE</div>
+    
+    <!-- Company Branding -->
+    <div class="branding">
+        <div>ArtiVisi Intermedia • artivisi.com</div>
+    </div>
+</body>
+</html>

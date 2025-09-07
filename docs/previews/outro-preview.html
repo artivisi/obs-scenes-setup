@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outro Scene - Preview</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%);
+            color: white;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+        
+        .outro-container {
+            padding: 60px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .thank-you-section {
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .thank-you-title {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .thank-you-message {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .topics-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin: 3rem 0;
+        }
+        
+        .topics-covered {
+            flex: 1;
+            margin-right: 3rem;
+        }
+        
+        .topics-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .topics-list {
+            list-style: none;
+        }
+        
+        .topic-item {
+            background: rgba(255,255,255,0.1);
+            margin: 10px 0;
+            padding: 15px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            border-left: 4px solid #58c034;
+            animation: slideInLeft 1s ease-out;
+            animation-delay: calc(var(--delay) * 0.2s);
+        }
+        
+        .social-section {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .social-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .social-link {
+            background: rgba(255,255,255,0.2);
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+        }
+        
+        .social-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .instructor-info {
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .instructor-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .company-info {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    
+        /* PREVIEW STYLES - Added for documentation visibility */
+        .preview-label {
+            position: absolute !important;
+            top: 20px !important;
+            right: 20px !important;
+            background: rgba(255,255,255,0.2) !important;
+            padding: 10px 20px !important;
+            border-radius: 20px !important;
+            font-size: 1rem !important;
+            backdrop-filter: blur(10px) !important;
+            z-index: 100 !important;
+        }
+        
+        /* Make camera areas visible with gradient backgrounds */
+        .camera-placeholder,
+        .camera-frame,
+        .camera-content {
+            background: radial-gradient(circle, #4a4a4a 40%, #2a2a2a 100%) !important;
+        }
+        
+        /* Make screen areas visible with pattern backgrounds */
+        .screen-placeholder {
+            background: linear-gradient(45deg, #2a2a2a 25%, transparent 25%, transparent 75%, #2a2a2a 75%, #2a2a2a),
+                        linear-gradient(45deg, #2a2a2a 25%, transparent 25%, transparent 75%, #2a2a2a 75%, #2a2a2a) !important;
+            background-size: 40px 40px !important;
+            background-position: 0 0, 20px 20px !important;
+        }
+        
+        /* Ensure body backgrounds are opaque for visibility */
+        body {
+            background: linear-gradient(135deg, #2e3192 0%, #58c034 100%) !important;
+        }
+    
+    </style>
+</head>
+<body>
+    <!-- Preview Label -->
+    <div class="preview-label">📖 Documentation Preview</div>
+
+    <div class="outro-container">
+        <!-- Thank You Section -->
+        <div class="thank-you-section">
+            <h1 class="thank-you-title">What We Accomplished Today</h1>
+            <p class="thank-you-message">Thank You for Attending!</p>
+        </div>
+        
+        <!-- Topics and Social Section -->
+        <div class="topics-section">
+            <!-- What We Covered -->
+            <div class="topics-covered">
+                <h2 class="topics-title">What We Accomplished Today</h2>
+                <ul class="topics-list">
+                    <li class="topic-item" style="--delay: ">
+                        ✅ Intro to OWASP Top 10
+                    </li>
+                    <li class="topic-item" style="--delay: ">
+                        ✅ Vulnerabilities in Web Applications
+                    </li>
+                    <li class="topic-item" style="--delay: ">
+                        ✅ Mitigation Strategies
+                    </li>
+                    <li class="topic-item" style="--delay: ">
+                        ✅ API Testing &amp; Documentation
+                    </li>
+                    <li class="topic-item" style="--delay: ">
+                        ✅ DevSecOps Practices
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Social Links -->
+            <div class="social-section">
+                <h2 class="social-title">Continue Learning</h2>
+                <div class="social-links">
+                    <a href="https://github.com/artivisi" class="social-link" target="_blank">
+                        🔗 GitHub
+                    </a>
+                    <a href="https://linkedin.com/company/artivisi" class="social-link" target="_blank">
+                        💼 LinkedIn
+                    </a>
+                    <a href="https://artivisi.com" class="social-link" target="_blank">
+                        🌐 Website
+                    </a>
+                    <a href="https://youtube.com/artivisi" class="social-link" target="_blank">
+                        ▶️ Youtube
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Instructor Information -->
+        <div class="instructor-info">
+            <div class="instructor-name">Endy Muhardin</div>
+            <div class="company-info">ArtiVisi Intermedia • artivisi.com</div>
+        </div>
+    </div>
+</body>
+</html>

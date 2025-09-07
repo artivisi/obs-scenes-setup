@@ -49,7 +49,7 @@ Ensure you have OBS Studio 28+ installed with Browser Source support.
 **Best For**: Session start, waiting for participants
 
 <div class="scene-preview">
-  <img src="assets/preview/intro-scene.png" alt="Intro Scene Preview" />
+  <a href="previews/intro-preview.html" target="_blank">View Live Preview →</a>
 </div>
 
 ### 👤 Talking Head
@@ -58,7 +58,7 @@ Ensure you have OBS Studio 28+ installed with Browser Source support.
 **Best For**: Introductions, explanations, Q&A sessions
 
 <div class="scene-preview">
-  <img src="assets/preview/talking-head.png" alt="Talking Head Preview" />
+  <a href="previews/talking-head-preview.html" target="_blank">View Live Preview →</a>
 </div>
 
 ### 📊 50:50 Presentation
@@ -68,7 +68,7 @@ Ensure you have OBS Studio 28+ installed with Browser Source support.
 **Best For**: PowerPoint, Keynote, slide presentations
 
 <div class="scene-preview">
-  <img src="assets/preview/presentation.png" alt="Presentation Preview" />
+  <a href="previews/presentation-preview.html" target="_blank">View Live Preview →</a>
 </div>
 
 ### 💻 Code Demo
@@ -78,7 +78,7 @@ Ensure you have OBS Studio 28+ installed with Browser Source support.
 **Best For**: IDE demos, terminal sessions, debugging
 
 <div class="scene-preview">
-  <img src="assets/preview/code-demo.png" alt="Code Demo Preview" />
+  <a href="previews/code-demo-preview.html" target="_blank">View Live Preview →</a>
 </div>
 
 ### 🖥️ Screen Only
@@ -87,7 +87,7 @@ Ensure you have OBS Studio 28+ installed with Browser Source support.
 **Best For**: Detailed code review, documentation reading
 
 <div class="scene-preview">
-  <img src="assets/preview/screen-only.png" alt="Screen Only Preview" />
+  <a href="previews/screen-only-preview.html" target="_blank">View Live Preview →</a>
 </div>
 
 ### 📺 BRB / Technical
@@ -96,7 +96,7 @@ Ensure you have OBS Studio 28+ installed with Browser Source support.
 **Best For**: Breaks, technical issues, scene transitions
 
 <div class="scene-preview">
-  <img src="assets/preview/brb.png" alt="BRB Preview" />
+  <a href="previews/brb-preview.html" target="_blank">View Live Preview →</a>
 </div>
 
 ### 🎯 Outro Scene
@@ -105,7 +105,7 @@ Ensure you have OBS Studio 28+ installed with Browser Source support.
 **Best For**: Session end, networking info, next steps
 
 <div class="scene-preview">
-  <img src="assets/preview/outro.png" alt="Outro Preview" />
+  <a href="previews/outro-preview.html" target="_blank">View Live Preview →</a>
 </div>
 
 ---
