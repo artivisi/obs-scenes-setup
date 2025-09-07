@@ -1,11 +1,11 @@
-# Event Configuration
+# Event Configuration  
 # Easy-to-edit text resources for OBS scenes
 # Edit this file to customize your event content
 
 event:
   title: "Web Application Security Workshop"
   subtitle: "Securing Modern Web Apps with OWASP Top 10 Vulnerabilities"
-  date: "2024-09-06"
+  date: "2025-09-07"
   duration: "2 hours"
   type: "Interactive Workshop"
   description: "Hands-on coding session"

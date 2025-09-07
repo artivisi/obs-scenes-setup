@@ -10,11 +10,14 @@ title: OBS Scenes Setup - Professional Streaming Overlays
 Create stunning educational content with our complete OBS scene collection. Perfect for programming tutorials, workshops, webinars, and technical presentations.
 
 <div style="text-align: center; margin: 40px 0;">
-  <a href="downloads/" class="button" style="background: #dc3545; font-size: 1.4em; padding: 20px 50px; margin: 10px;">📥 Download Scene Collection</a>
-  <br>
-  <a href="#get-started" class="button" style="background: #28a745; font-size: 1.2em; padding: 15px 40px; margin: 5px;">🚀 Get Started</a>
-  <a href="#preview-scenes" class="button" style="padding: 15px 30px; margin: 5px;">👁️ Preview Scenes</a>
-  <a href="https://github.com/artivisi/obs-scenes-setup" class="button" style="padding: 15px 30px; margin: 5px;">📦 GitHub</a>
+  <div style="margin-bottom: 20px;">
+    <a href="downloads/" class="button" style="background: #dc3545; font-size: 1.4em; padding: 20px 50px; margin: 10px; display: inline-block;">📥 Download Scene Collection</a>
+  </div>
+  <div>
+    <a href="#get-started" class="button" style="background: #28a745; font-size: 1.1em; padding: 12px 30px; margin: 8px; display: inline-block;">🚀 Get Started</a>
+    <a href="#preview-scenes" class="button" style="padding: 12px 25px; margin: 8px; display: inline-block;">👁️ Preview Scenes</a>
+    <a href="https://github.com/artivisi/obs-scenes-setup" class="button" style="padding: 12px 25px; margin: 8px; display: inline-block;">📦 GitHub</a>
+  </div>
 </div>
 
 ---
