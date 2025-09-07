@@ -41,6 +41,14 @@ Create stunning educational content with our complete OBS scene collection. Perf
     <h3>🔧 Fully Customizable</h3>
     <p>Edit text, colors, and branding to match your style</p>
   </div>
+  <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; color: #333;">
+    <h3>⚙️ OBS Optimization</h3>
+    <p>Auto-configure recording and streaming settings for Mac and 1080p quality</p>
+  </div>
+  <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; color: #333;">
+    <h3>📡 Multi-Platform</h3>
+    <p>YouTube, Facebook Live, and custom RTMP server support</p>
+  </div>
 </div>
 
 ---
@@ -103,6 +111,57 @@ python scripts/serve-scenes.py my-event/
 # Auto-inject to OBS (optional)
 python scripts/inject-obs.py --collection my-event --webserver http://localhost:8080
 ```
+
+---
+
+## ⚙️ OBS Configuration
+
+Optimize OBS settings for your Mac or streaming setup:
+
+### 🎬 Recording Configuration (Apple Silicon Macs)
+
+For MacBook Pro M1/M2/M3 users, automatically configure OBS for maximum recording quality:
+
+```bash
+# Configure for maximum quality (4K60 @ 50Mbps)
+python scripts/configure-obs-recording.py --preset maximum
+
+# Other presets available:
+# - high: 1440p60 @ 25Mbps
+# - standard: 1080p30 @ 12Mbps
+```
+
+**Features:**
+- 🚀 Apple VideoToolbox hardware acceleration
+- 📁 Auto-creates ~/Movies/OBS/ recording directory
+- 🎯 Optimized bitrates and encoding settings
+- 🎨 Professional color space settings
+
+### 📡 Streaming Configuration (1080p Optimized)
+
+Configure OBS for optimal streaming quality on YouTube, Facebook, or custom servers:
+
+```bash
+# YouTube Live streaming
+python scripts/configure-obs-streaming.py --platform youtube --quality high
+
+# Facebook Live streaming  
+python scripts/configure-obs-streaming.py --platform facebook --quality standard
+
+# Custom RTMP server
+python scripts/configure-obs-streaming.py --platform custom --server rtmp://your-server/live --key your-key
+```
+
+**Supported Platforms:**
+- **YouTube**: 6000 kbps, optimized for quality and DVR
+- **Facebook**: 4000 kbps, RTMPS secure streaming
+- **Custom RTMP**: Fully configurable settings
+
+**Quality Presets:**
+- **Ultra**: 1080p60 with premium bitrate (~7.5 Mbps upload required)
+- **High**: 1080p60 standard bitrate (~6.2 Mbps upload required)
+- **Standard**: 1080p30 stable streaming (~5.0 Mbps upload required)
+- **Low**: 720p30 for limited bandwidth (~3.5 Mbps upload required)
 
 ---
 
