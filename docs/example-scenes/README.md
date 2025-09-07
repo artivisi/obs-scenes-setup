@@ -1,15 +1,16 @@
-# python-web-development-workshop-8aefad18
+# python-web-development-workshop-93ee436f
 
 Generated scenes for: **Python Web Development Workshop**  
 Instructor: Sarah Johnson  
-Generated: 2025-09-06T22:11:28.286785
+Generated: 2025-09-07T04:47:03.690364
 
-## Scenes (5 total)
-- brb.html
-- talking-head.html
-- code-demo.html
+## Scenes (6 total)
 - screen-only.html
+- presentation.html
+- talking-head.html
 - outro.html
+- brb.html
+- code-demo.html
 
 ## Usage
 
@@ -20,7 +21,7 @@ Generated: 2025-09-06T22:11:28.286785
    ```
 
 2. **Import into OBS:**
-   Use the OBS injection script with collection name: `python-web-development-workshop-8aefad18`
+   Use the OBS injection script with collection name: `python-web-development-workshop-93ee436f`
 
 ## Files
 - `scene-collection.json` - Metadata and configuration
