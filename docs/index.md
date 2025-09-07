@@ -10,9 +10,11 @@ title: OBS Scenes Setup - Professional Streaming Overlays
 Create stunning educational content with our complete OBS scene collection. Perfect for programming tutorials, workshops, webinars, and technical presentations.
 
 <div style="text-align: center; margin: 40px 0;">
-  <a href="#get-started" class="button" style="background: #28a745; font-size: 1.2em; padding: 15px 40px;">🚀 Get Started</a>
-  <a href="#preview-scenes" class="button">👁️ Preview Scenes</a>
-  <a href="https://github.com/artivisi/obs-scenes-setup" class="button">📦 GitHub</a>
+  <a href="downloads/" class="button" style="background: #dc3545; font-size: 1.4em; padding: 20px 50px; margin: 10px;">📥 Download Scene Collection</a>
+  <br>
+  <a href="#get-started" class="button" style="background: #28a745; font-size: 1.2em; padding: 15px 40px; margin: 5px;">🚀 Get Started</a>
+  <a href="#preview-scenes" class="button" style="padding: 15px 30px; margin: 5px;">👁️ Preview Scenes</a>
+  <a href="https://github.com/artivisi/obs-scenes-setup" class="button" style="padding: 15px 30px; margin: 5px;">📦 GitHub</a>
 </div>
 
 ---
@@ -44,7 +46,18 @@ Create stunning educational content with our complete OBS scene collection. Perf
 
 Choose your setup method based on your technical comfort level:
 
-### Option 1: Use Our Hosted Overlays (Easiest)
+### Option 0: Download Scene Collection (Fastest) ⭐
+
+**Perfect for non-technical users who want everything ready in one click.**
+
+1. **[📥 Download Scene Collection](downloads/)** - Get the complete ZIP package
+2. **Extract files** to your desired folder  
+3. **Import to OBS**: Scene Collection → Import → Select `scene-collection.json`
+4. **Configure Browser Sources**: Update file paths to point to your extracted overlay files
+
+✅ **No git required** • ✅ **No Python required** • ✅ **Works offline**
+
+### Option 1: Use Our Hosted Overlays (Online)
 
 Perfect if you just want to start streaming right away.
 
