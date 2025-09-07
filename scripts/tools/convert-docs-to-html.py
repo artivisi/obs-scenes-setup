@@ -396,8 +396,11 @@ def create_html_template() -> str:
 
 def markdown_to_html(markdown_content: str) -> str:
     """Convert markdown content to HTML"""
+    # Remove Jekyll front matter (between --- lines)
+    html = re.sub(r'^---\s*\n.*?\n---\s*\n', '', markdown_content, flags=re.DOTALL)
+    
     # Convert headers
-    html = re.sub(r'^### (.*$)', r'<h3>\1</h3>', markdown_content, flags=re.MULTILINE)
+    html = re.sub(r'^### (.*$)', r'<h3>\1</h3>', html, flags=re.MULTILINE)
     html = re.sub(r'^## (.*$)', r'<h2>\1</h2>', html, flags=re.MULTILINE)
     html = re.sub(r'^# (.*$)', r'<h1>\1</h1>', html, flags=re.MULTILINE)
     
