@@ -325,6 +325,90 @@ If you've forked and customized the overlays:
    - `brb.mustache.html`
    - `outro.mustache.html`
 
+## Recording Configuration (Apple Silicon Macs)
+
+For MacBook Pro M1/M2/M3 users, optimize OBS recording settings:
+
+```bash
+# Configure for maximum quality (4K60 @ 50Mbps)
+python scripts/configure-obs-recording.py --preset maximum
+
+# Other presets available:
+# - high: 1440p60 @ 25Mbps
+# - streaming: 1080p60 @ 8Mbps  
+# - standard: 1080p30 @ 12Mbps
+```
+
+This automatically configures:
+- Apple VideoToolbox hardware acceleration
+- Optimal bitrates and encoding settings
+- Color space and format settings
+- Recording path (~/Movies/OBS/)
+
+## Streaming Configuration (1080p Optimized)
+
+Configure OBS for optimal streaming quality:
+
+```bash
+# YouTube Live streaming
+python scripts/configure-obs-streaming.py --platform youtube --quality high
+
+# Facebook Live streaming
+python scripts/configure-obs-streaming.py --platform facebook --quality standard
+
+# Show available servers
+python scripts/configure-obs-streaming.py --platform youtube --show-servers
+```
+
+### Supported Platforms:
+- **YouTube**: 6000 kbps, optimized for quality
+- **Facebook**: 4000 kbps, RTMPS support
+- **Custom RTMP**: Configurable settings
+
+### Quality Presets:
+- **Ultra**: 1080p60 with 20% higher bitrate
+- **High**: 1080p60 with recommended bitrate
+- **Standard**: 1080p30 for stable streaming
+- **Low**: 720p30 for limited bandwidth
+
+### Features:
+- Platform-specific bitrate optimization
+- Hardware acceleration (Apple VideoToolbox on macOS)
+- Network optimization and auto-reconnect
+- Bandwidth requirement calculations
+- Platform-specific streaming tips and best practices
+- Server selection for reliability
+
+### Custom RTMP Configuration:
+```bash
+# For custom streaming servers
+python scripts/configure-obs-streaming.py --platform custom \
+  --server rtmp://your-server.com/live \
+  --key your-stream-key \
+  --quality high
+```
+
+### Bandwidth Requirements:
+The script automatically calculates required upload speeds:
+- **Ultra Quality**: ~7.5 Mbps upload required
+- **High Quality**: ~6.2 Mbps upload required  
+- **Standard Quality**: ~5.0 Mbps upload required
+- **Low Quality**: ~3.5 Mbps upload required
+
+### Platform-Specific Features:
+
+#### YouTube Live:
+- Ultra Low Latency mode support
+- DVR functionality for viewers
+- 4500-9000 kbps bitrate range
+- Primary and backup server options
+
+#### Facebook Live:
+- RTMPS (secure) streaming
+- 60-minute limit for personal profiles
+- 8-hour limit for pages/groups
+- Optimized for social media sharing
+
 ## Architecture Overview
 
 See [CLAUDE.md](CLAUDE.md) for detailed technical documentation and development guidelines.

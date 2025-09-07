@@ -47,6 +47,75 @@ python scripts/serve-scenes.py nested-demo/
 python scripts/inject-obs.py --collection demo --webserver http://localhost:8080 --obs-host localhost
 ```
 
+### Recording Configuration (MacBook Pro M1/M2/M3)
+```bash
+# Configure OBS for maximum quality recording on Apple Silicon
+python scripts/configure-obs-recording.py --preset maximum
+
+# Available presets:
+# - maximum: 4K60 @ 50Mbps (best quality, large files)
+# - high: 1440p60 @ 25Mbps (great quality, moderate files)  
+# - streaming: 1080p60 @ 8Mbps (optimized for streaming/sharing)
+# - standard: 1080p30 @ 12Mbps (standard recording)
+
+# Configure remote OBS instance
+python scripts/configure-obs-recording.py --obs-host 192.168.1.100 --preset high
+```
+
+### Streaming Configuration (1080p Optimized)
+```bash
+# Configure for YouTube streaming
+python scripts/configure-obs-streaming.py --platform youtube --quality high
+
+# Configure for Facebook Live
+python scripts/configure-obs-streaming.py --platform facebook --quality standard
+
+# Show available servers for a platform
+python scripts/configure-obs-streaming.py --platform youtube --show-servers
+
+# Quality presets:
+# - ultra: 1080p60 with 20% higher bitrate
+# - high: 1080p60 with platform-recommended bitrate
+# - standard: 1080p30 with reduced bitrate
+# - low: 720p30 for limited bandwidth
+
+# Custom RTMP server
+python scripts/configure-obs-streaming.py --platform custom --server rtmp://your-server/live --key your-stream-key
+
+# Test connection only
+python scripts/configure-obs-streaming.py --test
+
+# Remote OBS configuration
+python scripts/configure-obs-streaming.py --obs-host 192.168.1.100 --platform youtube
+```
+
+#### Streaming Script Technical Details
+
+**Platform Configuration:**
+- YouTube: CBR 6000 kbps, H.264 High Profile, 2-second keyframes
+- Facebook: CBR 4000 kbps, RTMPS support, Main Profile
+- Custom: User-configurable bitrates and servers
+
+**Encoder Optimization:**
+- macOS: Apple VideoToolbox hardware acceleration
+- Cross-platform: x264 software encoding fallback
+- Constant bitrate (CBR) for streaming stability
+- Buffer size optimization (1-2x bitrate based on platform)
+
+**Network Optimization:**
+- Auto-reconnect with exponential backoff
+- TCP No-Delay for reduced latency
+- Bandwidth calculation and validation
+- Platform-specific server selection
+
+**Quality Calculations:**
+```
+Ultra:   Platform bitrate × 1.2 + audio bitrate
+High:    Platform bitrate × 1.0 + audio bitrate  
+Standard: Platform bitrate × 0.8 + audio bitrate
+Low:     Platform bitrate × 0.6 + audio bitrate
+```
+
 ## Architecture
 
 ### Core Components
@@ -69,6 +138,18 @@ python scripts/inject-obs.py --collection demo --webserver http://localhost:8080
 - **Cross-Platform**: WSL host IP detection for Windows/Linux hybrid setups
 - **Window Capture Priority**: Prefers application capture over display capture
 - **Smart Scene Ordering**: Automatically orders scenes for logical workflow (LIFO-aware)
+
+**Recording Configurator** (`scripts/configure-obs-recording.py`):
+- **Apple Silicon Optimization**: Hardware-accelerated encoding via VideoToolbox
+- **Quality Presets**: 4K60 maximum down to 1080p30 standard
+- **Storage Management**: Auto-creates ~/Movies/OBS/ directory
+- **Platform Detection**: macOS-specific optimizations and settings
+
+**Streaming Configurator** (`scripts/configure-obs-streaming.py`):
+- **Platform Optimization**: YouTube, Facebook, Custom RTMP support
+- **Quality Scaling**: Bandwidth-aware bitrate calculations
+- **Network Optimization**: Auto-reconnect, TCP optimization
+- **Hardware Acceleration**: Cross-platform encoder selection
 
 ### Nested Scene Architecture
 
@@ -165,6 +246,32 @@ nested-demo/            # Example generated output
 - Window Capture reduces system load vs Display Capture
 - Local webserver provides low-latency overlay updates
 
+## Modular Architecture Benefits
+
+**Separation of Concerns**:
+- **Scene Creation**: Platform-agnostic scene generation and injection
+- **Recording Optimization**: Mac-specific hardware acceleration settings
+- **Streaming Optimization**: Platform-specific bitrate and server configuration
+- **Overlay Generation**: YAML-driven content with Mustache templating
+
+**Cross-Platform Compatibility**:
+- Scenes work on any OBS-compatible system
+- Recording settings apply only to compatible hardware
+- Streaming settings adapt to platform requirements
+- Network detection handles WSL/macOS/Linux automatically
+
+**Independent Usage**:
+```bash
+# Use scenes on any computer
+python scripts/inject-obs.py --collection workshop --webserver http://server:8080
+
+# Apply Mac recording settings only on MacBooks  
+python scripts/configure-obs-recording.py --preset maximum
+
+# Configure streaming independently of scenes/recording
+python scripts/configure-obs-streaming.py --platform youtube --quality high
+```
+
 ## Important Notes
 
 **OBS Setup Requirements**:
@@ -177,9 +284,11 @@ nested-demo/            # Example generated output
 - Generate scenes from YAML resources
 - Test locally with webserver
 - Deploy to OBS with unique collection names
+- Configure recording/streaming settings independently
 - Clean up old collections manually as needed
 
 **Cross-Platform Considerations**:
 - WSL users: OBS runs on Windows host, requires IP detection
 - All users: Webserver binds to appropriate interface automatically
 - Network firewall: Ensure localhost/LAN HTTP access for overlays
+- Hardware acceleration: Auto-detected per platform
