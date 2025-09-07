@@ -1,0 +1,24 @@
+theme: jekyll-theme-cayman
+title: OBS Scenes Setup
+description: Professional Streaming Overlays for Educational Content
+show_downloads: true
+google_analytics: 
+
+# Custom variables
+github:
+  repository_url: https://github.com/artivisi/obs-scenes-setup
+  zip_url: https://github.com/artivisi/obs-scenes-setup/archive/refs/heads/master.zip
+  tar_url: https://github.com/artivisi/obs-scenes-setup/archive/refs/heads/master.tar.gz
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: Quick Start
+    url: /#quick-start
+  - title: Scenes Gallery
+    url: /#scenes-gallery
+  - title: Documentation
+    url: /documentation
+  - title: GitHub
+    url: https://github.com/artivisi/obs-scenes-setup

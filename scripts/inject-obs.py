@@ -78,14 +78,17 @@ class OBSSceneInjector:
                     metadata = response.json()
                     self.available_scenes = metadata.get('scenes', [])
                     print(f"📋 Found {len(self.available_scenes)} scenes from metadata")
+                    # Reorder scenes according to preferred sequence
+                    self._reorder_scenes()
                     return True
             except:
                 pass
             
-            # Fallback: try common scene names
+            # Fallback: try common scene names (in preferred order)
             common_scenes = [
-                'intro.html', 'talking-head.html', 'code-demo.html', 
-                'screen-only.html', 'brb.html', 'outro.html', 'dual-cam.html'
+                'intro.html', 'talking-head.html', 'presentation.html',
+                'code-demo.html', 'screen-only.html', 'brb.html', 
+                'outro.html', 'dual-cam.html'
             ]
             
             self.available_scenes = []
@@ -111,6 +114,34 @@ class OBSSceneInjector:
         except Exception as e:
             print(f"❌ Failed to discover scenes: {e}")
             return False
+    
+    def _reorder_scenes(self):
+        """Reorder scenes according to preferred sequence (reversed for LIFO)"""
+        preferred_order = [
+            'intro.html',
+            'talking-head.html', 
+            'presentation.html',
+            'code-demo.html',
+            'screen-only.html',
+            'brb.html',
+            'outro.html'
+        ]
+        
+        # Create a new ordered list
+        ordered_scenes = []
+        
+        # Add scenes in preferred order if they exist
+        for scene in preferred_order:
+            if scene in self.available_scenes:
+                ordered_scenes.append(scene)
+        
+        # Add any remaining scenes not in preferred order
+        for scene in self.available_scenes:
+            if scene not in ordered_scenes:
+                ordered_scenes.append(scene)
+        
+        # Reverse for LIFO (Last In, First Out) in OBS
+        self.available_scenes = list(reversed(ordered_scenes))
     
     def create_scene_collection(self) -> bool:
         """Create dedicated scene collection in OBS"""

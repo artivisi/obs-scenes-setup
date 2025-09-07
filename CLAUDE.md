@@ -68,6 +68,7 @@ python scripts/inject-obs.py --collection demo --webserver http://localhost:8080
 - **Unique Collections**: Timestamp-based names prevent conflicts
 - **Cross-Platform**: WSL host IP detection for Windows/Linux hybrid setups
 - **Window Capture Priority**: Prefers application capture over display capture
+- **Smart Scene Ordering**: Automatically orders scenes for logical workflow (LIFO-aware)
 
 ### Nested Scene Architecture
 
@@ -76,12 +77,14 @@ python scripts/inject-obs.py --collection demo --webserver http://localhost:8080
 - 🖥️ **Screen**: Window Capture (preferred) or Display Capture fallback
 - 🎤 **Audio**: Global audio configuration
 
-**Session Scenes** (reference source scenes):
-- 📺 **BRB / Technical**: Overlay only
+**Session Scenes** (reference source scenes, ordered for workflow):
+- 🎬 **Intro Scene**: Professional intro with event info + countdown timer
 - 👤 **Talking Head**: Full-screen camera + speaker info overlay
+- 📊 **50:50 Presentation**: Full screen + camera overlay (top-center, 25% cropped)
 - 💻 **Code Demo**: Screen + PiP camera (25% scale, bottom-right) + overlay
 - 🖥️ **Screen Only**: Full-screen capture + overlay
-- 🎯 **Outro Scene**: Overlay only
+- 📺 **BRB / Technical**: Overlay only
+- 🎯 **Outro Scene**: Overlay only with topics covered + social links
 
 ### Overlay System
 

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{event.title}} - Intro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, {{branding.primary_color}} 0%, {{branding.accent_color}} 100%);
+            color: white;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Main Container */
+        .intro-container {
+            text-align: center;
+            padding: 60px;
+            animation: fadeIn 2s ease-out;
+        }
+        
+        /* Event Title */
+        .event-title {
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            animation: slideDown 1s ease-out;
+        }
+        
+        /* Tagline */
+        .tagline {
+            font-size: 2rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            animation: slideUp 1s ease-out 0.3s both;
+        }
+        
+        /* Start Time */
+        .start-time {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 20px 40px;
+            border-radius: 12px;
+            display: inline-block;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+        
+        .start-label {
+            font-size: 1.4rem;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+        
+        .time-display {
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+        
+        /* Instructor Info */
+        .instructor-section {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            animation: fadeIn 1s ease-out 0.9s both;
+        }
+        
+        .instructor-label {
+            font-size: 1.3rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        
+        .instructor-name {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .instructor-title {
+            font-size: 1.5rem;
+            opacity: 0.9;
+        }
+        
+        /* Company Branding */
+        .branding {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            opacity: 0.8;
+            font-size: 1.4rem;
+            text-align: right;
+            animation: fadeIn 1s ease-out 1.2s both;
+        }
+        
+        /* Animated Background Elements */
+        .bg-element {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+        
+        .bg-element-1 {
+            width: 400px;
+            height: 400px;
+            background: {{branding.accent_color}};
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+        
+        .bg-element-2 {
+            width: 300px;
+            height: 300px;
+            background: {{branding.primary_color}};
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 5s;
+        }
+        
+        .bg-element-3 {
+            width: 200px;
+            height: 200px;
+            background: white;
+            top: 50%;
+            right: 10%;
+            animation-delay: 10s;
+        }
+        
+        /* Status Badge */
+        .status-badge {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 12px 24px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 1s ease-out 1.5s both;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-text {
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from { 
+                opacity: 0; 
+                transform: translateY(-30px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.9); }
+            75% { transform: translate(-30px, -10px) scale(1.05); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Countdown Timer (optional) */
+        .countdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 8rem;
+            font-weight: 700;
+            opacity: 0;
+            display: none;
+        }
+        
+        .countdown.active {
+            display: block;
+            animation: countdownPulse 1s ease-out;
+        }
+        
+        @keyframes countdownPulse {
+            0% { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% { 
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            100% { 
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="bg-element bg-element-1"></div>
+    <div class="bg-element bg-element-2"></div>
+    <div class="bg-element bg-element-3"></div>
+    
+    <!-- Status Badge -->
+    <div class="status-badge">
+        <div class="status-dot"></div>
+        <div class="status-text">Starting Soon</div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="intro-container">
+        <h1 class="event-title">{{event.title}}</h1>
+        {{#event.tagline}}
+        <p class="tagline">{{event.tagline}}</p>
+        {{/event.tagline}}
+        
+        <div class="start-time">
+            <div class="start-label">Session Begins</div>
+            <div class="time-display" id="timeDisplay">{{session.start_time}}</div>
+        </div>
+    </div>
+    
+    <!-- Instructor Information -->
+    <div class="instructor-section">
+        <div class="instructor-label">Your Instructor</div>
+        <div class="instructor-name">{{instructor.name}}</div>
+        <div class="instructor-title">{{instructor.title}}</div>
+    </div>
+    
+    <!-- Company Branding -->
+    <div class="branding">
+        <div>{{branding.company_name}}</div>
+        <div>{{branding.website}}</div>
+    </div>
+    
+    <!-- Countdown Timer (hidden by default) -->
+    <div class="countdown" id="countdown"></div>
+    
+    <script>
+        // Dynamic time display
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            });
+            const timeDisplay = document.getElementById('timeDisplay');
+            if (timeDisplay && !timeDisplay.dataset.static) {
+                timeDisplay.textContent = timeStr;
+            }
+        }
+        
+        // Update time every second
+        setInterval(updateTime, 1000);
+        updateTime();
+        
+        // Optional countdown functionality (triggered by pressing 'C')
+        let countdownActive = false;
+        let countdownValue = 5;
+        
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'c' || e.key === 'C') {
+                if (!countdownActive) {
+                    countdownActive = true;
+                    countdownValue = 5;
+                    startCountdown();
+                }
+            }
+        });
+        
+        function startCountdown() {
+            const countdownEl = document.getElementById('countdown');
+            
+            if (countdownValue > 0) {
+                countdownEl.textContent = countdownValue;
+                countdownEl.classList.add('active');
+                
+                setTimeout(() => {
+                    countdownEl.classList.remove('active');
+                    countdownValue--;
+                    setTimeout(() => startCountdown(), 100);
+                }, 900);
+            } else {
+                countdownActive = false;
+                // Optionally trigger scene change here
+            }
+        }
+    </script>
+</body>
+</html>
