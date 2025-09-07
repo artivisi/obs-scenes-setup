@@ -379,6 +379,14 @@ class OBSSceneInjector:
                 self._add_nested_scene(scene_name, camera_scene, "bottom-right", scale=0.25)
                 print(f"      🖥️ Added screen + 📹 camera (PiP)")
             
+            elif 'presentation' in scene_type or '50:50' in scene_type or '50-50' in scene_type:
+                # 50:50 Presentation: Full screen as base, camera overlaid on right
+                # Screen full size at position 0
+                self._add_nested_scene(scene_name, screen_scene, "fullscreen", scale=1.0)
+                # Camera overlaid on right side (50% scale)
+                self._add_nested_scene(scene_name, camera_scene, "right-overlay")
+                print(f"      👤📊 Added 50:50 (screen + camera overlay)")
+            
             elif 'screen' in scene_type:
                 # Screen Only: Full screen only
                 self._add_nested_scene(scene_name, screen_scene, "fullscreen", scale=1.0)
@@ -451,6 +459,13 @@ class OBSSceneInjector:
             "bottom-left": {
                 "positionX": 0, "positionY": 810,
                 "scaleX": scale, "scaleY": scale
+            },
+            "right-overlay": {
+                # Camera overlay on right side (100% scale, moved further up)
+                # Position (960, 0) - moved to top edge with 25% crop from left and right
+                "positionX": 960, "positionY": 0,
+                "scaleX": 1.0, "scaleY": 1.0,
+                "cropLeft": 480, "cropRight": 480, "cropTop": 0, "cropBottom": 0
             }
         }
         
@@ -468,7 +483,8 @@ class OBSSceneInjector:
             'screen only': '🖥️ Screen Only',
             'brb': '📺 BRB / Technical',
             'outro': '🎯 Outro Scene',
-            'dual cam': '👥 Dual Camera'
+            'dual cam': '👥 Dual Camera',
+            'presentation': '📊 50:50 Presentation'
         }
         
         return emoji_map.get(name.lower(), f"🎨 {name.title()}")
