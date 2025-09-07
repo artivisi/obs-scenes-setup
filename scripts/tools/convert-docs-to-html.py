@@ -516,6 +516,13 @@ def main():
     # Define conversion mappings - now only essential docs
     conversions = [
         {
+            'input': docs_dir / 'index.md',
+            'output': docs_dir / 'index.html',
+            'title': 'OBS Scenes Setup - Professional Streaming Overlays',
+            'description': 'Transform your OBS Studio with professional overlays for educational content.',
+            'breadcrumb': 'Home'
+        },
+        {
             'input': root_dir / 'README.md',
             'output': guides_dir / 'README.html',
             'title': 'OBS Scenes Setup',
@@ -535,6 +542,20 @@ def main():
             'title': 'Claude Code Integration',
             'description': 'AI assistant configuration and codebase instructions.',
             'breadcrumb': 'Claude Integration'
+        },
+        {
+            'input': docs_dir / 'documentation.md',
+            'output': docs_dir / 'documentation.html',
+            'title': 'Full Documentation',
+            'description': 'Complete documentation for OBS Scenes Setup.',
+            'breadcrumb': 'Documentation'
+        },
+        {
+            'input': docs_dir / 'quick-reference.md',
+            'output': docs_dir / 'quick-reference.html',
+            'title': 'Quick Reference',
+            'description': 'Quick reference guide for OBS Scenes Setup.',
+            'breadcrumb': 'Quick Reference'
         }
     ]
     
