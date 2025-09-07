@@ -5,116 +5,51 @@ title: OBS Scenes Setup - Professional Streaming Overlays
 
 # OBS Scenes Setup
 
-## Professional Streaming Overlays for Educational Content
+## Transform Your OBS Studio with Professional Overlays
 
-Transform your OBS Studio setup with professional, dynamic overlays designed specifically for programming tutorials, workshops, and technical education. No coding required - just add our overlay URLs to your OBS Browser Sources.
+Create stunning educational content with our complete OBS scene collection. Perfect for programming tutorials, workshops, webinars, and technical presentations.
 
 <div style="text-align: center; margin: 40px 0;">
-  <a href="#quick-start" class="button">Quick Start</a>
-  <a href="#scenes-gallery" class="button">View Scenes</a>
-  <a href="https://github.com/artivisi/obs-scenes-setup" class="button">GitHub Repo</a>
+  <a href="#get-started" class="button" style="background: #28a745; font-size: 1.2em; padding: 15px 40px;">🚀 Get Started</a>
+  <a href="#preview-scenes" class="button">👁️ Preview Scenes</a>
+  <a href="https://github.com/artivisi/obs-scenes-setup" class="button">📦 GitHub</a>
 </div>
 
 ---
 
-## 🚀 Quick Start {#quick-start}
+## ✨ What You Get
 
-### Step 1: Open OBS Studio
-Ensure you have OBS Studio 28+ installed with Browser Source support.
-
-### Step 2: Create a New Scene
-- Right-click in the Scenes box
-- Select "Add" → Name your scene (e.g., "Intro")
-
-### Step 3: Add Browser Source
-- Right-click in Sources → Add → Browser
-- Configure with these settings:
-  - **URL**: Copy from the [overlay URLs](#overlay-urls) below
-  - **Width**: 1920
-  - **Height**: 1080
-  - **FPS**: 30
-
-### Step 4: Add Your Content
-- For camera scenes: Add Video Capture Device
-- For screen scenes: Add Display/Window Capture
-- Position sources according to the scene layout
-
----
-
-## 📺 Scenes Gallery {#scenes-gallery}
-
-### 🎬 Intro Scene
-**Purpose**: Professional opening while attendees join  
-**Features**: Event title, instructor info, animated backgrounds, countdown timer  
-**Best For**: Session start, waiting for participants
-
-<div class="scene-preview">
-  <a href="previews/intro-preview.html" target="_blank">View Live Preview →</a>
-</div>
-
-### 👤 Talking Head
-**Purpose**: Full presenter focus with identification  
-**Features**: Name/title overlay, company branding  
-**Best For**: Introductions, explanations, Q&A sessions
-
-<div class="scene-preview">
-  <a href="previews/talking-head-preview.html" target="_blank">View Live Preview →</a>
-</div>
-
-### 📊 50:50 Presentation
-**Purpose**: Balanced view of slides and presenter  
-**Features**: Screen sharing with camera overlay (top-center)  
-**Camera Position**: 75% right, full height, 25% cropped sides  
-**Best For**: PowerPoint, Keynote, slide presentations
-
-<div class="scene-preview">
-  <a href="previews/presentation-preview.html" target="_blank">View Live Preview →</a>
-</div>
-
-### 💻 Code Demo
-**Purpose**: Live coding with presenter visibility  
-**Features**: Full screen share, PiP camera (bottom-right)  
-**Camera Size**: 25% scale  
-**Best For**: IDE demos, terminal sessions, debugging
-
-<div class="scene-preview">
-  <a href="previews/code-demo-preview.html" target="_blank">View Live Preview →</a>
-</div>
-
-### 🖥️ Screen Only
-**Purpose**: Maximum screen visibility  
-**Features**: Minimal overlay, topic indicator  
-**Best For**: Detailed code review, documentation reading
-
-<div class="scene-preview">
-  <a href="previews/screen-only-preview.html" target="_blank">View Live Preview →</a>
-</div>
-
-### 📺 BRB / Technical
-**Purpose**: Professional break screen  
-**Features**: Animated elements, status message  
-**Best For**: Breaks, technical issues, scene transitions
-
-<div class="scene-preview">
-  <a href="previews/brb-preview.html" target="_blank">View Live Preview →</a>
-</div>
-
-### 🎯 Outro Scene
-**Purpose**: Professional session conclusion  
-**Features**: Topics covered, social links, call-to-action  
-**Best For**: Session end, networking info, next steps
-
-<div class="scene-preview">
-  <a href="previews/outro-preview.html" target="_blank">View Live Preview →</a>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0;">
+  <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; color: #333;">
+    <h3>🎬 7 Professional Scenes</h3>
+    <p>Complete set including Intro, Outro, Presentation, Code Demo, and more</p>
+  </div>
+  <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; color: #333;">
+    <h3>🎨 Modern Animations</h3>
+    <p>Smooth transitions, animated backgrounds, and professional effects</p>
+  </div>
+  <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; color: #333;">
+    <h3>⚡ Ready to Use</h3>
+    <p>Pre-configured layouts, hotkeys (F1-F7), and perfect positioning</p>
+  </div>
+  <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; color: #333;">
+    <h3>🔧 Fully Customizable</h3>
+    <p>Edit text, colors, and branding to match your style</p>
+  </div>
 </div>
 
 ---
 
-## 🔗 Overlay URLs {#overlay-urls}
+## 🚀 Get Started {#get-started}
 
-Copy these URLs directly into your OBS Browser Sources:
+Choose your setup method based on your technical comfort level:
 
-### Production Overlays (Stable)
+### Option 1: Use Our Hosted Overlays (Easiest)
+
+Perfect if you just want to start streaming right away.
+
+1. **Copy these URLs into OBS Browser Sources:**
+
 ```
 https://artivisi.com/obs-scenes-setup/overlays/intro.html
 https://artivisi.com/obs-scenes-setup/overlays/talking-head.html
@@ -125,246 +60,234 @@ https://artivisi.com/obs-scenes-setup/overlays/brb.html
 https://artivisi.com/obs-scenes-setup/overlays/outro.html
 ```
 
-### Beta Overlays (Latest Features)
-```
-https://artivisi.com/obs-scenes-setup/beta/intro.html
-https://artivisi.com/obs-scenes-setup/beta/talking-head.html
-https://artivisi.com/obs-scenes-setup/beta/presentation.html
-https://artivisi.com/obs-scenes-setup/beta/code-demo.html
-https://artivisi.com/obs-scenes-setup/beta/screen-only.html
-https://artivisi.com/obs-scenes-setup/beta/brb.html
-https://artivisi.com/obs-scenes-setup/beta/outro.html
-```
+2. **Add to OBS:**
+   - Create new scene in OBS
+   - Add Browser Source
+   - Paste URL, set to 1920x1080
+   - Add your camera/screen capture as needed
 
----
+### Option 2: Generate Your Own (Customizable)
 
-## 📋 Complete OBS Setup Guide
-
-### Creating the Full Scene Collection
-
-#### 1. Intro Scene
-1. Create new scene "🎬 Intro"
-2. Add Browser Source with intro.html URL
-3. No additional sources needed
-
-#### 2. Talking Head Scene
-1. Create new scene "👤 Talking Head"
-2. Add Video Capture Device (your camera)
-3. Right-click camera → Transform → Fit to Screen
-4. Add Browser Source with talking-head.html URL
-5. Ensure Browser Source is above camera in sources list
-
-#### 3. 50:50 Presentation Scene
-1. Create new scene "📊 Presentation"
-2. Add Display/Window Capture (for slides)
-3. Add Video Capture Device (your camera)
-4. Transform camera:
-   - Position: X=1440, Y=0
-   - Size: 960x1080
-   - Crop: Left=480, Right=480
-5. Add Browser Source with presentation.html URL on top
-
-#### 4. Code Demo Scene
-1. Create new scene "💻 Code Demo"
-2. Add Window Capture (your IDE/terminal)
-3. Add Video Capture Device (your camera)
-4. Transform camera:
-   - Position: Bottom-right corner
-   - Scale to 25% (480x270)
-5. Add Browser Source with code-demo.html URL on top
-
-#### 5. Screen Only Scene
-1. Create new scene "🖥️ Screen Only"
-2. Add Display/Window Capture
-3. Add Browser Source with screen-only.html URL
-
-#### 6. BRB Scene
-1. Create new scene "📺 BRB"
-2. Add Browser Source with brb.html URL
-3. No additional sources needed
-
-#### 7. Outro Scene
-1. Create new scene "🎯 Outro"
-2. Add Browser Source with outro.html URL
-3. No additional sources needed
-
----
-
-## ⚙️ Advanced Configuration
-
-### Custom Branding
-
-While the online overlays use default branding, you can customize them by:
-
-1. **Fork the Repository**: [GitHub Repo](https://github.com/artivisi/obs-scenes-setup)
-2. **Edit Configuration**: Modify `resources/event.yaml`
-3. **Generate Custom Overlays**: Run the generation scripts
-4. **Host on GitHub Pages**: Enable Pages in your fork
-5. **Use Your URLs**: Replace artivisi.com with your GitHub Pages URL
-
-### Browser Source Settings
-
-#### Recommended Settings
-- **Width**: 1920
-- **Height**: 1080
-- **FPS**: 30
-- **CSS**: Leave empty (styles included in overlays)
-- **Shutdown when not visible**: ✓ Checked
-- **Refresh when scene becomes active**: ✓ Checked
-
-#### Troubleshooting Overlays
-- **Not Loading?** Check internet connection and URL
-- **Wrong Size?** Ensure 1920x1080 resolution
-- **Not Updating?** Right-click source → Refresh
-- **Performance Issues?** Reduce FPS to 24 or enable hardware acceleration
-
-### Hotkey Configuration
-
-Set up scene switching hotkeys for smooth transitions:
-
-1. File → Settings → Hotkeys
-2. Recommended setup:
-   - **F1**: Intro Scene
-   - **F2**: Talking Head
-   - **F3**: Presentation
-   - **F4**: Code Demo
-   - **F5**: Screen Only
-   - **F6**: BRB
-   - **F7**: Outro
-
----
-
-## 🎨 Customization Options
-
-### For Developers
-
-Clone and customize the overlays:
+For those who want to customize the overlays with their own branding.
 
 ```bash
-# Clone repository
+# Clone and customize
 git clone https://github.com/artivisi/obs-scenes-setup.git
 cd obs-scenes-setup
 
-# Edit configuration
+# Edit your event details
 nano resources/event.yaml
 
-# Generate custom overlays
-python scripts/generate-scenes.py resources/event.yaml --output my-overlays/
+# Generate overlays
+python scripts/generate-scenes.py resources/event.yaml --output my-event/
 
-# Serve locally for testing
-python scripts/serve-scenes.py my-overlays/
-```
+# Serve locally
+python scripts/serve-scenes.py my-event/
 
-### Configuration Options
-
-```yaml
-event:
-  title: "Your Workshop Title"
-  tagline: "Workshop Description"
-
-instructor:
-  name: "Your Name"
-  title: "Your Title"
-
-branding:
-  company_name: "Your Company"
-  website: "yourwebsite.com"
-  primary_color: "#2e3192"
-  accent_color: "#58c034"
-
-session:
-  current_topic: "Current Topic"
-  start_time: "10:00 AM"
+# Auto-inject to OBS (optional)
+python scripts/inject-obs.py --collection my-event --webserver http://localhost:8080
 ```
 
 ---
 
-## 🤝 Community & Support
+## 👁️ Preview Scenes {#preview-scenes}
 
-### Get Help
-- [GitHub Issues](https://github.com/artivisi/obs-scenes-setup/issues)
-- [Discussions](https://github.com/artivisi/obs-scenes-setup/discussions)
-- [Wiki](https://github.com/artivisi/obs-scenes-setup/wiki)
+Click any scene to see a live preview of how it looks:
 
-### Contribute
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0;">
+  
+  <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+    <a href="previews/intro-preview.html" target="_blank">
+      <div style="background: linear-gradient(135deg, #667eea, #764ba2); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2em;">
+        🎬 Intro
+      </div>
+    </a>
+    <div style="padding: 15px;">
+      <strong>Intro Scene</strong><br>
+      Professional opening with countdown timer
+    </div>
+  </div>
+
+  <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+    <a href="previews/talking-head-preview.html" target="_blank">
+      <div style="background: linear-gradient(135deg, #667eea, #764ba2); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2em;">
+        👤 Talking Head
+      </div>
+    </a>
+    <div style="padding: 15px;">
+      <strong>Talking Head</strong><br>
+      Full camera with name overlay
+    </div>
+  </div>
+
+  <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+    <a href="previews/presentation-preview.html" target="_blank">
+      <div style="background: linear-gradient(135deg, #667eea, #764ba2); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2em;">
+        📊 50:50
+      </div>
+    </a>
+    <div style="padding: 15px;">
+      <strong>Presentation</strong><br>
+      Screen + camera side by side
+    </div>
+  </div>
+
+  <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+    <a href="previews/code-demo-preview.html" target="_blank">
+      <div style="background: linear-gradient(135deg, #667eea, #764ba2); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2em;">
+        💻 Code Demo
+      </div>
+    </a>
+    <div style="padding: 15px;">
+      <strong>Code Demo</strong><br>
+      Screen with PiP camera
+    </div>
+  </div>
+
+  <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+    <a href="previews/screen-only-preview.html" target="_blank">
+      <div style="background: linear-gradient(135deg, #667eea, #764ba2); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2em;">
+        🖥️ Screen
+      </div>
+    </a>
+    <div style="padding: 15px;">
+      <strong>Screen Only</strong><br>
+      Full screen with minimal overlay
+    </div>
+  </div>
+
+  <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+    <a href="previews/brb-preview.html" target="_blank">
+      <div style="background: linear-gradient(135deg, #667eea, #764ba2); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2em;">
+        📺 BRB
+      </div>
+    </a>
+    <div style="padding: 15px;">
+      <strong>Be Right Back</strong><br>
+      Animated break screen
+    </div>
+  </div>
+
+  <div style="border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
+    <a href="previews/outro-preview.html" target="_blank">
+      <div style="background: linear-gradient(135deg, #667eea, #764ba2); height: 150px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2em;">
+        🎯 Outro
+      </div>
+    </a>
+    <div style="padding: 15px;">
+      <strong>Outro Scene</strong><br>
+      Thank you with social links
+    </div>
+  </div>
+
+</div>
+
+---
+
+## 🎯 Perfect For
+
+- 📚 **Programming Tutorials** - Live coding sessions with professional presentation
+- 🎓 **Educational Workshops** - Engaging overlays for teaching and training
+- 💼 **Technical Presentations** - Professional look for webinars and meetings
+- 🎮 **Code Streaming** - Stand out on Twitch/YouTube with polished overlays
+- 📹 **Course Recording** - Consistent branding for online courses
+
+---
+
+## 🛠️ Technical Details
+
+### Requirements
+- **OBS Studio 28.0+** with Browser Source plugin (included by default)
+- **Resolution**: 1920x1080 (Full HD)
+- **No coding required** for basic usage
+
+### What's Included
+- **7 HTML overlay files** with embedded CSS animations
+- **Mustache templates** for customization
+- **Python scripts** for automation (optional)
+- **WebSocket integration** for advanced users
+- **Full documentation** and examples
+
+### Customization Options
+- **Event details**: Title, instructor name, company branding
+- **Colors**: Primary and accent colors
+- **Content**: Session topics, social links
+- **Layout**: Camera positions and scaling
+
+---
+
+## 📖 Documentation
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 30px 0;">
+  <a href="documentation" style="background: #f8f9fa; padding: 20px; border-radius: 8px; text-decoration: none; color: #333; display: block;">
+    <strong>📚 Full Documentation</strong><br>
+    Complete setup and customization guide
+  </a>
+  <a href="quick-reference" style="background: #f8f9fa; padding: 20px; border-radius: 8px; text-decoration: none; color: #333; display: block;">
+    <strong>⚡ Quick Reference</strong><br>
+    Copy-paste commands and URLs
+  </a>
+  <a href="https://github.com/artivisi/obs-scenes-setup" style="background: #f8f9fa; padding: 20px; border-radius: 8px; text-decoration: none; color: #333; display: block;">
+    <strong>💻 Source Code</strong><br>
+    Fork on GitHub
+  </a>
+  <a href="https://github.com/artivisi/obs-scenes-setup/issues" style="background: #f8f9fa; padding: 20px; border-radius: 8px; text-decoration: none; color: #333; display: block;">
+    <strong>💬 Get Help</strong><br>
+    Report issues or ask questions
+  </a>
+</div>
+
+---
+
+## 🚀 Advanced Features
+
+### For Developers
+
+If you're comfortable with code, unlock these advanced features:
+
+- **Automated Scene Injection**: Use WebSocket to automatically create all scenes
+- **Custom Themes**: Create your own visual themes with Mustache templates
+- **CI/CD Integration**: GitHub Actions for automated overlay generation
+- **Bulk Generation**: Create multiple event-specific overlays
+- **API Integration**: Pull event data from external sources
+
+```python
+# Example: Auto-inject with custom branding
+python scripts/inject-obs.py \
+  --collection "My-Workshop" \
+  --webserver http://localhost:8080 \
+  --obs-host localhost
+```
+
+### Cross-Platform Support
+
+Works seamlessly across all platforms:
+- ✅ **Windows** (including WSL)
+- ✅ **macOS** 
+- ✅ **Linux** (Ubuntu, Fedora, etc.)
+
+---
+
+## 👥 Community
+
+### Created By
+**[ArtiVisi Intermedia](https://artivisi.com)**  
+Delivering Solutions, Creating Values
+
+### Contributing
+We welcome contributions! Feel free to:
 - Submit overlay themes
 - Report bugs
 - Suggest features
 - Improve documentation
 
-### Credits
-Created by [ArtiVisi Intermedia](https://artivisi.com) for the educational community.
-
----
-
-## 📊 Comparison Table
-
-| Scene Type | Camera | Screen | Overlay | Best Use Case |
-|------------|--------|--------|---------|---------------|
-| Intro | ❌ | ❌ | ✅ | Session start |
-| Talking Head | ✅ Full | ❌ | ✅ | Direct teaching |
-| 50:50 Presentation | ✅ Overlay | ✅ Full | ✅ | Slide presentations |
-| Code Demo | ✅ PiP | ✅ Full | ✅ | Live coding |
-| Screen Only | ❌ | ✅ Full | ✅ | Detailed review |
-| BRB | ❌ | ❌ | ✅ | Breaks |
-| Outro | ❌ | ❌ | ✅ | Session end |
-
----
-
-## 🚦 System Requirements
-
-### Minimum Requirements
-- OBS Studio 28.0+
-- Browser Source plugin (included by default)
-- Internet connection for overlay loading
-- 1920x1080 canvas resolution
-
-### Recommended Setup
-- OBS Studio 30.0+
-- Hardware encoding (NVENC/QuickSync)
-- 16GB RAM
-- Stable internet connection
-- Secondary monitor for OBS control
-
----
-
-## 📱 Mobile & Tablet Support
-
-While primarily designed for desktop streaming, the overlays are responsive and can be adapted for:
-- Vertical streaming (9:16)
-- Square format (1:1)
-- Custom resolutions
-
-Adjust Browser Source dimensions accordingly.
-
----
-
-## 🔄 Updates & Changelog
-
-### Latest Version (v2.0)
-- ✅ Added Intro Scene with countdown timer
-- ✅ Added 50:50 Presentation layout
-- ✅ Improved scene ordering
-- ✅ Enhanced overlay animations
-- ✅ Cross-platform compatibility
-
-### Coming Soon
-- 🔜 Theme selector
-- 🔜 Real-time customization
-- 🔜 StreamDeck integration
-- 🔜 Animated transitions
+### License
+Open source under MIT License
 
 ---
 
 <div style="text-align: center; margin-top: 60px; padding: 40px; background: linear-gradient(135deg, #2e3192, #58c034); color: white; border-radius: 10px;">
-  <h2>Ready to Professional Streaming?</h2>
-  <p>Get started with our overlays in less than 5 minutes</p>
-  <a href="#quick-start" class="button-white">Start Now</a>
+  <h2>Ready to Level Up Your Streaming?</h2>
+  <p style="font-size: 1.2em; margin: 20px 0;">Join hundreds of educators using our professional overlays</p>
+  <a href="#get-started" class="button" style="background: white; color: #2e3192; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">Get Started Now →</a>
 </div>
-
----
-
-<footer style="text-align: center; margin-top: 40px; padding: 20px; border-top: 1px solid #eee;">
-  <p>© 2024 ArtiVisi Intermedia | <a href="https://artivisi.com">artivisi.com</a></p>
-  <p>Open Source under MIT License</p>
-</footer>
